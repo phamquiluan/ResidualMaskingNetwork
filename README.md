@@ -143,7 +143,7 @@ We have accumulated the following to-do list, which we hope to complete in the n
 @misc{luanresmaskingnet2020,
 	Author = "Luan Pham, Tuan Anh Tran",
 	Title = "{Facial Expression Recognition using Residual Masking Network}",
-	url = "\url{github.com/pamqu/EfficientDet.Pytorch}",
+	url = "\url{https://github.com/phamquiluan/ResidualMaskingNetwork}",
 	Year = "2020"
 }
 ```
