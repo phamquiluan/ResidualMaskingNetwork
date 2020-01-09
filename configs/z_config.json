@@ -1,0 +1,21 @@
+{
+	"data_path": "saved/data/z",
+	"image_size": 299,
+	"in_channels": 3,
+	"num_classes": 7,
+	"arch": "inception_v3",
+	"lr":  0.0001,
+	"momentum": 0.9,
+	"weight_decay": 1e-3,
+	"distributed": 0,
+	"batch_size": 48, 
+	"num_workers": 8,
+	"device": "cuda:0",
+	"max_epoch_num": 50,
+	"max_plateau_count": 8,
+	"plateau_patience": 2,
+	"steplr": 50,
+	"log_dir": "saved/logs",
+	"checkpoint_dir": "saved/checkpoints",
+	"model_name": "last_hope"
+}
