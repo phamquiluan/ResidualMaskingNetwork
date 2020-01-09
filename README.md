@@ -1,3 +1,5 @@
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/challenges-in-representation-learning-a/facial-expression-recognition-on-fer2013)](https://paperswithcode.com/sota/facial-expression-recognition-on-fer2013?p=challenges-in-representation-learning-a)
+
 # Facial Expression Recognition using Residual Masking Network, in PyTorch
 A [PyTorch](http://pytorch.org/) implementation of my thesis with the same name.
 
@@ -159,4 +161,3 @@ We have accumulated the following to-do list, which we hope to complete in the n
 }
 ```
 
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/challenges-in-representation-learning-a/facial-expression-recognition-on-fer2013)](https://paperswithcode.com/sota/facial-expression-recognition-on-fer2013?p=challenges-in-representation-learning-a)
