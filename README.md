@@ -7,8 +7,10 @@ A [PyTorch](http://pytorch.org/) implementation of my thesis with the same name.
 </p>
 
 # Live Demo:
+- Model file: [download](https://drive.google.com/open?id=1_6CzlKRS9ksxlo0TjqIGXMzQE4I83tE0) (this checkpoint is trained on VEMO dataset, locate it at ```./saved/checkpoints/``` directory)
+- Download 2 files: [prototxt](https://drive.google.com/open?id=1ANVPx3JM4EcJVZOstV_kEO1Jcv74mBu5), and [res10_300x300_ssd](https://drive.google.com/open?id=1Iy_3I_mWGhBA63W0IK8tRrUuvr-WrGQ2) for face detection OpenCV. Locate at current directory or checking file path with ```ssd_infer.py``` file.
+
 ```Shell
-# remember download pretrained network and locate it to `saved/checkpoints/` (by default)
 python ssd_infer.py
 ```
 
@@ -58,6 +60,7 @@ Model | Accuracy |
 [Cbam\_Resnet50](https://drive.google.com/open?id=1i9zk8sGXiixkQGTA1txBxSuew6z_c86T) | 73.39
 [Resnet101](https://drive.google.com/open?id=1GadrX04NJIqtGHA85vz-ts93JuKj54ih) | 73.47
 [ResMaskingNet](https://drive.google.com/open?id=1_ASpv0QNxknMFI75gwuVWi8FeeuMoGYy) | 74.14
+[ResMaskingNet + 6](https://drive.google.com/open?id=1y28VHzJcgBpW0Qn_K0XVVd-hxG4feIHG) | 76.82
 
  
 2) we are working for approval of public VEMO dataset
@@ -108,6 +111,14 @@ python cm_cbam.py
 <img width=600 src= "./docs/cm_cbam.png"/>
 </p>
 
+
+## Ensemble method
+
+I used no-weighted sum avarage ensemble method to fusing 7 different models together, to reproduce results, you need to do some steps:
+
+1. Download all needed trained weights and located on ```./saved/checkpoints/``` directory.  Link to download can be found on Benchmarking section.
+2. Edit file ```gen_results``` and run it to generate result offline for **each** model.
+3. Run ```gen_ensemble.py``` file to generate accuracy for example methods.
 
 
 
