@@ -134,6 +134,7 @@ I used no-weighted sum avarage ensemble method to fusing 7 different models toge
 We have accumulated the following to-do list, which we hope to complete in the near future
 - Still to come:
   * [x] Upload all models and training code 
+  * [x] Test time augmentation
   * [x] GPU-Parallel
   * [x] Pretrained model
   * [x] Demo and inference code.
