@@ -21,16 +21,6 @@ python ssd_infer.py
 ### Table of Contents
 - <a href='#recent-update'>Recent Update</a>
 - <a href='#benchmarking'>Benchmarking</a>
-- <a href='#installation'>Installation</a>
-- <a href='#installation'>Installation</a>
-- <a href='#prerequisites'>Prerequisites</a>
-- <a href='#datasets'>Datasets</a>
-- <a href='#training-efficientdet'>Train</a>
-- <a href='#evaluation'>Evaluate</a>
-- <a href='#performance'>Performance</a>
-- <a href='#demo'>Demo</a>
-- <a href='#todo'>Future Work</a>
-- <a href='#references'>Reference</a>
 
 &nbsp;
 &nbsp;
