@@ -30,8 +30,8 @@ class ResMasking(ResNet):
             num_classes=1000
         )
         # state_dict = torch.load('saved/checkpoints/resnet18_rot30_2019Nov05_17.44')['net']
-        state_dict = load_state_dict_from_url(model_urls['resnet34'], progress=True)
-        self.load_state_dict(state_dict)
+        # state_dict = load_state_dict_from_url(model_urls['resnet34'], progress=True)
+        # self.load_state_dict(state_dict)
  
         self.fc = nn.Linear(512, 7)
 
