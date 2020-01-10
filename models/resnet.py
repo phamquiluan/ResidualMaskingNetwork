@@ -226,7 +226,7 @@ def _resnet(arch, block, layers, pretrained, progress, **kwargs):
     return model
 
 
-def resnet18(pretrained=True, progress=True, **kwargs):
+def resnet18(pretrained=False, progress=True, **kwargs):
     r"""ResNet-18 model from
     `"Deep Residual Learning for Image Recognition" <https://arxiv.org/pdf/1512.03385.pdf>`_
 
@@ -242,7 +242,7 @@ def resnet18(pretrained=True, progress=True, **kwargs):
     return model
 
 
-def resnet34(pretrained=True, progress=True, **kwargs):
+def resnet34(pretrained=False, progress=True, **kwargs):
     r"""ResNet-34 model from
     `"Deep Residual Learning for Image Recognition" <https://arxiv.org/pdf/1512.03385.pdf>`_
 
@@ -256,7 +256,7 @@ def resnet34(pretrained=True, progress=True, **kwargs):
     return model
 
 
-def resnet50(pretrained=True, progress=True, **kwargs):
+def resnet50(pretrained=False, progress=True, **kwargs):
     r"""ResNet-50 model from
     `"Deep Residual Learning for Image Recognition" <https://arxiv.org/pdf/1512.03385.pdf>`_
 
