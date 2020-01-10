@@ -28,6 +28,7 @@ python ssd_infer.py
 &nbsp;
 
 ## Recent Update
+ - [10/01/2020] Checking demo stuff and training procedure works on another machine
  - [09/01/2020] First time upload
 
 ## Benchmarking on FER2013
