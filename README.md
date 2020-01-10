@@ -78,7 +78,7 @@ Model | Accuracy |
 
 ### FER2013 Dataset
 
-- [Link download](https://drive.google.com/open?id=18ovcnZBsPvwXXFVAqczACe9zciO_1q6J)
+- [Link download](https://drive.google.com/open?id=18ovcnZBsPvwXXFVAqczACe9zciO_1q6J) (locate it in ```saved/data/fer2013``` like ```saved/data/fer2013/train.csv```)
 
 
 ## Training  
