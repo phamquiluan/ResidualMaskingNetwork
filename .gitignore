@@ -127,4 +127,10 @@ dmypy.json
 ####
 saved/checkpoints/*
 saved/logs/*
-
+debug
+ssh.sh
+vim-markdown-preview.html
+deploy.prototxt.txt
+res10_300x300_ssd_iter_140000.caffemodel
+run.sh
+saved
