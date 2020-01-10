@@ -6,11 +6,17 @@ import numpy as np
 import torch
 from torchvision.transforms import transforms
 from models import densenet121, resmasking_dropout1
-from barez import (
-    show,
-    ensure_gray,
-    ensure_color
-)
+
+
+
+def ensure_color(image):
+    if len(image.shape) == 2:
+        return np.dstack([image] * 3)
+    elif image.shape[2] == 1:
+        return np.dstack([image] * 3)
+    return image
+
+
 
 net = cv2.dnn.readNetFromCaffe("deploy.prototxt.txt", "res10_300x300_ssd_iter_140000.caffemodel")
 
