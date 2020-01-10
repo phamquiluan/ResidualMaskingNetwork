@@ -17,6 +17,12 @@ python ssd_infer.py
 ```
 
 
+<p align="center">
+<img width=500 src= "https://user-images.githubusercontent.com/24642166/72135777-da244d80-33b9-11ea-90ee-706b25c0a5a9.png"/>
+</p>
+
+
+
 
 ### Table of Contents
 - <a href='#recent-update'>Recent Update</a>
