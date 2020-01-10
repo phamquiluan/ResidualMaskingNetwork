@@ -3,7 +3,7 @@
 	"image_size": 224,
 	"in_channels": 3,
 	"num_classes": 7,
-	"arch": "resnet18",
+	"arch": "alexnet",
 	"lr":  0.0001,
 	"weighted_loss": 0,
 	"momentum": 0.9,

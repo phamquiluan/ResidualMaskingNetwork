@@ -92,6 +92,7 @@ python main_fer.py  # Example for fer2013_config.json file
 
 - The best checkpoints will chosen at term of best validation accuracy, located at ```saved/checkpoints```
 - The TensorBoard training logs are located at ```saved/logs```, to open it, use ```tensorboard --logdir saved/logs/```
+- By default, it will train `alexnet` model, you can switch to another model by edit `configs/fer2013\_config.json` file (to `resnet18` or `cbam\_resnet50` or my network `resmasking\_dropout1`.
 
 ## Evaluation
 
