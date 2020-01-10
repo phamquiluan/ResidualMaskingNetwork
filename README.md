@@ -89,6 +89,9 @@ Model | Accuracy |
 python main_fer.py  # Example for fer2013_config.json file
 ```
 
+- The best checkpoints will chosen at term of best validation accuracy, located at ```saved/checkpoints```
+- The TensorBoard training logs are located at ```saved/logs```, to open it, use ```tensorboard --logdir saved/logs/```
+
 ## Evaluation
 
 For student, who takes care of font family of confusion matrix and would like to write things in LaTeX, below is an example for generating a striking confusion matrix. 
