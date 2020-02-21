@@ -25,18 +25,31 @@ python ssd_infer.py
 
 
 ### Table of Contents
-- <a href='#recent-update'>Recent Update</a>
-- <a href='#benchmarking'>Benchmarking</a>
+- <a href='#recent_update'>Recent Update</a>
+- <a href='#benchmarking_fer2013'>Benchmarking on FER2013</a>
+- <a href='#benchmarking_imagenet'>Benchmarking on ImageNet</a>
+- <a href='#install'>Installation</a>
+- <a href='#datasets'>Download datasets</a>
+- <a href='#train_fer'>Training on FER2013</a>
+- <a href='#train_imagenet'>Training on ImageNet</a>
+- <a href='#eval'>Evaluation results</a>
+- <a href='#docs'>Download dissertation and slide</a>
 
 &nbsp;
 &nbsp;
 &nbsp;
 &nbsp;
+
+<p id="recent_update"></p>
+
 
 ## Recent Update
  - [21/02/2020] Imagenet training code and trained weights released.
  - [10/01/2020] Checking demo stuff and training procedure works on another machine
  - [09/01/2020] First time upload
+
+<p id="benchmarking_fer2013"></p>
+
 
 ## Benchmarking on FER2013
 
@@ -65,6 +78,8 @@ Model | Accuracy |
 
 Results in VEMO dataset could be found in my thesis or slide (attached below)
 
+<p id="benchmarking_imagenet"></p>
+
  
 ## Benchmarking on ImageNet 
 
@@ -76,6 +91,8 @@ Model | Top-1 Accuracy | Top-5 Accuracy |
 [Resnet34](https://drive.google.com/open?id=16lErBAk7K3WswKP0wyE9S0dNrr7AF6wd) | 72.59 | 90.92
 [ResidualMaskingNetwork](https://drive.google.com/open?id=1myjp4_XL8mNJlAbz0TFjYKUc7B0N64eb) | 73.15 | 91.40
 
+
+<p id="install"></p>
  
 
 ## Installation
@@ -93,10 +110,17 @@ Model | Top-1 Accuracy | Top-5 Accuracy |
 * [requirements.txt](requirements.txt)
 
 
+<p id="datasets"></p>
+
+
 ## Datasets
 
 - [FER2013 Dataset](https://drive.google.com/open?id=18ovcnZBsPvwXXFVAqczACe9zciO_1q6J) (locate it in ```saved/data/fer2013``` like ```saved/data/fer2013/train.csv```)
 - [ImageNet 1K Dataset](http://image-net.org/download-images) (ensure it can be loaded by torchvision.datasets.Imagenet)
+
+
+
+<p id="train_fer"></p>
 
 
 ## Training on FER2013
@@ -112,6 +136,9 @@ python main_fer.py  # Example for fer2013_config.json file
 - By default, it will train `alexnet` model, you can switch to another model by edit `configs/fer2013\_config.json` file (to `resnet18` or `cbam\_resnet50` or my network `resmasking\_dropout1`.
 
 
+<p id="train_imagenet"></p>
+
+
 ## Training on Imagenet dataset
 
 To perform training resnet34 on 4 GPUs V100 on a single machine:
@@ -119,6 +146,8 @@ To perform training resnet34 on 4 GPUs V100 on a single machine:
 ```Shell
 python ./main_imagenet.py -a resnet34 --dist-url 'tcp://127.0.0.1:12345' --dist-backend 'nccl' --multiprocessing-distributed --world-size 1 --rank 0 
 ```
+
+<p id="eval"></p>
 
 
 ## Evaluation
@@ -146,6 +175,9 @@ I used no-weighted sum avarage ensemble method to fusing 7 different models toge
 
 
 
+<p id="docs"></p>
+
+
 ## Dissertation and Slide
 - [Dissertation download (in Vietnamese)](https://drive.google.com/open?id=1HxqvQSZRf-3ashGtZ5o9OABdhmdjS64a)
 - [Presentation slide (in English) with full appendix](https://drive.google.com/open?id=19zweCDX8Vz4jgwJ6cBWr5x_iQPvahsQg)
@@ -163,12 +195,19 @@ We have accumulated the following to-do list, which we hope to complete in the n
   * [x] Imagenet trained and pretrained weights.
   
 
+<p id="author"></p>
+
+
 ## Authors
 
 * [**Luan Pham**](https://github.com/phamquiluan)
 * [**Tuan Anh Tran**](https://github.com/phamquiluan)
 
 ***Note:*** Unfortunately, I am currently join a full-time job and research on another topic, so I'll do my best to keep things up to date, but no guarantees.  That being said, thanks to everyone for your continued help and feedback as it is really appreciated. I will try to address everything as soon as possible.
+
+
+<p id="references"></p>
+
 
 ## References
 - Same as in dissertation.
