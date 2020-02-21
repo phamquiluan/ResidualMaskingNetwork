@@ -45,6 +45,7 @@ python ssd_infer.py
 
 ## Recent Update
  - [21/02/2020] Imagenet training code and trained weights released.
+ - [21/02/2020] Imagenet evaluation results released.
  - [10/01/2020] Checking demo stuff and training procedure works on another machine
  - [09/01/2020] First time upload
 
@@ -99,7 +100,6 @@ Model | Top-1 Accuracy | Top-5 Accuracy |
 - Install [PyTorch](http://pytorch.org/) by selecting your environment on the website and running the appropriate command.
 - Clone this repository and install package [prerequisites](#prerequisites) below.
 - Then download the dataset by following the [instructions](#datasets) below.
-- Note: For training, we currently support [FER2013](https://drive.google.com/open?id=18ovcnZBsPvwXXFVAqczACe9zciO_1q6J) and aim to add [ImageNet](http://www.image-net.org/) support soon.
 
 
 ### prerequisites
