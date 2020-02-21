@@ -95,12 +95,11 @@ Model | Top-1 Accuracy | Top-5 Accuracy |
 
 ## Datasets
 
-### FER2013 Dataset
+- [FER2013 Dataset](https://drive.google.com/open?id=18ovcnZBsPvwXXFVAqczACe9zciO_1q6J) (locate it in ```saved/data/fer2013``` like ```saved/data/fer2013/train.csv```)
+- [ImageNet 1K Dataset](http://image-net.org/download-images) (ensure it can be loaded by torchvision.datasets.Imagenet)
 
-- [Link download](https://drive.google.com/open?id=18ovcnZBsPvwXXFVAqczACe9zciO_1q6J) (locate it in ```saved/data/fer2013``` like ```saved/data/fer2013/train.csv```)
 
-
-## Training  
+## Training on FER2013
 
 - To train network, you need to specify model name and other hyperparameters in config file (located at configs/\*) then ensure it is loaded in main file, then run training procedure by simply run main file, for example:
 
@@ -111,6 +110,16 @@ python main_fer.py  # Example for fer2013_config.json file
 - The best checkpoints will chosen at term of best validation accuracy, located at ```saved/checkpoints```
 - The TensorBoard training logs are located at ```saved/logs```, to open it, use ```tensorboard --logdir saved/logs/```
 - By default, it will train `alexnet` model, you can switch to another model by edit `configs/fer2013\_config.json` file (to `resnet18` or `cbam\_resnet50` or my network `resmasking\_dropout1`.
+
+
+## Training on Imagenet dataset
+
+To perform training resnet34 on 4 GPUs V100 on a single machine:
+
+```Shell
+python ./main_imagenet.py -a resnet34 --dist-url 'tcp://127.0.0.1:12345' --dist-backend 'nccl' --multiprocessing-distributed --world-size 1 --rank 0 
+```
+
 
 ## Evaluation
 
@@ -146,12 +155,12 @@ I used no-weighted sum avarage ensemble method to fusing 7 different models toge
 ## TODO
 We have accumulated the following to-do list, which we hope to complete in the near future
 - Still to come:
-  * [x] Upload all models and training code 
-  * [x] Test time augmentation
-  * [x] GPU-Parallel
-  * [x] Pretrained model
+  * [x] Upload all models and training code.
+  * [x] Test time augmentation.
+  * [x] GPU-Parallel.
+  * [x] Pretrained model.
   * [x] Demo and inference code.
-  * [ ] Imagenet
+  * [x] Imagenet trained and pretrained weights.
   
 
 ## Authors
