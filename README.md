@@ -34,6 +34,7 @@ python ssd_infer.py
 &nbsp;
 
 ## Recent Update
+ - [21/02/2020] Imagenet training code and trained weights released.
  - [10/01/2020] Checking demo stuff and training procedure works on another machine
  - [09/01/2020] First time upload
 
@@ -41,7 +42,6 @@ python ssd_infer.py
 
 We benchmark our code thoroughly on two datasets: FER2013 and VEMO. Below are the results and trained weights:
 
-1). FER2013:
 
 Model | Accuracy |
 ---------|--------|
@@ -61,10 +61,22 @@ Model | Accuracy |
 [ResMaskingNet](https://drive.google.com/open?id=1_ASpv0QNxknMFI75gwuVWi8FeeuMoGYy) | 74.14
 [ResMaskingNet + 6](https://drive.google.com/open?id=1y28VHzJcgBpW0Qn_K0XVVd-hxG4feIHG) | 76.82
 
- 
-2) we are working for approval of public VEMO dataset
-3) Imagenet is cominggggggggggggggggggggggggggggg
 
+
+Results in VEMO dataset could be found in my thesis or slide (attached below)
+
+ 
+## Benchmarking on ImageNet 
+
+We also benchmark our model on ImageNet dataset.
+
+
+Model | Top-1 Accuracy | Top-5 Accuracy |
+---------|--------|--------|
+[Resnet34](https://drive.google.com/open?id=16lErBAk7K3WswKP0wyE9S0dNrr7AF6wd) | 72.59 | 90.92
+[ResidualMaskingNetwork](https://drive.google.com/open?id=1myjp4_XL8mNJlAbz0TFjYKUc7B0N64eb) | 73.15 | 91.40
+
+ 
 
 ## Installation
 - Install [PyTorch](http://pytorch.org/) by selecting your environment on the website and running the appropriate command.
