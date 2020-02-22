@@ -44,6 +44,7 @@ python ssd_infer.py
 
 
 ## Recent Update
+ - [22/02/2020] Test-time augmentation implementation.
  - [21/02/2020] Imagenet training code and trained weights released.
  - [21/02/2020] Imagenet evaluation results released.
  - [10/01/2020] Checking demo stuff and training procedure works on another machine
