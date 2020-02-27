@@ -149,7 +149,7 @@ python main_fer.py  # Example for fer2013_config.json file
 
 ## Training on Imagenet dataset
 
-To perform training resnet34 on 4 GPUs V100 on a single machine:
+To perform training resnet34 on 4 V100 GPUs on a single machine:
 
 ```Shell
 python ./main_imagenet.py -a resnet34 --dist-url 'tcp://127.0.0.1:12345' --dist-backend 'nccl' --multiprocessing-distributed --world-size 1 --rank 0 
