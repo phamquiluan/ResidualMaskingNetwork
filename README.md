@@ -203,6 +203,7 @@ We have accumulated the following to-do list, which we hope to complete in the n
   * [x] Demo and inference code.
   * [x] Imagenet trained and pretrained weights.
   * [ ] GradCAM visualization and Pooling method for visualize activations.
+  * [ ] Centerloss Visualizations.
   
 
 <p id="author"></p>
