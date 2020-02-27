@@ -44,6 +44,7 @@ python ssd_infer.py
 
 
 ## Recent Update
+ - [27/02/2020] Update Tensorboard visualizations.
  - [22/02/2020] Test-time augmentation implementation.
  - [21/02/2020] Imagenet training code and trained weights released.
  - [21/02/2020] Imagenet evaluation results released.
@@ -200,6 +201,7 @@ We have accumulated the following to-do list, which we hope to complete in the n
   * [x] Pretrained model.
   * [x] Demo and inference code.
   * [x] Imagenet trained and pretrained weights.
+  * [ ] GradCAM visualization and Pooling method for visualize activations.
   
 
 <p id="author"></p>
