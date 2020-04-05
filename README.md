@@ -227,11 +227,12 @@ We have accumulated the following to-do list, which we hope to complete in the n
 
 ## Citation
 ```
+
 @misc{luanresmaskingnet2020,
-	Author = "Luan Pham, Tuan Anh Tran",
-	Title = "{Facial Expression Recognition using Residual Masking Network}",
-	url = "\url{https://github.com/phamquiluan/ResidualMaskingNetwork}",
-	Year = "2020"
+Author = {Luan Pham & Tuan Anh Tran},
+Title = {Facial Expression Recognition using Residual Masking Network},
+url = {https://github.com/phamquiluan/ResidualMaskingNetwork},
+Year = {2020}
 }
 ```
 
