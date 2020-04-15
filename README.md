@@ -61,7 +61,6 @@ We benchmark our code thoroughly on two datasets: FER2013 and VEMO. Below are th
 
 Model | Accuracy |
 ---------|--------|
-[ResAttNet56](https://drive.google.com/open?id=1sG3ERWLPdBkjYSaZb_ynypHD15KUSsUR) | 68.54
 [VGG19](https://drive.google.com/open?id=1FPkwhmel0AiGK3UtYiWCHPi5CYkF7BRc) | 70.80
 [EfficientNet\_b2b](https://drive.google.com/open?id=1pEyupTGQPoX1gj0NoJQUHnK5-mxB8NcS) | 70.80
 [Googlenet](https://drive.google.com/open?id=1LvxAxDmnTuXgYoqBj41qTdCRCSzaWIJr) | 71.97
