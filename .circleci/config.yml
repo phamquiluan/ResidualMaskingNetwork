@@ -1,0 +1,20 @@
+version: 2.1
+
+workflows:
+  main:
+    jobs:
+      - build
+
+jobs:
+    build:
+        machine:
+            image: ubuntu-1604:201903-01 
+        steps:
+            - checkout
+            - run:
+                name: "Prepare environment: Install Miniconda and required packages."
+                command: |
+                    curl -o conda.sh https://repo.anaconda.com/miniconda/Miniconda3-py37_4.8.2-Linux-x86_64.sh
+                    sh conda.sh -b
+                    source $HOME/miniconda3/bin/activate
+                    pip install -r requirements.txt
