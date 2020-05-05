@@ -18,6 +18,3 @@ jobs:
                     sh conda.sh -b
                     source $HOME/miniconda3/bin/activate
                     pip install -r requirements.txt
-
-
-
