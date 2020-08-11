@@ -25,6 +25,7 @@ from utils.generals import make_batch
 
 class Trainer(object):
     """base class for trainers"""
+
     def __init__(self):
         pass
 
@@ -37,37 +38,38 @@ class CkTrainer(Trainer):
 
         # load config
         self._configs = configs
-        self._lr = self._configs['lr']
-        self._batch_size = self._configs['batch_size']
-        self._momentum = self._configs['momentum']
-        self._weight_decay = self._configs['weight_decay']
-        self._distributed = self._configs['distributed']
-        self._num_workers = self._configs['num_workers']
-        self._device = torch.device(self._configs['device'])
-        self._max_epoch_num = self._configs['max_epoch_num']
-        self._max_plateau_count = self._configs['max_plateau_count']
+        self._lr = self._configs["lr"]
+        self._batch_size = self._configs["batch_size"]
+        self._momentum = self._configs["momentum"]
+        self._weight_decay = self._configs["weight_decay"]
+        self._distributed = self._configs["distributed"]
+        self._num_workers = self._configs["num_workers"]
+        self._device = torch.device(self._configs["device"])
+        self._max_epoch_num = self._configs["max_epoch_num"]
+        self._max_plateau_count = self._configs["max_plateau_count"]
         self._fold_idx = str(fold_idx)
 
         # load dataloader and model
         self._train_set = train_set
         self._val_set = val_set
         self._model = model(
-            in_channels=configs['in_channels'],
-            num_classes=configs['num_classes'],
+            in_channels=configs["in_channels"], num_classes=configs["num_classes"],
         )
 
         self._model = self._model.to(self._device)
 
         if self._distributed == 1:
-            torch.distributed.init_process_group(backend='nccl')
-            self._model = nn.parallel.DistributedDataParallel(self._model, find_unused_parameters=True)
+            torch.distributed.init_process_group(backend="nccl")
+            self._model = nn.parallel.DistributedDataParallel(
+                self._model, find_unused_parameters=True
+            )
             self._train_loader = DataLoader(
                 self._train_set,
                 batch_size=self._batch_size,
                 num_workers=self._num_workers,
                 pin_memory=True,
                 shuffle=True,
-                worker_init_fn=lambda x: np.random.seed(x)
+                worker_init_fn=lambda x: np.random.seed(x),
             )
             self._val_loader = DataLoader(
                 self._val_set,
@@ -75,7 +77,7 @@ class CkTrainer(Trainer):
                 num_workers=self._num_workers,
                 pin_memory=True,
                 shuffle=False,
-                worker_init_fn=lambda x: np.random.seed(x)
+                worker_init_fn=lambda x: np.random.seed(x),
             )
         else:
             self._train_loader = DataLoader(
@@ -101,7 +103,7 @@ class CkTrainer(Trainer):
             0.56843877,
             0.84912748,
             1.29337298,
-            0.82603942
+            0.82603942,
         ]
         class_weights = torch.FloatTensor(np.array(class_weights))
         # self._criterion = nn.CrossEntropyLoss(class_weights).to(self._device)
@@ -115,9 +117,9 @@ class CkTrainer(Trainer):
 
         self._scheduler = ReduceLROnPlateau(
             self._optimizer,
-            patience=self._configs['plateau_patience'],
+            patience=self._configs["plateau_patience"],
             min_lr=1e-6,
-            verbose=True
+            verbose=True,
         )
 
         # training info
@@ -125,15 +127,13 @@ class CkTrainer(Trainer):
         self._start_time = self._start_time.replace(microsecond=0)
 
         log_dir = os.path.join(
-            self._configs['cwd'],
-            self._configs['log_dir'],
+            self._configs["cwd"],
+            self._configs["log_dir"],
             "{}_{}_fold_{}".format(
-                self._configs['arch'],
-                self._configs['model_name'],
-                self._fold_idx
-            )
+                self._configs["arch"], self._configs["model_name"], self._fold_idx
+            ),
         )
-        
+
         self._writer = SummaryWriter(log_dir)
         self._train_loss_list = []
         self._train_acc_list = []
@@ -147,32 +147,25 @@ class CkTrainer(Trainer):
         self._current_epoch_num = 0
 
         # for checkpoints
-        self._checkpoint_dir = os.path.join(
-            self._configs['cwd'],
-            'saved/checkpoints'
-        )
+        self._checkpoint_dir = os.path.join(self._configs["cwd"], "saved/checkpoints")
         if not os.path.exists(self._checkpoint_dir):
             os.makedirs(self._checkpoint_dir, exist_ok=True)
 
         self._checkpoint_path = os.path.join(
             self._checkpoint_dir,
             "{}_{}_fold_{}".format(
-                self._configs['arch'],
-                self._configs['model_name'],
-                self._fold_idx
-            )
+                self._configs["arch"], self._configs["model_name"], self._fold_idx
+            ),
         )
 
     def _train(self):
         self._model.train()
-        train_loss = 0.
-        train_acc = 0.
+        train_loss = 0.0
+        train_acc = 0.0
 
         for i, (images, targets) in tqdm(
-                enumerate(self._train_loader),
-                total=len(self._train_loader),
-                leave=False
-            ):
+            enumerate(self._train_loader), total=len(self._train_loader), leave=False
+        ):
             images = images.cuda(non_blocking=True)
             targets = targets.cuda(non_blocking=True)
 
@@ -197,15 +190,13 @@ class CkTrainer(Trainer):
 
     def _val(self):
         self._model.eval()
-        val_loss = 0.
-        val_acc = 0.
+        val_loss = 0.0
+        val_acc = 0.0
 
         with torch.no_grad():
             for i, (images, targets) in tqdm(
-                    enumerate(self._val_loader),
-                    total=len(self._val_loader),
-                    leave=False
-                ):
+                enumerate(self._val_loader), total=len(self._val_loader), leave=False
+            ):
                 images = images.cuda(non_blocking=True)
                 targets = targets.cuda(non_blocking=True)
 
@@ -238,13 +229,20 @@ class CkTrainer(Trainer):
             traceback.print_exc()
             pass
 
-
         consume_time = str(datetime.datetime.now() - self._start_time)
-        self._writer.add_text('Summary', 'Converged after {} epochs, consume {}'.format(self._current_epoch_num, consume_time[:-7]))
-        self._writer.add_text('Results', 'Best validation accuracy: {:.3f}'.format(self._best_val_acc))
-        self._writer.add_text('Results', 'Best training accuracy: {:.3f}'.format(self._best_train_acc))
+        self._writer.add_text(
+            "Summary",
+            "Converged after {} epochs, consume {}".format(
+                self._current_epoch_num, consume_time[:-7]
+            ),
+        )
+        self._writer.add_text(
+            "Results", "Best validation accuracy: {:.3f}".format(self._best_val_acc)
+        )
+        self._writer.add_text(
+            "Results", "Best training accuracy: {:.3f}".format(self._best_train_acc)
+        )
         self._writer.close()
-
 
     def _update_training_state(self):
         if self._val_acc_list[-1] > self._best_val_acc:
@@ -273,20 +271,28 @@ class CkTrainer(Trainer):
             self._val_acc_list[-1],
             self._best_val_acc,
             self._plateau_count,
-            consume_time[:-7]
+            consume_time[:-7],
         )
 
-        self._writer.add_scalar('Accuracy/Train', self._train_acc_list[-1], self._current_epoch_num)
-        self._writer.add_scalar('Accuracy/Val', self._val_acc_list[-1], self._current_epoch_num)
-        self._writer.add_scalar('Loss/Train', self._train_loss_list[-1], self._current_epoch_num)
-        self._writer.add_scalar('Loss/Val', self._val_loss_list[-1], self._current_epoch_num)
+        self._writer.add_scalar(
+            "Accuracy/Train", self._train_acc_list[-1], self._current_epoch_num
+        )
+        self._writer.add_scalar(
+            "Accuracy/Val", self._val_acc_list[-1], self._current_epoch_num
+        )
+        self._writer.add_scalar(
+            "Loss/Train", self._train_loss_list[-1], self._current_epoch_num
+        )
+        self._writer.add_scalar(
+            "Loss/Val", self._val_loss_list[-1], self._current_epoch_num
+        )
         print(message)
 
     def _is_stop(self):
         """check stop condition"""
         return (
-            self._plateau_count > self._max_plateau_count or
-            self._current_epoch_num > self._max_epoch_num
+            self._plateau_count > self._max_plateau_count
+            or self._current_epoch_num > self._max_epoch_num
         )
 
     def _increase_epoch_num(self):
@@ -301,15 +307,15 @@ class CkTrainer(Trainer):
 
         state = {
             **self._configs,
-            'net': state_dict,
-            'best_val_loss': self._best_val_loss,
-            'best_val_acc': self._best_val_acc,
-            'best_train_loss': self._best_train_loss,
-            'best_train_acc': self._best_train_acc,
-            'train_losses': self._train_loss_list,
-            'val_loss_list': self._val_loss_list,
-            'train_acc_list': self._train_acc_list,
-            'val_acc_list': self._val_acc_list,
+            "net": state_dict,
+            "best_val_loss": self._best_val_loss,
+            "best_val_acc": self._best_val_acc,
+            "best_train_loss": self._best_train_loss,
+            "best_train_acc": self._best_train_acc,
+            "train_losses": self._train_loss_list,
+            "val_loss_list": self._val_loss_list,
+            "train_acc_list": self._train_acc_list,
+            "val_acc_list": self._val_acc_list,
         }
 
         torch.save(state, self._checkpoint_path)

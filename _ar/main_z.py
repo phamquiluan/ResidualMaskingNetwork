@@ -4,7 +4,8 @@ import glob
 import json
 import random
 import warnings
-warnings.simplefilter(action='ignore', category=FutureWarning)
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
 
 import imgaug
 import torch
@@ -40,7 +41,7 @@ def main(config_path):
     """
     # load configs and set random seed
     configs = json.load(open(config_path))
-    configs['cwd'] = os.getcwd()
+    configs["cwd"] = os.getcwd()
 
     # load model and data_loader
     model = get_model(configs)
@@ -51,10 +52,11 @@ def main(config_path):
     # from trainers.fer2013_trainer import FER2013Trainer
     # from trainers.tta_trainer import FER2013Trainer
     from trainers.z_trainer import ZTrainer
+
     # from trainers.centerloss_trainer import FER2013Trainer
     trainer = ZTrainer(model, train_set, val_set, test_set, configs)
 
-    if configs['distributed'] == 1:
+    if configs["distributed"] == 1:
         ngpus = torch.cuda.device_count()
         mp.spawn(trainer.train, nprocs=ngpus, args=())
     else:
@@ -71,9 +73,9 @@ def get_model(configs):
         configs dictionary
     """
     try:
-        return models.__dict__[configs['arch']]
+        return models.__dict__[configs["arch"]]
     except KeyError:
-        return segmentation.__dict__[configs['arch']]
+        return segmentation.__dict__[configs["arch"]]
 
 
 def get_dataset(configs):
@@ -83,11 +85,11 @@ def get_dataset(configs):
     from utils.datasets.z_dataset import z
 
     # todo: add transform
-    train_set = z('train', configs)
-    val_set = z('val', configs)
-    test_set = z('test', configs, tta=True, tta_size=10)
+    train_set = z("train", configs)
+    val_set = z("val", configs)
+    test_set = z("test", configs, tta=True, tta_size=10)
     return train_set, val_set, test_set
 
 
 if __name__ == "__main__":
-    main('./configs/z_config.json')
+    main("./configs/z_config.json")

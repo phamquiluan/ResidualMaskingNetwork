@@ -3,20 +3,16 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from .resnet import (
-    conv1x1,
-    conv3x3,
-    BasicBlock,
-    Bottleneck
-)
+from .resnet import conv1x1, conv3x3, BasicBlock, Bottleneck
 
 
 def up_pooling(in_channels, out_channels, kernel_size=2, stride=2):
     return nn.Sequential(
-        nn.ConvTranspose2d(in_channels, out_channels,
-            kernel_size=kernel_size, stride=stride),
+        nn.ConvTranspose2d(
+            in_channels, out_channels, kernel_size=kernel_size, stride=stride
+        ),
         nn.BatchNorm2d(out_channels),
-        nn.ReLU(inplace=True)
+        nn.ReLU(inplace=True),
     )
 
 
@@ -24,33 +20,35 @@ class Masking4(nn.Module):
     def __init__(self, in_channels, out_channels, block=BasicBlock):
         assert in_channels == out_channels
         super(Masking4, self).__init__()
-        filters = [in_channels, in_channels * 2, in_channels * 4, in_channels * 8, in_channels * 16]
+        filters = [
+            in_channels,
+            in_channels * 2,
+            in_channels * 4,
+            in_channels * 8,
+            in_channels * 16,
+        ]
 
         self.downsample1 = nn.Sequential(
-            conv1x1(filters[0], filters[1], 1),
-            nn.BatchNorm2d(filters[1]),
+            conv1x1(filters[0], filters[1], 1), nn.BatchNorm2d(filters[1]),
         )
 
         self.downsample2 = nn.Sequential(
-            conv1x1(filters[1], filters[2], 1),
-            nn.BatchNorm2d(filters[2]),
+            conv1x1(filters[1], filters[2], 1), nn.BatchNorm2d(filters[2]),
         )
 
         self.downsample3 = nn.Sequential(
-            conv1x1(filters[2], filters[3], 1),
-            nn.BatchNorm2d(filters[3]),
+            conv1x1(filters[2], filters[3], 1), nn.BatchNorm2d(filters[3]),
         )
 
         self.downsample4 = nn.Sequential(
-            conv1x1(filters[3], filters[4], 1),
-            nn.BatchNorm2d(filters[4]),
+            conv1x1(filters[3], filters[4], 1), nn.BatchNorm2d(filters[4]),
         )
 
-        '''
+        """
         self.conv1 = block(filters[0], filters[1], downsample=conv1x1(filters[0], filters[1], 1))
         self.conv2 = block(filters[1], filters[2], downsample=conv1x1(filters[1], filters[2], 1))
         self.conv3 = block(filters[2], filters[3], downsample=conv1x1(filters[2], filters[3], 1))
-        '''
+        """
 
         self.conv1 = block(filters[0], filters[1], downsample=self.downsample1)
         self.conv2 = block(filters[1], filters[2], downsample=self.downsample2)
@@ -59,36 +57,31 @@ class Masking4(nn.Module):
 
         self.down_pooling = nn.MaxPool2d(kernel_size=2)
 
-
         self.downsample5 = nn.Sequential(
-            conv1x1(filters[4], filters[3], 1),
-            nn.BatchNorm2d(filters[3]),
+            conv1x1(filters[4], filters[3], 1), nn.BatchNorm2d(filters[3]),
         )
 
         self.downsample6 = nn.Sequential(
-            conv1x1(filters[3], filters[2], 1),
-            nn.BatchNorm2d(filters[2]),
+            conv1x1(filters[3], filters[2], 1), nn.BatchNorm2d(filters[2]),
         )
 
         self.downsample7 = nn.Sequential(
-            conv1x1(filters[2], filters[1], 1),
-            nn.BatchNorm2d(filters[1]),
+            conv1x1(filters[2], filters[1], 1), nn.BatchNorm2d(filters[1]),
         )
 
         self.downsample8 = nn.Sequential(
-            conv1x1(filters[1], filters[0], 1),
-            nn.BatchNorm2d(filters[0]),
+            conv1x1(filters[1], filters[0], 1), nn.BatchNorm2d(filters[0]),
         )
 
-        '''
+        """
         self.up_pool4 = up_pooling(filters[3], filters[2])
         self.conv4 = block(filters[3], filters[2], downsample=conv1x1(filters[3], filters[2], 1))
         self.up_pool5 = up_pooling(filters[2], filters[1])
         self.conv5 = block(filters[2], filters[1], downsample=conv1x1(filters[2], filters[1], 1))
 
         self.conv6 = block(filters[1], filters[0], downsample=conv1x1(filters[1], filters[0], 1))
-        '''
-        
+        """
+
         self.up_pool5 = up_pooling(filters[4], filters[3])
         self.conv5 = block(filters[4], filters[3], downsample=self.downsample5)
         self.up_pool6 = up_pooling(filters[3], filters[2])
@@ -100,12 +93,11 @@ class Masking4(nn.Module):
         # init weight
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
-                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+                nn.init.kaiming_normal_(m.weight, mode="fan_out", nonlinearity="relu")
             elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
                 nn.init.constant_(m.weight, 1)
                 nn.init.constant_(m.bias, 0)
 
-        
         # Zero-initialize the last BN in each residual branch,
         # so that the residual branch starts with zeros, and each residual block behaves like an identity.
         # This improves the model by 0.2~0.3% according to https://arxiv.org/abs/1706.02677
@@ -114,7 +106,6 @@ class Masking4(nn.Module):
                 nn.init.constant_(m.bn3.weight, 0)
             elif isinstance(m, BasicBlock):
                 nn.init.constant_(m.bn2.weight, 0)
-        
 
     def forward(self, x):
         x1 = self.conv1(x)
@@ -144,34 +135,29 @@ class Masking4(nn.Module):
         return output
 
 
-
 class Masking3(nn.Module):
     def __init__(self, in_channels, out_channels, block=BasicBlock):
         assert in_channels == out_channels
         super(Masking3, self).__init__()
         filters = [in_channels, in_channels * 2, in_channels * 4, in_channels * 8]
 
-
         self.downsample1 = nn.Sequential(
-            conv1x1(filters[0], filters[1], 1),
-            nn.BatchNorm2d(filters[1]),
+            conv1x1(filters[0], filters[1], 1), nn.BatchNorm2d(filters[1]),
         )
 
         self.downsample2 = nn.Sequential(
-            conv1x1(filters[1], filters[2], 1),
-            nn.BatchNorm2d(filters[2]),
+            conv1x1(filters[1], filters[2], 1), nn.BatchNorm2d(filters[2]),
         )
 
         self.downsample3 = nn.Sequential(
-            conv1x1(filters[2], filters[3], 1),
-            nn.BatchNorm2d(filters[3]),
+            conv1x1(filters[2], filters[3], 1), nn.BatchNorm2d(filters[3]),
         )
 
-        '''
+        """
         self.conv1 = block(filters[0], filters[1], downsample=conv1x1(filters[0], filters[1], 1))
         self.conv2 = block(filters[1], filters[2], downsample=conv1x1(filters[1], filters[2], 1))
         self.conv3 = block(filters[2], filters[3], downsample=conv1x1(filters[2], filters[3], 1))
-        '''
+        """
 
         self.conv1 = block(filters[0], filters[1], downsample=self.downsample1)
         self.conv2 = block(filters[1], filters[2], downsample=self.downsample2)
@@ -179,31 +165,26 @@ class Masking3(nn.Module):
 
         self.down_pooling = nn.MaxPool2d(kernel_size=2)
 
-
-
         self.downsample4 = nn.Sequential(
-            conv1x1(filters[3], filters[2], 1),
-            nn.BatchNorm2d(filters[2]),
+            conv1x1(filters[3], filters[2], 1), nn.BatchNorm2d(filters[2]),
         )
 
         self.downsample5 = nn.Sequential(
-            conv1x1(filters[2], filters[1], 1),
-            nn.BatchNorm2d(filters[1]),
+            conv1x1(filters[2], filters[1], 1), nn.BatchNorm2d(filters[1]),
         )
 
         self.downsample6 = nn.Sequential(
-            conv1x1(filters[1], filters[0], 1),
-            nn.BatchNorm2d(filters[0]),
+            conv1x1(filters[1], filters[0], 1), nn.BatchNorm2d(filters[0]),
         )
 
-        '''
+        """
         self.up_pool4 = up_pooling(filters[3], filters[2])
         self.conv4 = block(filters[3], filters[2], downsample=conv1x1(filters[3], filters[2], 1))
         self.up_pool5 = up_pooling(filters[2], filters[1])
         self.conv5 = block(filters[2], filters[1], downsample=conv1x1(filters[2], filters[1], 1))
 
         self.conv6 = block(filters[1], filters[0], downsample=conv1x1(filters[1], filters[0], 1))
-        '''
+        """
 
         self.up_pool4 = up_pooling(filters[3], filters[2])
         self.conv4 = block(filters[3], filters[2], downsample=self.downsample4)
@@ -215,12 +196,11 @@ class Masking3(nn.Module):
         # init weight
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
-                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+                nn.init.kaiming_normal_(m.weight, mode="fan_out", nonlinearity="relu")
             elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
                 nn.init.constant_(m.weight, 1)
                 nn.init.constant_(m.bias, 0)
 
-       
         # Zero-initialize the last BN in each residual branch,
         # so that the residual branch starts with zeros, and each residual block behaves like an identity.
         # This improves the model by 0.2~0.3% according to https://arxiv.org/abs/1706.02677
@@ -229,8 +209,6 @@ class Masking3(nn.Module):
                 nn.init.constant_(m.bn3.weight, 0)
             elif isinstance(m, BasicBlock):
                 nn.init.constant_(m.bn2.weight, 0)
-        
-        
 
     def forward(self, x):
         x1 = self.conv1(x)
@@ -262,41 +240,35 @@ class Masking2(nn.Module):
         filters = [in_channels, in_channels * 2, in_channels * 4, in_channels * 8]
 
         self.downsample1 = nn.Sequential(
-            conv1x1(filters[0], filters[1], 1),
-            nn.BatchNorm2d(filters[1]),
+            conv1x1(filters[0], filters[1], 1), nn.BatchNorm2d(filters[1]),
         )
 
         self.downsample2 = nn.Sequential(
-            conv1x1(filters[1], filters[2], 1),
-            nn.BatchNorm2d(filters[2]),
+            conv1x1(filters[1], filters[2], 1), nn.BatchNorm2d(filters[2]),
         )
 
-        '''
+        """
         self.conv1 = block(filters[0], filters[1], downsample=conv1x1(filters[0], filters[1], 1))
         self.conv2 = block(filters[1], filters[2], downsample=conv1x1(filters[1], filters[2], 1))
-        '''
+        """
         self.conv1 = block(filters[0], filters[1], downsample=self.downsample1)
         self.conv2 = block(filters[1], filters[2], downsample=self.downsample2)
- 
+
         self.down_pooling = nn.MaxPool2d(kernel_size=2)
 
-
         self.downsample3 = nn.Sequential(
-            conv1x1(filters[2], filters[1], 1),
-            nn.BatchNorm2d(filters[1]),
+            conv1x1(filters[2], filters[1], 1), nn.BatchNorm2d(filters[1]),
         )
 
         self.downsample4 = nn.Sequential(
-            conv1x1(filters[1], filters[0], 1),
-            nn.BatchNorm2d(filters[0]),
+            conv1x1(filters[1], filters[0], 1), nn.BatchNorm2d(filters[0]),
         )
 
-
-        '''
+        """
         self.up_pool3 = up_pooling(filters[2], filters[1])
         self.conv3 = block(filters[2], filters[1], downsample=conv1x1(filters[2], filters[1], 1))
         self.conv4 = block(filters[1], filters[0], downsample=conv1x1(filters[1], filters[0], 1))
-        '''
+        """
         self.up_pool3 = up_pooling(filters[2], filters[1])
         self.conv3 = block(filters[2], filters[1], downsample=self.downsample3)
         self.conv4 = block(filters[1], filters[0], downsample=self.downsample4)
@@ -304,12 +276,11 @@ class Masking2(nn.Module):
         # init weight
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
-                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+                nn.init.kaiming_normal_(m.weight, mode="fan_out", nonlinearity="relu")
             elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
                 nn.init.constant_(m.weight, 1)
                 nn.init.constant_(m.bias, 0)
 
-        
         # Zero-initialize the last BN in each residual branch,
         # so that the residual branch starts with zeros, and each residual block behaves like an identity.
         # This improves the model by 0.2~0.3% according to https://arxiv.org/abs/1706.02677
@@ -318,8 +289,6 @@ class Masking2(nn.Module):
                 nn.init.constant_(m.bn3.weight, 0)
             elif isinstance(m, BasicBlock):
                 nn.init.constant_(m.bn2.weight, 0)
-        
- 
 
     def forward(self, x):
         x1 = self.conv1(x)
@@ -344,16 +313,13 @@ class Masking1(nn.Module):
         filters = [in_channels, in_channels * 2, in_channels * 4, in_channels * 8]
 
         self.downsample1 = nn.Sequential(
-            conv1x1(filters[0], filters[1], 1),
-            nn.BatchNorm2d(filters[1]),
+            conv1x1(filters[0], filters[1], 1), nn.BatchNorm2d(filters[1]),
         )
 
         self.conv1 = block(filters[0], filters[1], downsample=self.downsample1)
- 
 
         self.downsample2 = nn.Sequential(
-            conv1x1(filters[1], filters[0], 1),
-            nn.BatchNorm2d(filters[0]),
+            conv1x1(filters[1], filters[0], 1), nn.BatchNorm2d(filters[0]),
         )
 
         self.conv2 = block(filters[1], filters[0], downsample=self.downsample2)
@@ -361,12 +327,11 @@ class Masking1(nn.Module):
         # init weight
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
-                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+                nn.init.kaiming_normal_(m.weight, mode="fan_out", nonlinearity="relu")
             elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
                 nn.init.constant_(m.weight, 1)
                 nn.init.constant_(m.bias, 0)
 
-        
         # Zero-initialize the last BN in each residual branch,
         # so that the residual branch starts with zeros, and each residual block behaves like an identity.
         # This improves the model by 0.2~0.3% according to https://arxiv.org/abs/1706.02677
@@ -375,7 +340,6 @@ class Masking1(nn.Module):
                 nn.init.constant_(m.bn3.weight, 0)
             elif isinstance(m, BasicBlock):
                 nn.init.constant_(m.bn2.weight, 0)
- 
 
     def forward(self, x):
         x1 = self.conv1(x)
@@ -383,7 +347,6 @@ class Masking1(nn.Module):
         output = torch.softmax(x2, dim=1)
         # output = torch.sigmoid(x2)
         return output
-
 
 
 def masking(in_channels, out_channels, depth, block=BasicBlock):

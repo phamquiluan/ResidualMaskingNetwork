@@ -3,16 +3,15 @@ import torch.nn as nn
 from .utils import load_state_dict_from_url
 
 
-__all__ = ['AlexNet', 'alexnet']
+__all__ = ["AlexNet", "alexnet"]
 
 
 model_urls = {
-    'alexnet': 'https://download.pytorch.org/models/alexnet-owt-4df8aa71.pth',
+    "alexnet": "https://download.pytorch.org/models/alexnet-owt-4df8aa71.pth",
 }
 
 
 class AlexNet(nn.Module):
-
     def __init__(self, in_channels=3, num_classes=1000):
         super(AlexNet, self).__init__()
         self.features = nn.Sequential(
@@ -61,8 +60,7 @@ def alexnet(pretrained=True, progress=True, **kwargs):
     """
     model = AlexNet(**kwargs)
     if pretrained:
-        state_dict = load_state_dict_from_url(model_urls['alexnet'],
-                                              progress=progress)
+        state_dict = load_state_dict_from_url(model_urls["alexnet"], progress=progress)
         model.load_state_dict(state_dict)
 
     # change to adapt fer

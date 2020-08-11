@@ -22,50 +22,52 @@ from utils.metrics.metrics import accuracy
 
 class Trainer(object):
     """base class for trainers"""
+
     def __init__(self):
         pass
 
 
-
 class TeeTrainer(Trainer):
     """for classification task"""
+
     def __init__(self, model, train_set, val_set, configs):
         super().__init__()
         print("Start trainer..")
         # load config
         self._configs = configs
-        self._lr = self._configs['lr']
-        self._batch_size = self._configs['batch_size']
-        self._momentum = self._configs['momentum']
-        self._weight_decay = self._configs['weight_decay']
-        self._distributed = self._configs['distributed']
-        self._num_workers = self._configs['num_workers']
-        self._device = torch.device(self._configs['device'])
-        self._max_epoch_num = self._configs['max_epoch_num']
-        self._max_plateau_count = self._configs['max_plateau_count']
+        self._lr = self._configs["lr"]
+        self._batch_size = self._configs["batch_size"]
+        self._momentum = self._configs["momentum"]
+        self._weight_decay = self._configs["weight_decay"]
+        self._distributed = self._configs["distributed"]
+        self._num_workers = self._configs["num_workers"]
+        self._device = torch.device(self._configs["device"])
+        self._max_epoch_num = self._configs["max_epoch_num"]
+        self._max_plateau_count = self._configs["max_plateau_count"]
 
         # load dataloader and model
         self._train_set = train_set
         self._val_set = val_set
         self._model = model(
-            in_channels=configs['in_channels'],
-            num_classes=configs['num_classes'],
+            in_channels=configs["in_channels"], num_classes=configs["num_classes"],
         )
-        self._model.load_state_dict(torch.load('saved/checkpoints/mixed.test')['net'])
+        self._model.load_state_dict(torch.load("saved/checkpoints/mixed.test")["net"])
 
         print(self._configs)
         self._model = self._model.to(self._device)
 
         if self._distributed == 1:
-            torch.distributed.init_process_group(backend='nccl')
-            self._model = nn.parallel.DistributedDataParallel(self._model, find_unused_parameters=True)
+            torch.distributed.init_process_group(backend="nccl")
+            self._model = nn.parallel.DistributedDataParallel(
+                self._model, find_unused_parameters=True
+            )
             self._train_loader = DataLoader(
                 self._train_set,
                 batch_size=self._batch_size,
                 num_workers=self._num_workers,
                 pin_memory=True,
                 shuffle=True,
-                worker_init_fn=lambda x: np.random.seed(x)
+                worker_init_fn=lambda x: np.random.seed(x),
             )
             self._val_loader = DataLoader(
                 self._val_set,
@@ -73,7 +75,7 @@ class TeeTrainer(Trainer):
                 num_workers=self._num_workers,
                 pin_memory=True,
                 shuffle=False,
-                worker_init_fn=lambda x: np.random.seed(x)
+                worker_init_fn=lambda x: np.random.seed(x),
             )
         else:
             self._train_loader = DataLoader(
@@ -104,9 +106,7 @@ class TeeTrainer(Trainer):
         )
 
         self._scheduler = ReduceLROnPlateau(
-            self._optimizer,
-            patience=self._configs['plateau_patience'],
-            verbose=True
+            self._optimizer, patience=self._configs["plateau_patience"], verbose=True
         )
 
         # training info
@@ -114,14 +114,11 @@ class TeeTrainer(Trainer):
         self._start_time = self._start_time.replace(microsecond=0)
 
         log_dir = os.path.join(
-            self._configs['cwd'],
-            self._configs['log_dir'],
-            "{}_{}".format(
-                self._configs['model_name'],
-                str(self._start_time)
-            )
+            self._configs["cwd"],
+            self._configs["log_dir"],
+            "{}_{}".format(self._configs["model_name"], str(self._start_time)),
         )
-        
+
         self._writer = SummaryWriter(log_dir)
         self._train_loss = []
         self._train_acc = []
@@ -138,14 +135,12 @@ class TeeTrainer(Trainer):
 
     def _train(self):
         self._model.train()
-        train_loss = 0.
-        train_acc = 0.
-        
+        train_loss = 0.0
+        train_acc = 0.0
+
         for i, (images, targets) in tqdm(
-                enumerate(self._train_loader),
-                total=len(self._train_loader),
-                leave=False
-            ):
+            enumerate(self._train_loader), total=len(self._train_loader), leave=False
+        ):
             images = images.cuda(non_blocking=True)
             targets = targets.cuda(non_blocking=True)
 
@@ -167,16 +162,18 @@ class TeeTrainer(Trainer):
             # log
             if i == 0:
                 grid = torchvision.utils.make_grid(images)
-                self._writer.add_image('images', grid, 0)
+                self._writer.add_image("images", grid, 0)
                 # self._writer.add_graph(self._model, images)
                 # self._writer.close()
 
-            if self._configs['little'] == 1:
+            if self._configs["little"] == 1:
                 mask = torch.squeeze(outputs, 0)
                 mask = mask.detach().cpu().numpy() * 255
                 mask = np.transpose(mask, (1, 2, 0)).astype(np.uint8)
-                cv2.imwrite(os.path.join('debug', 'e{}.png'.format(self._current_epoch_num)), mask[..., 1])
-
+                cv2.imwrite(
+                    os.path.join("debug", "e{}.png".format(self._current_epoch_num)),
+                    mask[..., 1],
+                )
 
         i += 1
         self._train_loss.append(train_loss / i)
@@ -184,22 +181,19 @@ class TeeTrainer(Trainer):
 
     def _val(self):
         self._model.eval()
-        val_loss = 0.
-        val_acc = 0.
+        val_loss = 0.0
+        val_acc = 0.0
 
-        os.system('rm -rf debug/*')
+        os.system("rm -rf debug/*")
         for i, (images, targets) in tqdm(
-                enumerate(self._val_loader),
-                total=len(self._val_loader),
-                leave=False
-            ):
+            enumerate(self._val_loader), total=len(self._val_loader), leave=False
+        ):
             images = images.cuda(non_blocking=True)
             targets = targets.cuda(non_blocking=True)
 
             # compute output, measure accuracy and record loss
             outputs = self._model(images)
 
-        
             loss = self._criterion(outputs, targets)
             acc = accuracy(outputs, targets)[0]
             # acc = eval_metrics(targets, outputs, 2)[0]
@@ -213,7 +207,7 @@ class TeeTrainer(Trainer):
             tmp_image = torch.squeeze(images, dim=0)
             print(tmp_image.shape)
             tmp_image = tmp_image.cpu().numpy()
-            cv2.imwrite('debug/{}/{}.png'.format(outputs, i), tmp_image)
+            cv2.imwrite("debug/{}/{}.png".format(outputs, i), tmp_image)
 
         i += 1
         self._val_loss.append(val_loss / i)
@@ -254,21 +248,27 @@ class TeeTrainer(Trainer):
             self._val_acc[-1],
             self._best_acc,
             self._plateau_count,
-            consume_time[:-7]
+            consume_time[:-7],
         )
 
-        self._writer.add_scalar('Accuracy/train', self._train_acc[-1], self._current_epoch_num)
-        self._writer.add_scalar('Accuracy/val', self._val_acc[-1], self._current_epoch_num)
-        self._writer.add_scalar('Loss/train', self._train_loss[-1], self._current_epoch_num)
-        self._writer.add_scalar('Loss/val', self._val_loss[-1], self._current_epoch_num)
- 
+        self._writer.add_scalar(
+            "Accuracy/train", self._train_acc[-1], self._current_epoch_num
+        )
+        self._writer.add_scalar(
+            "Accuracy/val", self._val_acc[-1], self._current_epoch_num
+        )
+        self._writer.add_scalar(
+            "Loss/train", self._train_loss[-1], self._current_epoch_num
+        )
+        self._writer.add_scalar("Loss/val", self._val_loss[-1], self._current_epoch_num)
+
         print(message)
 
     def _is_stop(self):
         """check stop condition"""
         return (
-            self._plateau_count > self._max_plateau_count or
-            self._current_epoch_num > self._max_epoch_num
+            self._plateau_count > self._max_plateau_count
+            or self._current_epoch_num > self._max_epoch_num
         )
 
     def _increase_epoch_num(self):
@@ -286,23 +286,14 @@ class TeeTrainer(Trainer):
             state_dict = self._model.module.state_dict()
         state = {
             **self._configs,
-            'net': state_dict,
-            'best_loss': self._best_loss,
-            'best_acc': self._best_acc,
+            "net": state_dict,
+            "best_loss": self._best_loss,
+            "best_acc": self._best_acc,
         }
 
-        checkpoint_dir = os.path.join(
-            self._configs['cwd'],
-            'saved/checkpoints'
-        )
+        checkpoint_dir = os.path.join(self._configs["cwd"], "saved/checkpoints")
 
         if not os.path.exists(checkpoint_dir):
             os.makedirs(checkpoint_dir, exist_ok=True)
 
-        torch.save(
-            state,
-            os.path.join(
-                checkpoint_dir,
-                self._configs['model_name']
-            )
-        )
+        torch.save(state, os.path.join(checkpoint_dir, self._configs["model_name"]))

@@ -3,17 +3,10 @@ import torch
 import torch.nn as nn
 
 from .utils import load_state_dict_from_url
-from .resnet import (
-    BasicBlock,
-    Bottleneck,
-    ResNet,
-    resnet18
-)
+from .resnet import BasicBlock, Bottleneck, ResNet, resnet18
 
 
-model_urls = {
-    'resnet34': 'https://download.pytorch.org/models/resnet34-333f7ec4.pth'
-}
+model_urls = {"resnet34": "https://download.pytorch.org/models/resnet34-333f7ec4.pth"}
 
 
 from .masking import masking
@@ -22,10 +15,7 @@ from .masking import masking
 class ResMasking(ResNet):
     def __init__(self, weight_path):
         super(ResMasking, self).__init__(
-            block=BasicBlock,
-            layers=[3, 4, 6, 3],
-            in_channels=3,
-            num_classes=1000
+            block=BasicBlock, layers=[3, 4, 6, 3], in_channels=3, num_classes=1000
         )
         self.fc = nn.Linear(512, 7)
         self.mask1 = masking(64, 64, depth=4)
@@ -33,14 +23,13 @@ class ResMasking(ResNet):
         self.mask3 = masking(256, 256, depth=2)
         self.mask4 = masking(512, 512, depth=1)
 
-
-    def forward(self, x):  # 224 
+    def forward(self, x):  # 224
         x = self.conv1(x)  # 112
         x = self.bn1(x)
         x = self.relu(x)
         x = self.maxpool(x)  # 56
 
-        x = self.layer1(x)  # 56 
+        x = self.layer1(x)  # 56
         m = self.mask1(x)
         x = x * (1 + m)
 
@@ -60,10 +49,10 @@ class ResMasking(ResNet):
         x = torch.flatten(x, 1)
 
         x = self.fc(x)
-        return x 
-    
+        return x
 
-def resmasking_dropout1(in_channels=3, num_classes=7, weight_path=''):
+
+def resmasking_dropout1(in_channels=3, num_classes=7, weight_path=""):
     model = ResMasking(weight_path)
     model.fc = nn.Sequential(
         nn.Dropout(0.4),

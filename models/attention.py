@@ -3,26 +3,24 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from .resnet import (
-    conv1x1,
-    conv3x3,
-    BasicBlock,
-    Bottleneck
-)
+from .resnet import conv1x1, conv3x3, BasicBlock, Bottleneck
 
 
 def transpose(in_channels, out_channels, kernel_size=2, stride=2):
     return nn.Sequential(
-        nn.ConvTranspose2d(in_channels, out_channels,
-            kernel_size=kernel_size, stride=stride),
+        nn.ConvTranspose2d(
+            in_channels, out_channels, kernel_size=kernel_size, stride=stride
+        ),
         nn.BatchNorm2d(out_channels),
-        nn.ReLU(inplace=True)
+        nn.ReLU(inplace=True),
     )
 
+
 def downsample(in_channels, out_channels):
-    return nn.Sequential(conv1x1(in_channels, out_channels),
+    return nn.Sequential(
+        conv1x1(in_channels, out_channels),
         nn.BatchNorm2d(num_features(out_channels)),
-        nn.ReLU(inplace=True)
+        nn.ReLU(inplace=True),
     )
 
 
@@ -38,12 +36,11 @@ class Attention0(nn.Module):
         self._conv1x1 = nn.Sequential(
             conv1x1(2 * channels, channels),
             nn.BatchNorm2d(num_features=channels),
-            nn.ReLU(inplace=True)
+            nn.ReLU(inplace=True),
         )
 
         self._mp = nn.MaxPool2d(3, 2, 1)
         self._relu = nn.ReLU(inplace=True)
-
 
     def enc(self, x):
         return self._enc(x)
@@ -58,7 +55,7 @@ class Attention0(nn.Module):
         x = self.enc(x)
         x = self.dec(x)
         return torch.sigmoid(x)
-    
+
     def forward(self, x):
         trunk = self.trunking(x)
         mask = self.masking(x)
@@ -78,13 +75,13 @@ class Attention1(nn.Module):
         self._conv1x1 = nn.Sequential(
             conv1x1(2 * channels, channels),
             nn.BatchNorm2d(num_features=channels),
-            nn.ReLU(inplace=True)
+            nn.ReLU(inplace=True),
         )
 
         self._trans = nn.Sequential(
             nn.ConvTranspose2d(channels, channels, kernel_size=2, stride=2),
             nn.BatchNorm2d(num_features=channels),
-            nn.ReLU(inplace=True)
+            nn.ReLU(inplace=True),
         )
 
         self._mp = nn.MaxPool2d(3, 2, 1)
@@ -109,7 +106,7 @@ class Attention1(nn.Module):
         x = self.enc(x)
         x = self.dec(x)
         return torch.sigmoid(x)
-    
+
     def forward(self, x):
         trunk = self.trunking(x)
         mask = self.masking(x)
@@ -124,28 +121,25 @@ class Attention2(nn.Module):
 
         self._enc1 = block(channels, channels)
         self._enc2 = block(channels, channels)
-        self._enc3 = nn.Sequential(
-            block(channels, channels),
-            block(channels, channels)
-        )
+        self._enc3 = nn.Sequential(block(channels, channels), block(channels, channels))
 
         self._dec1 = nn.Sequential(
             conv1x1(2 * channels, channels),
             nn.BatchNorm2d(num_features=channels),
             nn.ReLU(inplace=True),
-            block(channels, channels)
+            block(channels, channels),
         )
         self._dec2 = nn.Sequential(
             conv1x1(2 * channels, channels),
             nn.BatchNorm2d(num_features=channels),
             nn.ReLU(inplace=True),
-            block(channels, channels)
+            block(channels, channels),
         )
 
         self._trans = nn.Sequential(
             nn.ConvTranspose2d(channels, channels, kernel_size=2, stride=2),
             nn.BatchNorm2d(num_features=channels),
-            nn.ReLU(inplace=True)
+            nn.ReLU(inplace=True),
         )
 
         self._mp = nn.MaxPool2d(3, 2, 1)
@@ -153,7 +147,7 @@ class Attention2(nn.Module):
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
-                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+                nn.init.kaiming_normal_(m.weight, mode="fan_out", nonlinearity="relu")
             elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
                 nn.init.constant_(m.weight, 1)
                 nn.init.constant_(m.bias, 0)
@@ -190,7 +184,7 @@ class Attention2(nn.Module):
         x = self.enc(x)
         x = self.dec(x)
         return torch.sigmoid(x)
-    
+
     def forward(self, x):
         trunk = self.trunking(x)
         mask = self.masking(x)

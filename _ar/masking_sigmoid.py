@@ -9,10 +9,8 @@ from models import resmasking_dropout1
 from utils.datasets.fer2013dataset import EMOTION_DICT
 from barez import show
 
-transform = transforms.Compose([
-    transforms.ToPILImage(),
-    transforms.ToTensor(),
-])
+transform = transforms.Compose([transforms.ToPILImage(), transforms.ToTensor(),])
+
 
 def activations_mask(tensor):
     tensor = torch.squeeze(tensor, 0)
@@ -30,18 +28,21 @@ def activations_mask(tensor):
     # return tensor
 
 
-
 model = resmasking_dropout1(3, 7)
-state = torch.load('./saved/checkpoints/resmasking_naive_dropout1__sigmoid_2019Dec17_14.40')
-model.load_state_dict(state['net'])
+state = torch.load(
+    "./saved/checkpoints/resmasking_naive_dropout1__sigmoid_2019Dec17_14.40"
+)
+model.load_state_dict(state["net"])
 model.cuda()
 model.eval()
 
 # for image_path  in natsorted(glob.glob('/home/z/research/bkemo/images/**/*.png', recursive=True)):
-for image_path in natsorted(glob.glob('/home/z/research/bkemo/debug/**/*.png', recursive=True)):
+for image_path in natsorted(
+    glob.glob("/home/z/research/bkemo/debug/**/*.png", recursive=True)
+):
     image_name = os.path.basename(image_path)
 
-    if not os.path.exists('./landmark_false/{}'.format(image_name)):
+    if not os.path.exists("./landmark_false/{}".format(image_name)):
         continue
 
     print(image_name)
@@ -58,7 +59,7 @@ for image_path in natsorted(glob.glob('/home/z/research/bkemo/debug/**/*.png', r
     x = model.relu(x)
     x = model.maxpool(x)  # 56
 
-    x = model.layer1(x)  # 56 
+    x = model.layer1(x)  # 56
     m = model.mask1(x)
     x = x * m
 
@@ -83,21 +84,16 @@ for image_path in natsorted(glob.glob('/home/z/research/bkemo/debug/**/*.png', r
 
     # show(np.concatenate((image, heat_1, heat_2), axis=1))
     debug_image = np.concatenate((image, heat_1, heat_2), axis=1)
-    cv2.imwrite('./debug/{}'.format(image_name), debug_image)
+    cv2.imwrite("./debug/{}".format(image_name), debug_image)
     # cv2.imshow('disp', debug_image)
     # if cv2.waitKey(0) == ord('w'):
 
-
-    
     # cv2.imwrite(
     #     './debug/{}'.format(image_name),
     #     (image * np.dstack([heat_2] * 3)).astype(np.uint8)
     # )
-    
+
     # cv2.destroyAllWindows()
 
     # cv2.imwrite('./masking_provements/{}'.format(image_name),
     #     np.concatenate((image, heat_1), axis=1))
-
-        
-

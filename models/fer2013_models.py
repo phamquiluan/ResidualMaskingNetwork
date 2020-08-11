@@ -4,15 +4,27 @@ import torch.nn.functional as F
 
 
 def conv3x3(in_channels, out_channels, stride=1, groups=1, dilation=1):
-    return nn.Conv2d(in_channels=in_channels, out_channels=out_channels,
-        kernel_size=3, stride=stride, padding=dilation, groups=groups,
-        bias=False, dilation=dilation)
+    return nn.Conv2d(
+        in_channels=in_channels,
+        out_channels=out_channels,
+        kernel_size=3,
+        stride=stride,
+        padding=dilation,
+        groups=groups,
+        bias=False,
+        dilation=dilation,
+    )
 
 
 def conv1x1(in_channels, out_channels, stride=1):
     """1x1 convolution"""
-    return nn.Conv2d(in_channels=in_channels, out_channels=out_channels,
-        kernel_size=1, stride=stride, bias=False)
+    return nn.Conv2d(
+        in_channels=in_channels,
+        out_channels=out_channels,
+        kernel_size=1,
+        stride=stride,
+        bias=False,
+    )
 
 
 class ResidualUnit(nn.Module):
@@ -33,8 +45,7 @@ class ResidualUnit(nn.Module):
 
         # for downsample
         self._downsample = nn.Sequential(
-            conv1x1(in_channels, out_channels, 1),
-            nn.BatchNorm2d(out_channels)
+            conv1x1(in_channels, out_channels, 1), nn.BatchNorm2d(out_channels)
         )
 
     def forward(self, x):
@@ -66,19 +77,27 @@ class BasicBlock(nn.Module):
 
 
 class BaseNet(nn.Module):
-    '''basenet for fer2013'''
+    """basenet for fer2013"""
+
     def __init__(self, in_channels=1, num_classes=7):
         super(BaseNet, self).__init__()
         norm_layer = nn.BatchNorm2d
 
-        self.conv1 = nn.Conv2d(in_channels=1, out_channels=64, kernel_size=7, stride=1, padding=3, bias=False)
+        self.conv1 = nn.Conv2d(
+            in_channels=1,
+            out_channels=64,
+            kernel_size=7,
+            stride=1,
+            padding=3,
+            bias=False,
+        )
         self.bn1 = nn.BatchNorm2d(num_features=64)
         self.relu = nn.ReLU(inplace=True)
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
 
-        self.residual_1 = ResidualUnit(in_channels=64, out_channels=256) 
-        self.residual_2 = ResidualUnit(in_channels=256, out_channels=512) 
-        self.residual_3 = ResidualUnit(in_channels=512, out_channels=1024) 
+        self.residual_1 = ResidualUnit(in_channels=64, out_channels=256)
+        self.residual_2 = ResidualUnit(in_channels=256, out_channels=512)
+        self.residual_3 = ResidualUnit(in_channels=512, out_channels=1024)
 
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.Linear(1024, 7)

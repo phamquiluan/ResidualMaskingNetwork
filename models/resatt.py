@@ -4,18 +4,13 @@ import torch.nn as nn
 import torch.nn.functional as F
 from .utils import load_state_dict_from_url
 from .attention import attention
-from .resnet import (
-    BasicBlock,
-    Bottleneck,
-    ResNet,
-    resnet18
-)
+from .resnet import BasicBlock, Bottleneck, ResNet, resnet18
 
 
 model_urls = {
-    'resnet18': 'https://download.pytorch.org/models/resnet18-5c106cde.pth',
-    'resnet34': 'https://download.pytorch.org/models/resnet34-333f7ec4.pth',
-    'resnet50': 'https://download.pytorch.org/models/resnet50-19c8e357.pth',
+    "resnet18": "https://download.pytorch.org/models/resnet18-5c106cde.pth",
+    "resnet34": "https://download.pytorch.org/models/resnet34-333f7ec4.pth",
+    "resnet50": "https://download.pytorch.org/models/resnet50-19c8e357.pth",
 }
 
 
@@ -26,10 +21,7 @@ class ResAtt(ResNet):
     #              norm_layer=None, in_channels=3):
     def __init__(self):
         super(ResAtt, self).__init__(
-            block=BasicBlock,
-            layers=[2, 2, 2, 2],
-            in_channels=3,
-            num_classes=1000
+            block=BasicBlock, layers=[2, 2, 2, 2], in_channels=3, num_classes=1000
         )
         # state_dict = load_state_dict_from_url(model_urls['resnet18'])
         # self.load_state_dict(state_dict)

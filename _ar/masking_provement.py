@@ -9,10 +9,8 @@ from models import resmasking_dropout1
 from utils.datasets.fer2013dataset import EMOTION_DICT
 from barez import show
 
-transform = transforms.Compose([
-    transforms.ToPILImage(),
-    transforms.ToTensor(),
-])
+transform = transforms.Compose([transforms.ToPILImage(), transforms.ToTensor(),])
+
 
 def activations_mask(tensor):
     tensor = torch.squeeze(tensor, 0)
@@ -27,15 +25,16 @@ def activations_mask(tensor):
     return heatmap
 
 
-
 model = resmasking_dropout1(3, 7)
 # state = torch.load('./saved/checkpoints/resmasking_dropout1_rot30_2019Nov17_14.33')
-state = torch.load('./saved/checkpoints/Z_resmasking_dropout1_rot30_2019Nov30_13.32')
-model.load_state_dict(state['net'])
+state = torch.load("./saved/checkpoints/Z_resmasking_dropout1_rot30_2019Nov30_13.32")
+model.load_state_dict(state["net"])
 model.cuda()
 model.eval()
 
-for image_path  in natsorted(glob.glob('/home/z/research/bkemo/images/**/*.png', recursive=True)):
+for image_path in natsorted(
+    glob.glob("/home/z/research/bkemo/images/**/*.png", recursive=True)
+):
     image_name = os.path.basename(image_path)
     print(image_name)
     # image_path = '/home/z/research/bkemo/images/disgust/0.0_dc10a3_1976_0.png'
@@ -52,7 +51,7 @@ for image_path  in natsorted(glob.glob('/home/z/research/bkemo/images/**/*.png',
     x = model.relu(x)
     x = model.maxpool(x)  # 56
 
-    x = model.layer1(x)  # 56 
+    x = model.layer1(x)  # 56
     m = model.mask1(x)
     x = x * (1 + m)
 
@@ -76,14 +75,13 @@ for image_path  in natsorted(glob.glob('/home/z/research/bkemo/images/**/*.png',
     output = model.fc(x)
 
     # print(np.sum(heat_1 - heat_2))
-    
+
     # show(np.concatenate((image, heat_1, heat_2), axis=1))
-    cv2.imwrite('./masking_provements/{}'.format(image_name),
-        np.concatenate((image, heat_1), axis=1))
-        # np.concatenate((image, heat_1, heat_2), axis=1))
+    cv2.imwrite(
+        "./masking_provements/{}".format(image_name),
+        np.concatenate((image, heat_1), axis=1),
+    )
+    # np.concatenate((image, heat_1, heat_2), axis=1))
 
     # output = output.cpu().numpy()
     # print(EMOTION_DICT[torch.argmax(output, 1).item()])
-
-
-

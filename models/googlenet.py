@@ -5,14 +5,16 @@ import torch.nn as nn
 import torch.nn.functional as F
 from .utils import load_state_dict_from_url
 
-__all__ = ['GoogLeNet', 'googlenet']
+__all__ = ["GoogLeNet", "googlenet"]
 
 model_urls = {
     # GoogLeNet ported from TensorFlow
-    'googlenet': 'https://download.pytorch.org/models/googlenet-1378be20.pth',
+    "googlenet": "https://download.pytorch.org/models/googlenet-1378be20.pth",
 }
 
-_GoogLeNetOutputs = namedtuple('GoogLeNetOutputs', ['logits', 'aux_logits2', 'aux_logits1'])
+_GoogLeNetOutputs = namedtuple(
+    "GoogLeNetOutputs", ["logits", "aux_logits2", "aux_logits1"]
+)
 
 
 def googlenet(pretrained=True, progress=True, **kwargs):
@@ -28,19 +30,22 @@ def googlenet(pretrained=True, progress=True, **kwargs):
             was trained on ImageNet. Default: *False*
     """
     if pretrained:
-        if 'transform_input' not in kwargs:
-            kwargs['transform_input'] = True
-        if 'aux_logits' not in kwargs:
-            kwargs['aux_logits'] = False
-        if kwargs['aux_logits']:
-            warnings.warn('auxiliary heads in the pretrained googlenet model are NOT pretrained, '
-                          'so make sure to train them')
-        original_aux_logits = kwargs['aux_logits']
-        kwargs['aux_logits'] = True
-        kwargs['init_weights'] = False
+        if "transform_input" not in kwargs:
+            kwargs["transform_input"] = True
+        if "aux_logits" not in kwargs:
+            kwargs["aux_logits"] = False
+        if kwargs["aux_logits"]:
+            warnings.warn(
+                "auxiliary heads in the pretrained googlenet model are NOT pretrained, "
+                "so make sure to train them"
+            )
+        original_aux_logits = kwargs["aux_logits"]
+        kwargs["aux_logits"] = True
+        kwargs["init_weights"] = False
         model = GoogLeNet(**kwargs)
-        state_dict = load_state_dict_from_url(model_urls['googlenet'],
-                                              progress=progress)
+        state_dict = load_state_dict_from_url(
+            model_urls["googlenet"], progress=progress
+        )
         model.load_state_dict(state_dict)
         if not original_aux_logits:
             model.aux_logits = False
@@ -48,13 +53,19 @@ def googlenet(pretrained=True, progress=True, **kwargs):
 
         model.fc = nn.Linear(1024, 7)
         return model
-    
+
     return GoogLeNet(**kwargs)
 
 
 class GoogLeNet(nn.Module):
-
-    def __init__(self, num_classes=1000, aux_logits=True, transform_input=False, init_weights=True, in_channels=3):
+    def __init__(
+        self,
+        num_classes=1000,
+        aux_logits=True,
+        transform_input=False,
+        init_weights=True,
+        in_channels=3,
+    ):
         super(GoogLeNet, self).__init__()
         # strict set to 1000
         num_classes = 1000
@@ -99,6 +110,7 @@ class GoogLeNet(nn.Module):
         for m in self.modules():
             if isinstance(m, nn.Conv2d) or isinstance(m, nn.Linear):
                 import scipy.stats as stats
+
                 X = stats.truncnorm(-2, 2, scale=0.01)
                 values = torch.as_tensor(X.rvs(m.weight.numel()), dtype=m.weight.dtype)
                 values = values.view(m.weight.size())
@@ -169,7 +181,6 @@ class GoogLeNet(nn.Module):
 
 
 class Inception(nn.Module):
-
     def __init__(self, in_channels, ch1x1, ch3x3red, ch3x3, ch5x5red, ch5x5, pool_proj):
         super(Inception, self).__init__()
 
@@ -177,17 +188,17 @@ class Inception(nn.Module):
 
         self.branch2 = nn.Sequential(
             BasicConv2d(in_channels, ch3x3red, kernel_size=1),
-            BasicConv2d(ch3x3red, ch3x3, kernel_size=3, padding=1)
+            BasicConv2d(ch3x3red, ch3x3, kernel_size=3, padding=1),
         )
 
         self.branch3 = nn.Sequential(
             BasicConv2d(in_channels, ch5x5red, kernel_size=1),
-            BasicConv2d(ch5x5red, ch5x5, kernel_size=3, padding=1)
+            BasicConv2d(ch5x5red, ch5x5, kernel_size=3, padding=1),
         )
 
         self.branch4 = nn.Sequential(
             nn.MaxPool2d(kernel_size=3, stride=1, padding=1, ceil_mode=True),
-            BasicConv2d(in_channels, pool_proj, kernel_size=1)
+            BasicConv2d(in_channels, pool_proj, kernel_size=1),
         )
 
     def forward(self, x):
@@ -201,7 +212,6 @@ class Inception(nn.Module):
 
 
 class InceptionAux(nn.Module):
-
     def __init__(self, in_channels, num_classes):
         super(InceptionAux, self).__init__()
         self.conv = BasicConv2d(in_channels, 128, kernel_size=1)
@@ -228,7 +238,6 @@ class InceptionAux(nn.Module):
 
 
 class BasicConv2d(nn.Module):
-
     def __init__(self, in_channels, out_channels, **kwargs):
         super(BasicConv2d, self).__init__()
         self.conv = nn.Conv2d(in_channels, out_channels, bias=False, **kwargs)

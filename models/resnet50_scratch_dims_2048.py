@@ -1,169 +1,388 @@
-
 import torch
 import torch.nn as nn
 
-class Resnet50_scratch(nn.Module):
 
+class Resnet50_scratch(nn.Module):
     def __init__(self):
         super(Resnet50_scratch, self).__init__()
-        self.meta = {'mean': [131.0912, 103.8827, 91.4953],
-                     'std': [1, 1, 1],
-                     'imageSize': [224, 224, 3]}
-        self.conv1_7x7_s2 = nn.Conv2d(3, 64, kernel_size=[7, 7], stride=(2, 2), padding=(3, 3), bias=False)
-        self.conv1_7x7_s2_bn = nn.BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.meta = {
+            "mean": [131.0912, 103.8827, 91.4953],
+            "std": [1, 1, 1],
+            "imageSize": [224, 224, 3],
+        }
+        self.conv1_7x7_s2 = nn.Conv2d(
+            3, 64, kernel_size=[7, 7], stride=(2, 2), padding=(3, 3), bias=False
+        )
+        self.conv1_7x7_s2_bn = nn.BatchNorm2d(
+            64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv1_relu_7x7_s2 = nn.ReLU()
-        self.pool1_3x3_s2 = nn.MaxPool2d(kernel_size=[3, 3], stride=[2, 2], padding=(0, 0), dilation=1, ceil_mode=True)
-        self.conv2_1_1x1_reduce = nn.Conv2d(64, 64, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv2_1_1x1_reduce_bn = nn.BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.pool1_3x3_s2 = nn.MaxPool2d(
+            kernel_size=[3, 3],
+            stride=[2, 2],
+            padding=(0, 0),
+            dilation=1,
+            ceil_mode=True,
+        )
+        self.conv2_1_1x1_reduce = nn.Conv2d(
+            64, 64, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv2_1_1x1_reduce_bn = nn.BatchNorm2d(
+            64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv2_1_1x1_reduce_relu = nn.ReLU()
-        self.conv2_1_3x3 = nn.Conv2d(64, 64, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False)
-        self.conv2_1_3x3_bn = nn.BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv2_1_3x3 = nn.Conv2d(
+            64, 64, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False
+        )
+        self.conv2_1_3x3_bn = nn.BatchNorm2d(
+            64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv2_1_3x3_relu = nn.ReLU()
-        self.conv2_1_1x1_increase = nn.Conv2d(64, 256, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv2_1_1x1_increase_bn = nn.BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-        self.conv2_1_1x1_proj = nn.Conv2d(64, 256, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv2_1_1x1_proj_bn = nn.BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv2_1_1x1_increase = nn.Conv2d(
+            64, 256, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv2_1_1x1_increase_bn = nn.BatchNorm2d(
+            256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
+        self.conv2_1_1x1_proj = nn.Conv2d(
+            64, 256, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv2_1_1x1_proj_bn = nn.BatchNorm2d(
+            256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv2_1_relu = nn.ReLU()
-        self.conv2_2_1x1_reduce = nn.Conv2d(256, 64, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv2_2_1x1_reduce_bn = nn.BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv2_2_1x1_reduce = nn.Conv2d(
+            256, 64, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv2_2_1x1_reduce_bn = nn.BatchNorm2d(
+            64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv2_2_1x1_reduce_relu = nn.ReLU()
-        self.conv2_2_3x3 = nn.Conv2d(64, 64, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False)
-        self.conv2_2_3x3_bn = nn.BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv2_2_3x3 = nn.Conv2d(
+            64, 64, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False
+        )
+        self.conv2_2_3x3_bn = nn.BatchNorm2d(
+            64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv2_2_3x3_relu = nn.ReLU()
-        self.conv2_2_1x1_increase = nn.Conv2d(64, 256, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv2_2_1x1_increase_bn = nn.BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv2_2_1x1_increase = nn.Conv2d(
+            64, 256, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv2_2_1x1_increase_bn = nn.BatchNorm2d(
+            256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv2_2_relu = nn.ReLU()
-        self.conv2_3_1x1_reduce = nn.Conv2d(256, 64, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv2_3_1x1_reduce_bn = nn.BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv2_3_1x1_reduce = nn.Conv2d(
+            256, 64, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv2_3_1x1_reduce_bn = nn.BatchNorm2d(
+            64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv2_3_1x1_reduce_relu = nn.ReLU()
-        self.conv2_3_3x3 = nn.Conv2d(64, 64, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False)
-        self.conv2_3_3x3_bn = nn.BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv2_3_3x3 = nn.Conv2d(
+            64, 64, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False
+        )
+        self.conv2_3_3x3_bn = nn.BatchNorm2d(
+            64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv2_3_3x3_relu = nn.ReLU()
-        self.conv2_3_1x1_increase = nn.Conv2d(64, 256, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv2_3_1x1_increase_bn = nn.BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv2_3_1x1_increase = nn.Conv2d(
+            64, 256, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv2_3_1x1_increase_bn = nn.BatchNorm2d(
+            256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv2_3_relu = nn.ReLU()
-        self.conv3_1_1x1_reduce = nn.Conv2d(256, 128, kernel_size=[1, 1], stride=(2, 2), bias=False)
-        self.conv3_1_1x1_reduce_bn = nn.BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv3_1_1x1_reduce = nn.Conv2d(
+            256, 128, kernel_size=[1, 1], stride=(2, 2), bias=False
+        )
+        self.conv3_1_1x1_reduce_bn = nn.BatchNorm2d(
+            128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv3_1_1x1_reduce_relu = nn.ReLU()
-        self.conv3_1_3x3 = nn.Conv2d(128, 128, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False)
-        self.conv3_1_3x3_bn = nn.BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv3_1_3x3 = nn.Conv2d(
+            128, 128, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False
+        )
+        self.conv3_1_3x3_bn = nn.BatchNorm2d(
+            128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv3_1_3x3_relu = nn.ReLU()
-        self.conv3_1_1x1_increase = nn.Conv2d(128, 512, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv3_1_1x1_increase_bn = nn.BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-        self.conv3_1_1x1_proj = nn.Conv2d(256, 512, kernel_size=[1, 1], stride=(2, 2), bias=False)
-        self.conv3_1_1x1_proj_bn = nn.BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv3_1_1x1_increase = nn.Conv2d(
+            128, 512, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv3_1_1x1_increase_bn = nn.BatchNorm2d(
+            512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
+        self.conv3_1_1x1_proj = nn.Conv2d(
+            256, 512, kernel_size=[1, 1], stride=(2, 2), bias=False
+        )
+        self.conv3_1_1x1_proj_bn = nn.BatchNorm2d(
+            512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv3_1_relu = nn.ReLU()
-        self.conv3_2_1x1_reduce = nn.Conv2d(512, 128, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv3_2_1x1_reduce_bn = nn.BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv3_2_1x1_reduce = nn.Conv2d(
+            512, 128, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv3_2_1x1_reduce_bn = nn.BatchNorm2d(
+            128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv3_2_1x1_reduce_relu = nn.ReLU()
-        self.conv3_2_3x3 = nn.Conv2d(128, 128, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False)
-        self.conv3_2_3x3_bn = nn.BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv3_2_3x3 = nn.Conv2d(
+            128, 128, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False
+        )
+        self.conv3_2_3x3_bn = nn.BatchNorm2d(
+            128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv3_2_3x3_relu = nn.ReLU()
-        self.conv3_2_1x1_increase = nn.Conv2d(128, 512, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv3_2_1x1_increase_bn = nn.BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv3_2_1x1_increase = nn.Conv2d(
+            128, 512, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv3_2_1x1_increase_bn = nn.BatchNorm2d(
+            512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv3_2_relu = nn.ReLU()
-        self.conv3_3_1x1_reduce = nn.Conv2d(512, 128, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv3_3_1x1_reduce_bn = nn.BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv3_3_1x1_reduce = nn.Conv2d(
+            512, 128, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv3_3_1x1_reduce_bn = nn.BatchNorm2d(
+            128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv3_3_1x1_reduce_relu = nn.ReLU()
-        self.conv3_3_3x3 = nn.Conv2d(128, 128, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False)
-        self.conv3_3_3x3_bn = nn.BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv3_3_3x3 = nn.Conv2d(
+            128, 128, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False
+        )
+        self.conv3_3_3x3_bn = nn.BatchNorm2d(
+            128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv3_3_3x3_relu = nn.ReLU()
-        self.conv3_3_1x1_increase = nn.Conv2d(128, 512, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv3_3_1x1_increase_bn = nn.BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv3_3_1x1_increase = nn.Conv2d(
+            128, 512, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv3_3_1x1_increase_bn = nn.BatchNorm2d(
+            512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv3_3_relu = nn.ReLU()
-        self.conv3_4_1x1_reduce = nn.Conv2d(512, 128, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv3_4_1x1_reduce_bn = nn.BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv3_4_1x1_reduce = nn.Conv2d(
+            512, 128, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv3_4_1x1_reduce_bn = nn.BatchNorm2d(
+            128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv3_4_1x1_reduce_relu = nn.ReLU()
-        self.conv3_4_3x3 = nn.Conv2d(128, 128, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False)
-        self.conv3_4_3x3_bn = nn.BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv3_4_3x3 = nn.Conv2d(
+            128, 128, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False
+        )
+        self.conv3_4_3x3_bn = nn.BatchNorm2d(
+            128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv3_4_3x3_relu = nn.ReLU()
-        self.conv3_4_1x1_increase = nn.Conv2d(128, 512, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv3_4_1x1_increase_bn = nn.BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv3_4_1x1_increase = nn.Conv2d(
+            128, 512, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv3_4_1x1_increase_bn = nn.BatchNorm2d(
+            512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv3_4_relu = nn.ReLU()
-        self.conv4_1_1x1_reduce = nn.Conv2d(512, 256, kernel_size=[1, 1], stride=(2, 2), bias=False)
-        self.conv4_1_1x1_reduce_bn = nn.BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv4_1_1x1_reduce = nn.Conv2d(
+            512, 256, kernel_size=[1, 1], stride=(2, 2), bias=False
+        )
+        self.conv4_1_1x1_reduce_bn = nn.BatchNorm2d(
+            256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv4_1_1x1_reduce_relu = nn.ReLU()
-        self.conv4_1_3x3 = nn.Conv2d(256, 256, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False)
-        self.conv4_1_3x3_bn = nn.BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv4_1_3x3 = nn.Conv2d(
+            256, 256, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False
+        )
+        self.conv4_1_3x3_bn = nn.BatchNorm2d(
+            256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv4_1_3x3_relu = nn.ReLU()
-        self.conv4_1_1x1_increase = nn.Conv2d(256, 1024, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv4_1_1x1_increase_bn = nn.BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-        self.conv4_1_1x1_proj = nn.Conv2d(512, 1024, kernel_size=[1, 1], stride=(2, 2), bias=False)
-        self.conv4_1_1x1_proj_bn = nn.BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv4_1_1x1_increase = nn.Conv2d(
+            256, 1024, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv4_1_1x1_increase_bn = nn.BatchNorm2d(
+            1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
+        self.conv4_1_1x1_proj = nn.Conv2d(
+            512, 1024, kernel_size=[1, 1], stride=(2, 2), bias=False
+        )
+        self.conv4_1_1x1_proj_bn = nn.BatchNorm2d(
+            1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv4_1_relu = nn.ReLU()
-        self.conv4_2_1x1_reduce = nn.Conv2d(1024, 256, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv4_2_1x1_reduce_bn = nn.BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv4_2_1x1_reduce = nn.Conv2d(
+            1024, 256, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv4_2_1x1_reduce_bn = nn.BatchNorm2d(
+            256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv4_2_1x1_reduce_relu = nn.ReLU()
-        self.conv4_2_3x3 = nn.Conv2d(256, 256, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False)
-        self.conv4_2_3x3_bn = nn.BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv4_2_3x3 = nn.Conv2d(
+            256, 256, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False
+        )
+        self.conv4_2_3x3_bn = nn.BatchNorm2d(
+            256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv4_2_3x3_relu = nn.ReLU()
-        self.conv4_2_1x1_increase = nn.Conv2d(256, 1024, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv4_2_1x1_increase_bn = nn.BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv4_2_1x1_increase = nn.Conv2d(
+            256, 1024, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv4_2_1x1_increase_bn = nn.BatchNorm2d(
+            1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv4_2_relu = nn.ReLU()
-        self.conv4_3_1x1_reduce = nn.Conv2d(1024, 256, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv4_3_1x1_reduce_bn = nn.BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv4_3_1x1_reduce = nn.Conv2d(
+            1024, 256, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv4_3_1x1_reduce_bn = nn.BatchNorm2d(
+            256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv4_3_1x1_reduce_relu = nn.ReLU()
-        self.conv4_3_3x3 = nn.Conv2d(256, 256, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False)
-        self.conv4_3_3x3_bn = nn.BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv4_3_3x3 = nn.Conv2d(
+            256, 256, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False
+        )
+        self.conv4_3_3x3_bn = nn.BatchNorm2d(
+            256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv4_3_3x3_relu = nn.ReLU()
-        self.conv4_3_1x1_increase = nn.Conv2d(256, 1024, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv4_3_1x1_increase_bn = nn.BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv4_3_1x1_increase = nn.Conv2d(
+            256, 1024, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv4_3_1x1_increase_bn = nn.BatchNorm2d(
+            1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv4_3_relu = nn.ReLU()
-        self.conv4_4_1x1_reduce = nn.Conv2d(1024, 256, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv4_4_1x1_reduce_bn = nn.BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv4_4_1x1_reduce = nn.Conv2d(
+            1024, 256, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv4_4_1x1_reduce_bn = nn.BatchNorm2d(
+            256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv4_4_1x1_reduce_relu = nn.ReLU()
-        self.conv4_4_3x3 = nn.Conv2d(256, 256, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False)
-        self.conv4_4_3x3_bn = nn.BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv4_4_3x3 = nn.Conv2d(
+            256, 256, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False
+        )
+        self.conv4_4_3x3_bn = nn.BatchNorm2d(
+            256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv4_4_3x3_relu = nn.ReLU()
-        self.conv4_4_1x1_increase = nn.Conv2d(256, 1024, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv4_4_1x1_increase_bn = nn.BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv4_4_1x1_increase = nn.Conv2d(
+            256, 1024, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv4_4_1x1_increase_bn = nn.BatchNorm2d(
+            1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv4_4_relu = nn.ReLU()
-        self.conv4_5_1x1_reduce = nn.Conv2d(1024, 256, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv4_5_1x1_reduce_bn = nn.BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv4_5_1x1_reduce = nn.Conv2d(
+            1024, 256, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv4_5_1x1_reduce_bn = nn.BatchNorm2d(
+            256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv4_5_1x1_reduce_relu = nn.ReLU()
-        self.conv4_5_3x3 = nn.Conv2d(256, 256, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False)
-        self.conv4_5_3x3_bn = nn.BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv4_5_3x3 = nn.Conv2d(
+            256, 256, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False
+        )
+        self.conv4_5_3x3_bn = nn.BatchNorm2d(
+            256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv4_5_3x3_relu = nn.ReLU()
-        self.conv4_5_1x1_increase = nn.Conv2d(256, 1024, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv4_5_1x1_increase_bn = nn.BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv4_5_1x1_increase = nn.Conv2d(
+            256, 1024, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv4_5_1x1_increase_bn = nn.BatchNorm2d(
+            1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv4_5_relu = nn.ReLU()
-        self.conv4_6_1x1_reduce = nn.Conv2d(1024, 256, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv4_6_1x1_reduce_bn = nn.BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv4_6_1x1_reduce = nn.Conv2d(
+            1024, 256, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv4_6_1x1_reduce_bn = nn.BatchNorm2d(
+            256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv4_6_1x1_reduce_relu = nn.ReLU()
-        self.conv4_6_3x3 = nn.Conv2d(256, 256, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False)
-        self.conv4_6_3x3_bn = nn.BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv4_6_3x3 = nn.Conv2d(
+            256, 256, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False
+        )
+        self.conv4_6_3x3_bn = nn.BatchNorm2d(
+            256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv4_6_3x3_relu = nn.ReLU()
-        self.conv4_6_1x1_increase = nn.Conv2d(256, 1024, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv4_6_1x1_increase_bn = nn.BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv4_6_1x1_increase = nn.Conv2d(
+            256, 1024, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv4_6_1x1_increase_bn = nn.BatchNorm2d(
+            1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv4_6_relu = nn.ReLU()
-        self.conv5_1_1x1_reduce = nn.Conv2d(1024, 512, kernel_size=[1, 1], stride=(2, 2), bias=False)
-        self.conv5_1_1x1_reduce_bn = nn.BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv5_1_1x1_reduce = nn.Conv2d(
+            1024, 512, kernel_size=[1, 1], stride=(2, 2), bias=False
+        )
+        self.conv5_1_1x1_reduce_bn = nn.BatchNorm2d(
+            512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv5_1_1x1_reduce_relu = nn.ReLU()
-        self.conv5_1_3x3 = nn.Conv2d(512, 512, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False)
-        self.conv5_1_3x3_bn = nn.BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv5_1_3x3 = nn.Conv2d(
+            512, 512, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False
+        )
+        self.conv5_1_3x3_bn = nn.BatchNorm2d(
+            512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv5_1_3x3_relu = nn.ReLU()
-        self.conv5_1_1x1_increase = nn.Conv2d(512, 2048, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv5_1_1x1_increase_bn = nn.BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-        self.conv5_1_1x1_proj = nn.Conv2d(1024, 2048, kernel_size=[1, 1], stride=(2, 2), bias=False)
-        self.conv5_1_1x1_proj_bn = nn.BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv5_1_1x1_increase = nn.Conv2d(
+            512, 2048, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv5_1_1x1_increase_bn = nn.BatchNorm2d(
+            2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
+        self.conv5_1_1x1_proj = nn.Conv2d(
+            1024, 2048, kernel_size=[1, 1], stride=(2, 2), bias=False
+        )
+        self.conv5_1_1x1_proj_bn = nn.BatchNorm2d(
+            2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv5_1_relu = nn.ReLU()
-        self.conv5_2_1x1_reduce = nn.Conv2d(2048, 512, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv5_2_1x1_reduce_bn = nn.BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv5_2_1x1_reduce = nn.Conv2d(
+            2048, 512, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv5_2_1x1_reduce_bn = nn.BatchNorm2d(
+            512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv5_2_1x1_reduce_relu = nn.ReLU()
-        self.conv5_2_3x3 = nn.Conv2d(512, 512, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False)
-        self.conv5_2_3x3_bn = nn.BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv5_2_3x3 = nn.Conv2d(
+            512, 512, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False
+        )
+        self.conv5_2_3x3_bn = nn.BatchNorm2d(
+            512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv5_2_3x3_relu = nn.ReLU()
-        self.conv5_2_1x1_increase = nn.Conv2d(512, 2048, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv5_2_1x1_increase_bn = nn.BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv5_2_1x1_increase = nn.Conv2d(
+            512, 2048, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv5_2_1x1_increase_bn = nn.BatchNorm2d(
+            2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv5_2_relu = nn.ReLU()
-        self.conv5_3_1x1_reduce = nn.Conv2d(2048, 512, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv5_3_1x1_reduce_bn = nn.BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv5_3_1x1_reduce = nn.Conv2d(
+            2048, 512, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv5_3_1x1_reduce_bn = nn.BatchNorm2d(
+            512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv5_3_1x1_reduce_relu = nn.ReLU()
-        self.conv5_3_3x3 = nn.Conv2d(512, 512, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False)
-        self.conv5_3_3x3_bn = nn.BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv5_3_3x3 = nn.Conv2d(
+            512, 512, kernel_size=[3, 3], stride=(1, 1), padding=(1, 1), bias=False
+        )
+        self.conv5_3_3x3_bn = nn.BatchNorm2d(
+            512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv5_3_3x3_relu = nn.ReLU()
-        self.conv5_3_1x1_increase = nn.Conv2d(512, 2048, kernel_size=[1, 1], stride=(1, 1), bias=False)
-        self.conv5_3_1x1_increase_bn = nn.BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.conv5_3_1x1_increase = nn.Conv2d(
+            512, 2048, kernel_size=[1, 1], stride=(1, 1), bias=False
+        )
+        self.conv5_3_1x1_increase_bn = nn.BatchNorm2d(
+            2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        )
         self.conv5_3_relu = nn.ReLU()
         self.pool5_7x7_s1 = nn.AvgPool2d(kernel_size=[7, 7], stride=[1, 1], padding=0)
         self.classifier = nn.Conv2d(2048, 8631, kernel_size=[1, 1], stride=(1, 1))
@@ -354,7 +573,7 @@ class Resnet50_pretrained_vgg(Resnet50_scratch):
         # self.load_state_dict(state_dict)
 
         self.classifier = nn.Conv2d(2048, 7, kernel_size=[1, 1], stride=(1, 1))
- 
+
     def forward(self, data):
         conv1_7x7_s2 = self.conv1_7x7_s2(data)
         conv1_7x7_s2_bn = self.conv1_7x7_s2_bn(conv1_7x7_s2)

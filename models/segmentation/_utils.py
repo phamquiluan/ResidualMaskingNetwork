@@ -20,13 +20,13 @@ class _SimpleSegmentationModel(nn.Module):
         result = OrderedDict()
         x = features["out"]
         x = self.classifier(x)
-        x = F.interpolate(x, size=input_shape, mode='bilinear', align_corners=False)
+        x = F.interpolate(x, size=input_shape, mode="bilinear", align_corners=False)
         result["out"] = x
 
         if self.aux_classifier is not None:
             x = features["aux"]
             x = self.aux_classifier(x)
-            x = F.interpolate(x, size=input_shape, mode='bilinear', align_corners=False)
+            x = F.interpolate(x, size=input_shape, mode="bilinear", align_corners=False)
             result["aux"] = x
 
         return result

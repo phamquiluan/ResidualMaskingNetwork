@@ -4,7 +4,8 @@ import glob
 import json
 import random
 import warnings
-warnings.simplefilter(action='ignore', category=FutureWarning)
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
 
 import imgaug
 import torch
@@ -31,25 +32,18 @@ from utils import datasets
 
 def create_fold_and_train(fold_idx, configs):
     model = get_model(configs)
-    train_set = CKDataset('train', fold_idx, configs)
-    test_set = CKDataset('test', fold_idx, configs)
+    train_set = CKDataset("train", fold_idx, configs)
+    test_set = CKDataset("test", fold_idx, configs)
 
-    trainer = CKPlusTrainer(
-        model,
-        train_set,
-        test_set,
-        fold_idx,
-        configs
-    )
+    trainer = CKPlusTrainer(model, train_set, test_set, fold_idx, configs)
 
     trainer.train()
-
 
 
 def main(config_path, fold_idx):
     # load configs and set random seed
     configs = json.load(open(config_path))
-    configs['cwd'] = os.getcwd()
+    configs["cwd"] = os.getcwd()
 
     processes = []
 
@@ -64,8 +58,8 @@ def main(config_path, fold_idx):
     #         print("start fold {} in {} seconds..".format(fold_idx, 5 - r_time))
 
     model = get_model(configs)
-    train_set = ckdataset(stage='train', fold_idx=fold_idx, configs=configs)
-    test_set = ckdataset(stage='test', fold_idx=fold_idx, configs=configs)
+    train_set = ckdataset(stage="train", fold_idx=fold_idx, configs=configs)
+    test_set = ckdataset(stage="test", fold_idx=fold_idx, configs=configs)
 
     trainer = CkTrainer(model, train_set, test_set, fold_idx, configs)
     trainer.train()
@@ -81,13 +75,13 @@ def get_model(configs):
         configs dictionary
     """
     try:
-        return models.__dict__[configs['arch']]
+        return models.__dict__[configs["arch"]]
     except KeyError:
-        return segmentation.__dict__[configs['arch']]
+        return segmentation.__dict__[configs["arch"]]
 
 
 if __name__ == "__main__":
     argv = sys.argv[1:]
     if len(argv) != 1:
         raise Exception("You need to declare fold_idx")
-    main('./configs/ck_config.json', argv[0])
+    main("./configs/ck_config.json", argv[0])

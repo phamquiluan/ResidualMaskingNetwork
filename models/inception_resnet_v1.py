@@ -7,19 +7,21 @@ import os
 
 
 class BasicConv2d(nn.Module):
-
     def __init__(self, in_planes, out_planes, kernel_size, stride, padding=0):
         super().__init__()
         self.conv = nn.Conv2d(
-            in_planes, out_planes,
-            kernel_size=kernel_size, stride=stride,
-            padding=padding, bias=False
-        ) # verify bias false
+            in_planes,
+            out_planes,
+            kernel_size=kernel_size,
+            stride=stride,
+            padding=padding,
+            bias=False,
+        )  # verify bias false
         self.bn = nn.BatchNorm2d(
             out_planes,
-            eps=0.001, # value found in tensorflow
-            momentum=0.1, # default pytorch value
-            affine=True
+            eps=0.001,  # value found in tensorflow
+            momentum=0.1,  # default pytorch value
+            affine=True,
         )
         self.relu = nn.ReLU(inplace=False)
 
@@ -31,7 +33,6 @@ class BasicConv2d(nn.Module):
 
 
 class Block35(nn.Module):
-
     def __init__(self, scale=1.0):
         super().__init__()
 
@@ -41,13 +42,13 @@ class Block35(nn.Module):
 
         self.branch1 = nn.Sequential(
             BasicConv2d(256, 32, kernel_size=1, stride=1),
-            BasicConv2d(32, 32, kernel_size=3, stride=1, padding=1)
+            BasicConv2d(32, 32, kernel_size=3, stride=1, padding=1),
         )
 
         self.branch2 = nn.Sequential(
             BasicConv2d(256, 32, kernel_size=1, stride=1),
             BasicConv2d(32, 32, kernel_size=3, stride=1, padding=1),
-            BasicConv2d(32, 32, kernel_size=3, stride=1, padding=1)
+            BasicConv2d(32, 32, kernel_size=3, stride=1, padding=1),
         )
 
         self.conv2d = nn.Conv2d(96, 256, kernel_size=1, stride=1)
@@ -65,7 +66,6 @@ class Block35(nn.Module):
 
 
 class Block17(nn.Module):
-
     def __init__(self, scale=1.0):
         super().__init__()
 
@@ -75,8 +75,8 @@ class Block17(nn.Module):
 
         self.branch1 = nn.Sequential(
             BasicConv2d(896, 128, kernel_size=1, stride=1),
-            BasicConv2d(128, 128, kernel_size=(1,7), stride=1, padding=(0,3)),
-            BasicConv2d(128, 128, kernel_size=(7,1), stride=1, padding=(3,0))
+            BasicConv2d(128, 128, kernel_size=(1, 7), stride=1, padding=(0, 3)),
+            BasicConv2d(128, 128, kernel_size=(7, 1), stride=1, padding=(3, 0)),
         )
 
         self.conv2d = nn.Conv2d(256, 896, kernel_size=1, stride=1)
@@ -93,7 +93,6 @@ class Block17(nn.Module):
 
 
 class Block8(nn.Module):
-
     def __init__(self, scale=1.0, noReLU=False):
         super().__init__()
 
@@ -104,8 +103,8 @@ class Block8(nn.Module):
 
         self.branch1 = nn.Sequential(
             BasicConv2d(1792, 192, kernel_size=1, stride=1),
-            BasicConv2d(192, 192, kernel_size=(1,3), stride=1, padding=(0,1)),
-            BasicConv2d(192, 192, kernel_size=(3,1), stride=1, padding=(1,0))
+            BasicConv2d(192, 192, kernel_size=(1, 3), stride=1, padding=(0, 1)),
+            BasicConv2d(192, 192, kernel_size=(3, 1), stride=1, padding=(1, 0)),
         )
 
         self.conv2d = nn.Conv2d(384, 1792, kernel_size=1, stride=1)
@@ -124,7 +123,6 @@ class Block8(nn.Module):
 
 
 class Mixed_6a(nn.Module):
-
     def __init__(self):
         super().__init__()
 
@@ -133,7 +131,7 @@ class Mixed_6a(nn.Module):
         self.branch1 = nn.Sequential(
             BasicConv2d(256, 192, kernel_size=1, stride=1),
             BasicConv2d(192, 192, kernel_size=3, stride=1, padding=1),
-            BasicConv2d(192, 256, kernel_size=3, stride=2)
+            BasicConv2d(192, 256, kernel_size=3, stride=2),
         )
 
         self.branch2 = nn.MaxPool2d(3, stride=2)
@@ -147,24 +145,23 @@ class Mixed_6a(nn.Module):
 
 
 class Mixed_7a(nn.Module):
-
     def __init__(self):
         super().__init__()
 
         self.branch0 = nn.Sequential(
             BasicConv2d(896, 256, kernel_size=1, stride=1),
-            BasicConv2d(256, 384, kernel_size=3, stride=2)
+            BasicConv2d(256, 384, kernel_size=3, stride=2),
         )
 
         self.branch1 = nn.Sequential(
             BasicConv2d(896, 256, kernel_size=1, stride=1),
-            BasicConv2d(256, 256, kernel_size=3, stride=2)
+            BasicConv2d(256, 256, kernel_size=3, stride=2),
         )
 
         self.branch2 = nn.Sequential(
             BasicConv2d(896, 256, kernel_size=1, stride=1),
             BasicConv2d(256, 256, kernel_size=3, stride=1, padding=1),
-            BasicConv2d(256, 256, kernel_size=3, stride=2)
+            BasicConv2d(256, 256, kernel_size=3, stride=2),
         )
 
         self.branch3 = nn.MaxPool2d(3, stride=2)
@@ -196,7 +193,15 @@ class InceptionResnetV1(nn.Module):
             initialized. (default: {None})
         dropout_prob {float} -- Dropout probability. (default: {0.6})
     """
-    def __init__(self, pretrained=None, classify=False, num_classes=None, dropout_prob=0.6, device=None):
+
+    def __init__(
+        self,
+        pretrained=None,
+        classify=False,
+        num_classes=None,
+        dropout_prob=0.6,
+        device=None,
+    ):
         super().__init__()
 
         # Set simple attributes
@@ -204,15 +209,16 @@ class InceptionResnetV1(nn.Module):
         self.classify = classify
         self.num_classes = num_classes
 
-        if pretrained == 'vggface2':
+        if pretrained == "vggface2":
             tmp_classes = 8631
-        elif pretrained == 'casia-webface':
+        elif pretrained == "casia-webface":
             tmp_classes = 10575
         elif pretrained is None and self.num_classes is None:
-            raise Exception('At least one of "pretrained" or "num_classes" must be specified')
+            raise Exception(
+                'At least one of "pretrained" or "num_classes" must be specified'
+            )
         else:
             tmp_classes = self.num_classes
-
 
         # Define layers
         self.conv2d_1a = BasicConv2d(3, 32, kernel_size=3, stride=2)
@@ -263,7 +269,7 @@ class InceptionResnetV1(nn.Module):
         if self.num_classes is not None:
             self.logits = nn.Linear(512, self.num_classes)
 
-        self.device = torch.device('cpu')
+        self.device = torch.device("cpu")
         if device is not None:
             self.device = device
             self.to(device)
@@ -310,27 +316,29 @@ def load_weights(mdl, name):
     Raises:
         ValueError: If 'pretrained' not equal to 'vggface2' or 'casia-webface'.
     """
-    if name == 'vggface2':
-        features_path = 'https://drive.google.com/uc?export=download&id=1cWLH_hPns8kSfMz9kKl9PsG5aNV2VSMn'
-        logits_path = 'https://drive.google.com/uc?export=download&id=1mAie3nzZeno9UIzFXvmVZrDG3kwML46X'
-    elif name == 'casia-webface':
-        features_path = 'https://drive.google.com/uc?export=download&id=1LSHHee_IQj5W3vjBcRyVaALv4py1XaGy'
-        logits_path = 'https://drive.google.com/uc?export=download&id=1QrhPgn1bGlDxAil2uc07ctunCQoDnCzT'
+    if name == "vggface2":
+        features_path = "https://drive.google.com/uc?export=download&id=1cWLH_hPns8kSfMz9kKl9PsG5aNV2VSMn"
+        logits_path = "https://drive.google.com/uc?export=download&id=1mAie3nzZeno9UIzFXvmVZrDG3kwML46X"
+    elif name == "casia-webface":
+        features_path = "https://drive.google.com/uc?export=download&id=1LSHHee_IQj5W3vjBcRyVaALv4py1XaGy"
+        logits_path = "https://drive.google.com/uc?export=download&id=1QrhPgn1bGlDxAil2uc07ctunCQoDnCzT"
     else:
-        raise ValueError('Pretrained models only exist for "vggface2" and "casia-webface"')
+        raise ValueError(
+            'Pretrained models only exist for "vggface2" and "casia-webface"'
+        )
 
-    model_dir = os.path.join(get_torch_home(), 'checkpoints')
+    model_dir = os.path.join(get_torch_home(), "checkpoints")
     os.makedirs(model_dir, exist_ok=True)
 
     state_dict = {}
     for i, path in enumerate([features_path, logits_path]):
-        cached_file = os.path.join(model_dir, '{}_{}.pt'.format(name, path[-10:]))
+        cached_file = os.path.join(model_dir, "{}_{}.pt".format(name, path[-10:]))
         if not os.path.exists(cached_file):
-            print('Downloading parameters ({}/2)'.format(i+1))
+            print("Downloading parameters ({}/2)".format(i + 1))
             s = requests.Session()
-            s.mount('https://', HTTPAdapter(max_retries=10))
+            s.mount("https://", HTTPAdapter(max_retries=10))
             r = s.get(path, allow_redirects=True)
-            with open(cached_file, 'wb') as f:
+            with open(cached_file, "wb") as f:
                 f.write(r.content)
         state_dict.update(torch.load(cached_file))
 
@@ -338,18 +346,13 @@ def load_weights(mdl, name):
 
 
 def inception_resnet_v1(pretrained=True, progress=True, **kwargs):
-    return InceptionResnetV1(
-        classify=True,
-        pretrained='vggface2',
-        num_classes=7
-    )
+    return InceptionResnetV1(classify=True, pretrained="vggface2", num_classes=7)
 
 
 def get_torch_home():
     torch_home = os.path.expanduser(
         os.getenv(
-            'TORCH_HOME',
-            os.path.join(os.getenv('XDG_CACHE_HOME', '~/.cache'), 'torch')
+            "TORCH_HOME", os.path.join(os.getenv("XDG_CACHE_HOME", "~/.cache"), "torch")
         )
     )
     return torch_home

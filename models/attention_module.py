@@ -7,32 +7,29 @@ import numpy as np
 
 from .basic_layers import ResidualBlock
 
+
 class AttentionModule(nn.Module):
     def __init__(self, in_channels, out_channels, size1, size2, size3):
         super(AttentionModule, self).__init__()
-        self.first_residual_blocks = ResidualBlock(
-            in_channels, out_channels)
+        self.first_residual_blocks = ResidualBlock(in_channels, out_channels)
 
         self.trunk_branches = nn.Sequential(
             ResidualBlock(in_channels, out_channels),
-            ResidualBlock(out_channels, out_channels)
+            ResidualBlock(out_channels, out_channels),
         )
         self.mpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
 
-        self.softmax1_blocks = ResidualBlock(
-            in_channels, out_channels)
+        self.softmax1_blocks = ResidualBlock(in_channels, out_channels)
 
-        self.skip1_connection_residual_block = ResidualBlock(
-            in_channels, out_channels)
+        self.skip1_connection_residual_block = ResidualBlock(in_channels, out_channels)
 
         self.softmax2_blocks = ResidualBlock(in_channels, out_channels)
 
-        self.skip2_connection_residual_block = ResidualBlock(
-            in_channels, out_channels)
+        self.skip2_connection_residual_block = ResidualBlock(in_channels, out_channels)
 
         self.softmax3_blocks = nn.Sequential(
             ResidualBlock(in_channels, out_channels),
-            ResidualBlock(in_channels, out_channels)
+            ResidualBlock(in_channels, out_channels),
         )
 
         self.interpolation3 = nn.UpsamplingBilinear2d(size=size3)
@@ -48,11 +45,11 @@ class AttentionModule(nn.Module):
         self.softmax6_blocks = nn.Sequential(
             nn.BatchNorm2d(out_channels),
             nn.ReLU(inplace=True),
-            nn.Conv2d(out_channels, out_channels , kernel_size = 1, stride = 1, bias = False),
+            nn.Conv2d(out_channels, out_channels, kernel_size=1, stride=1, bias=False),
             nn.BatchNorm2d(out_channels),
             nn.ReLU(inplace=True),
-            nn.Conv2d(out_channels, out_channels , kernel_size = 1, stride = 1, bias = False),
-            nn.Sigmoid()
+            nn.Conv2d(out_channels, out_channels, kernel_size=1, stride=1, bias=False),
+            nn.Sigmoid(),
         )
 
         self.last_blocks = ResidualBlock(in_channels, out_channels)
@@ -60,7 +57,7 @@ class AttentionModule(nn.Module):
     def forward(self, x):
         x = self.first_residual_blocks(x)
         out_trunk = self.trunk_branches(x)
-        out_mpool1 =  self.mpool1(x)
+        out_mpool1 = self.mpool1(x)
         out_softmax1 = self.softmax1_blocks(out_mpool1)
         out_skip1_connection = self.skip1_connection_residual_block(out_softmax1)
         out_mpool2 = self.mpool2(out_softmax1)

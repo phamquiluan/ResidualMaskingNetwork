@@ -21,6 +21,7 @@ from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm
 
 from utils.radam import RAdam
+
 # from torch.optim import Adam as RAdam
 from torch.optim import SGD
 
@@ -30,26 +31,19 @@ from utils.metrics.metrics import accuracy
 from utils.generals import make_batch
 
 
-
-EMO_DICT = {
-    0: 'ne',
-    1: 'an',
-    2: 'di',
-    3: 'fe',
-    4: 'ha',
-    5: 'sa',
-    6: 'su'
-}
+EMO_DICT = {0: "ne", 1: "an", 2: "di", 3: "fe", 4: "ha", 5: "sa", 6: "su"}
 
 
 class Trainer(object):
     """base class for trainers"""
+
     def __init__(self):
         pass
 
 
 class FER2013Trainer(Trainer):
     """for classification task"""
+
     def __init__(self, model, train_set, val_set, test_set, configs):
         super().__init__()
         print("Start trainer..")
@@ -57,23 +51,22 @@ class FER2013Trainer(Trainer):
 
         # load config
         self._configs = configs
-        self._lr = self._configs['lr']
-        self._batch_size = self._configs['batch_size']
-        self._momentum = self._configs['momentum']
-        self._weight_decay = self._configs['weight_decay']
-        self._distributed = self._configs['distributed']
-        self._num_workers = self._configs['num_workers']
-        self._device = torch.device(self._configs['device'])
-        self._max_epoch_num = self._configs['max_epoch_num']
-        self._max_plateau_count = self._configs['max_plateau_count']
+        self._lr = self._configs["lr"]
+        self._batch_size = self._configs["batch_size"]
+        self._momentum = self._configs["momentum"]
+        self._weight_decay = self._configs["weight_decay"]
+        self._distributed = self._configs["distributed"]
+        self._num_workers = self._configs["num_workers"]
+        self._device = torch.device(self._configs["device"])
+        self._max_epoch_num = self._configs["max_epoch_num"]
+        self._max_plateau_count = self._configs["max_plateau_count"]
 
         # load dataloader and model
         self._train_set = train_set
         self._val_set = val_set
         self._test_set = test_set
         self._model = model(
-            in_channels=configs['in_channels'],
-            num_classes=configs['num_classes'],
+            in_channels=configs["in_channels"], num_classes=configs["num_classes"],
         )
 
         # self._model.fc = nn.Linear(512, 7)
@@ -82,15 +75,17 @@ class FER2013Trainer(Trainer):
         self._model = self._model.to(self._device)
 
         if self._distributed == 1:
-            torch.distributed.init_process_group(backend='nccl')
-            self._model = nn.parallel.DistributedDataParallel(self._model, find_unused_parameters=True)
+            torch.distributed.init_process_group(backend="nccl")
+            self._model = nn.parallel.DistributedDataParallel(
+                self._model, find_unused_parameters=True
+            )
             self._train_loader = DataLoader(
                 self._train_set,
                 batch_size=self._batch_size,
                 num_workers=self._num_workers,
                 pin_memory=True,
                 shuffle=True,
-                worker_init_fn=lambda x: np.random.seed(x)
+                worker_init_fn=lambda x: np.random.seed(x),
             )
             self._val_loader = DataLoader(
                 self._val_set,
@@ -98,16 +93,16 @@ class FER2013Trainer(Trainer):
                 num_workers=self._num_workers,
                 pin_memory=True,
                 shuffle=False,
-                worker_init_fn=lambda x: np.random.seed(x)
+                worker_init_fn=lambda x: np.random.seed(x),
             )
 
-            self._test_loader= DataLoader(
+            self._test_loader = DataLoader(
                 self._test_set,
                 batch_size=1,
                 num_workers=self._num_workers,
                 pin_memory=True,
                 shuffle=False,
-                worker_init_fn=lambda x: np.random.seed(x)
+                worker_init_fn=lambda x: np.random.seed(x),
             )
         else:
             self._train_loader = DataLoader(
@@ -140,7 +135,7 @@ class FER2013Trainer(Trainer):
             0.56843877,
             0.84912748,
             1.29337298,
-            0.82603942
+            0.82603942,
         ]
         class_weights = torch.FloatTensor(np.array(class_weights))
         self._criterion = nn.CrossEntropyLoss(class_weights).to(self._device)
@@ -151,49 +146,41 @@ class FER2013Trainer(Trainer):
             lr=self._lr,
             weight_decay=self._weight_decay,
         )
-        
+
         # for center loss
         self._criterion_cent = CenterLoss(num_classes=7, feat_dim=2, use_gpu=True)
         self._optimizer_cent = RAdam(
-            self._criterion_cent.parameters(),
-            lr=self._configs['clr']
-        ) 
+            self._criterion_cent.parameters(), lr=self._configs["clr"]
+        )
 
-
-        '''
+        """
         self._scheduler = ReduceLROnPlateau(
             self._optimizer,
             patience=self._configs['plateau_patience'],
             min_lr=1e-6,
             verbose=True
         )
-        '''
-        
-        
+        """
+
         # ''' TODO set step size equal to configs
-        self._scheduler = StepLR(
-            self._optimizer,
-            step_size=self._configs['steplr']
-        )
+        self._scheduler = StepLR(self._optimizer, step_size=self._configs["steplr"])
         self._center_scheduler = StepLR(
-            self._optimizer_cent,
-            step_size=self._configs['csteplr']
+            self._optimizer_cent, step_size=self._configs["csteplr"]
         )
         # '''
- 
 
         # training info
         self._start_time = datetime.datetime.now()
         self._start_time = self._start_time.replace(microsecond=0)
 
         log_dir = os.path.join(
-            self._configs['cwd'],
-            self._configs['log_dir'],
+            self._configs["cwd"],
+            self._configs["log_dir"],
             "{}_{}_{}".format(
-                self._configs['arch'],
-                self._configs['model_name'],
-                self._start_time.strftime('%Y%b%d_%H.%M')
-            )
+                self._configs["arch"],
+                self._configs["model_name"],
+                self._start_time.strftime("%Y%b%d_%H.%M"),
+            ),
         )
         self._writer = SummaryWriter(log_dir)
         self._train_loss_list = []
@@ -204,41 +191,35 @@ class FER2013Trainer(Trainer):
         self._best_val_acc = 0
         self._best_train_loss = 1e9
         self._best_train_acc = 0
-        self._test_acc = 0.
+        self._test_acc = 0.0
         self._plateau_count = 0
         self._current_epoch_num = 0
 
         # for checkpoints
-        self._checkpoint_dir = os.path.join(
-            self._configs['cwd'],
-            'saved/checkpoints'
-        )
+        self._checkpoint_dir = os.path.join(self._configs["cwd"], "saved/checkpoints")
         if not os.path.exists(self._checkpoint_dir):
             os.makedirs(self._checkpoint_dir, exist_ok=True)
 
         self._checkpoint_path = os.path.join(
             self._checkpoint_dir,
             "{}_{}_{}".format(
-                self._configs['arch'],
-                self._configs['model_name'],
-                self._start_time.strftime('%Y%b%d_%H.%M')
-            )
+                self._configs["arch"],
+                self._configs["model_name"],
+                self._start_time.strftime("%Y%b%d_%H.%M"),
+            ),
         )
 
     def _train(self):
         self._model.train()
-        train_loss = 0.
-        train_acc = 0.
+        train_loss = 0.0
+        train_acc = 0.0
 
         # for plot center lloss
         all_features, all_labels = [], []
-        
-    
+
         for i, (images, targets) in tqdm(
-                enumerate(self._train_loader),
-                total=len(self._train_loader),
-                leave=False
-            ):
+            enumerate(self._train_loader), total=len(self._train_loader), leave=False
+        ):
             images = images.cuda(non_blocking=True)
             targets = targets.cuda(non_blocking=True)
 
@@ -249,7 +230,7 @@ class FER2013Trainer(Trainer):
 
             if self._current_epoch_num > 20:
                 loss_cent = self._criterion_cent(features, targets)
-                loss_cent *= self._configs['cweight']
+                loss_cent *= self._configs["cweight"]
                 loss = loss + loss_cent
 
             acc = accuracy(outputs, targets)[0]
@@ -266,7 +247,7 @@ class FER2013Trainer(Trainer):
             if self._current_epoch_num > 20:
                 # by doing so, weight_cent would not impact on the learning of centers
                 for param in self._criterion_cent.parameters():
-                    param.grad.data *= (1. / self._configs['cweight'])
+                    param.grad.data *= 1.0 / self._configs["cweight"]
                 self._optimizer_cent.step()
 
             all_features.append(features.data.cpu().numpy())
@@ -279,21 +260,19 @@ class FER2013Trainer(Trainer):
         # plot center
         all_features = np.concatenate(all_features, 0)
         all_labels = np.concatenate(all_labels, 0)
-        self._plot_features(all_features, all_labels, prefix='train')
+        self._plot_features(all_features, all_labels, prefix="train")
 
     def _val(self):
         self._model.eval()
-        val_loss = 0.
-        val_acc = 0.
+        val_loss = 0.0
+        val_acc = 0.0
         # for plot center lloss
         all_features, all_labels = [], []
- 
+
         with torch.no_grad():
             for i, (images, targets) in tqdm(
-                    enumerate(self._val_loader),
-                    total=len(self._val_loader),
-                    leave=False
-                ):
+                enumerate(self._val_loader), total=len(self._val_loader), leave=False
+            ):
                 images = images.cuda(non_blocking=True)
                 targets = targets.cuda(non_blocking=True)
 
@@ -309,7 +288,6 @@ class FER2013Trainer(Trainer):
                 all_features.append(features.data.cpu().numpy())
                 all_labels.append(targets.data.cpu().numpy())
 
-
             i += 1
             self._val_loss_list.append(val_loss / i)
             self._val_acc_list.append(val_acc / i)
@@ -317,20 +295,17 @@ class FER2013Trainer(Trainer):
         # plot center
         all_features = np.concatenate(all_features, 0)
         all_labels = np.concatenate(all_labels, 0)
-        self._plot_features(all_features, all_labels, prefix='test')
-
+        self._plot_features(all_features, all_labels, prefix="test")
 
     def _calc_acc_on_private_test(self):
         self._model.eval()
-        test_acc = 0.
-        print('Calc acc on private test..')
-        f = open('private_test_log.txt', 'w')
+        test_acc = 0.0
+        print("Calc acc on private test..")
+        f = open("private_test_log.txt", "w")
         with torch.no_grad():
             for i, (images, targets) in tqdm(
-                    enumerate(self._test_loader),
-                    total=len(self._test_loader),
-                    leave=False
-                ):
+                enumerate(self._test_loader), total=len(self._test_loader), leave=False
+            ):
 
                 images = images.cuda(non_blocking=True)
                 targets = targets.cuda(non_blocking=True)
@@ -348,26 +323,29 @@ class FER2013Trainer(Trainer):
 
     def _calc_acc_on_private_test_with_tta(self):
         self._model.eval()
-        test_acc = 0.
-        print('Calc acc on private test..')
-        f = open('private_test_log_{}_{}.txt'.format(self._configs['arch'], self._configs['model_name']), 'w')
+        test_acc = 0.0
+        print("Calc acc on private test..")
+        f = open(
+            "private_test_log_{}_{}.txt".format(
+                self._configs["arch"], self._configs["model_name"]
+            ),
+            "w",
+        )
 
         with torch.no_grad():
             for idx in tqdm(
-                    range(len(self._test_set)),
-                    total=len(self._test_set),
-                    leave=False
-                ):
+                range(len(self._test_set)), total=len(self._test_set), leave=False
+            ):
                 images, targets = self._test_set[idx]
                 targets = torch.LongTensor([targets])
 
-                images = make_batch(images) 
+                images = make_batch(images)
                 images = images.cuda(non_blocking=True)
                 targets = targets.cuda(non_blocking=True)
 
                 outputs, _ = self._model(images)
                 outputs = F.softmax(outputs, 1)
-                
+
                 # outputs.shape [tta_size, 7]
                 outputs = torch.sum(outputs, 0)
 
@@ -386,7 +364,7 @@ class FER2013Trainer(Trainer):
     def train(self):
         """make a training job"""
         print(self._model)
-        
+
         try:
             while not self._is_stop():
                 self._increase_epoch_num()
@@ -398,15 +376,15 @@ class FER2013Trainer(Trainer):
         except KeyboardInterrupt:
             traceback.print_exc()
             pass
-       
+
         # training stop
         try:
             # state = torch.load('saved/checkpoints/resatt18_rot30_2019Nov06_18.56')
             state = torch.load(self._checkpoint_path)
             if self._distributed:
-                self._model.module.load_state_dict(state['net'])
+                self._model.module.load_state_dict(state["net"])
             else:
-                self._model.load_state_dict(state['net'])
+                self._model.load_state_dict(state["net"])
 
             if not self._test_set.is_tta():
                 self._test_acc = self._calc_acc_on_private_test()
@@ -419,10 +397,21 @@ class FER2013Trainer(Trainer):
             pass
 
         consume_time = str(datetime.datetime.now() - self._start_time)
-        self._writer.add_text('Summary', 'Converged after {} epochs, consume {}'.format(self._current_epoch_num, consume_time[:-7]))
-        self._writer.add_text('Results', 'Best validation accuracy: {:.3f}'.format(self._best_val_acc))
-        self._writer.add_text('Results', 'Best training accuracy: {:.3f}'.format(self._best_train_acc))
-        self._writer.add_text('Results', 'Private test accuracy: {:.3f}'.format(self._test_acc))
+        self._writer.add_text(
+            "Summary",
+            "Converged after {} epochs, consume {}".format(
+                self._current_epoch_num, consume_time[:-7]
+            ),
+        )
+        self._writer.add_text(
+            "Results", "Best validation accuracy: {:.3f}".format(self._best_val_acc)
+        )
+        self._writer.add_text(
+            "Results", "Best training accuracy: {:.3f}".format(self._best_train_acc)
+        )
+        self._writer.add_text(
+            "Results", "Private test accuracy: {:.3f}".format(self._test_acc)
+        )
         self._writer.close()
 
     def _update_training_state(self):
@@ -455,27 +444,35 @@ class FER2013Trainer(Trainer):
             self._val_acc_list[-1],
             self._best_val_acc,
             self._plateau_count,
-            consume_time[:-7]
+            consume_time[:-7],
         )
 
-        self._writer.add_scalar('Accuracy/Train', self._train_acc_list[-1], self._current_epoch_num)
-        self._writer.add_scalar('Accuracy/Val', self._val_acc_list[-1], self._current_epoch_num)
-        self._writer.add_scalar('Loss/Train', self._train_loss_list[-1], self._current_epoch_num)
-        self._writer.add_scalar('Loss/Val', self._val_loss_list[-1], self._current_epoch_num)
- 
+        self._writer.add_scalar(
+            "Accuracy/Train", self._train_acc_list[-1], self._current_epoch_num
+        )
+        self._writer.add_scalar(
+            "Accuracy/Val", self._val_acc_list[-1], self._current_epoch_num
+        )
+        self._writer.add_scalar(
+            "Loss/Train", self._train_loss_list[-1], self._current_epoch_num
+        )
+        self._writer.add_scalar(
+            "Loss/Val", self._val_loss_list[-1], self._current_epoch_num
+        )
+
         print(message)
 
     def _is_stop(self):
         """check stop condition"""
         return (
-            self._plateau_count > self._max_plateau_count or
-            self._current_epoch_num > self._max_epoch_num
+            self._plateau_count > self._max_plateau_count
+            or self._current_epoch_num > self._max_epoch_num
         )
 
     def _increase_epoch_num(self):
         self._current_epoch_num += 1
 
-    def _save_weights(self, test_acc=0.):
+    def _save_weights(self, test_acc=0.0):
         if self._distributed == 0:
             state_dict = self._model.state_dict()
         else:
@@ -483,16 +480,16 @@ class FER2013Trainer(Trainer):
 
         state = {
             **self._configs,
-            'net': state_dict,
-            'best_val_loss': self._best_val_loss,
-            'best_val_acc': self._best_val_acc,
-            'best_train_loss': self._best_train_loss,
-            'best_train_acc': self._best_train_acc,
-            'train_losses': self._train_loss_list,
-            'val_loss_list': self._val_loss_list,
-            'train_acc_list': self._train_acc_list,
-            'val_acc_list': self._val_acc_list,
-            'test_acc': self._test_acc
+            "net": state_dict,
+            "best_val_loss": self._best_val_loss,
+            "best_val_acc": self._best_val_acc,
+            "best_train_loss": self._best_train_loss,
+            "best_train_acc": self._best_train_acc,
+            "train_losses": self._train_loss_list,
+            "val_loss_list": self._val_loss_list,
+            "train_acc_list": self._train_acc_list,
+            "val_acc_list": self._val_acc_list,
+            "test_acc": self._test_acc,
         }
 
         torch.save(state, self._checkpoint_path)
@@ -503,19 +500,23 @@ class FER2013Trainer(Trainer):
             features: (num_instances, num_features).
             labels: (num_instances). 
         """
-        colors = ['C0', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6']
+        colors = ["C0", "C1", "C2", "C3", "C4", "C5", "C6"]
         for label_idx in range(7):
             plt.scatter(
-                features[labels==label_idx, 0],
-                features[labels==label_idx, 1],
+                features[labels == label_idx, 0],
+                features[labels == label_idx, 1],
                 c=colors[label_idx],
                 s=1,
             )
-        plt.legend(['0', '1', '2', '3', '4', '5', '6'], loc='upper right')
-        plt_dirname = os.path.join('saved/plot/{}'.format(os.path.basename(self._checkpoint_path)))
+        plt.legend(["0", "1", "2", "3", "4", "5", "6"], loc="upper right")
+        plt_dirname = os.path.join(
+            "saved/plot/{}".format(os.path.basename(self._checkpoint_path))
+        )
         if not os.path.exists(plt_dirname):
             os.makedirs(plt_dirname, exist_ok=True)
 
-        save_name = os.path.join(plt_dirname, 'epoch_{}_{}.png'.format(self._current_epoch_num, prefix))
-        plt.savefig(save_name, bbox_inches='tight')
+        save_name = os.path.join(
+            plt_dirname, "epoch_{}_{}.png".format(self._current_epoch_num, prefix)
+        )
+        plt.savefig(save_name, bbox_inches="tight")
         plt.close()
