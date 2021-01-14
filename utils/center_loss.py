@@ -4,10 +4,10 @@ import torch.nn as nn
 
 class CenterLoss(nn.Module):
     """Center loss.
-    
+
     Reference:
     Wen et al. A Discriminative Feature Learning Approach for Deep Face Recognition. ECCV 2016.
-    
+
     Args:
         num_classes (int): number of classes.
         feat_dim (int): feature dimension.

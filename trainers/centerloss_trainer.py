@@ -66,7 +66,8 @@ class FER2013Trainer(Trainer):
         self._val_set = val_set
         self._test_set = test_set
         self._model = model(
-            in_channels=configs["in_channels"], num_classes=configs["num_classes"],
+            in_channels=configs["in_channels"],
+            num_classes=configs["num_classes"],
         )
 
         # self._model.fc = nn.Linear(512, 7)
@@ -498,7 +499,7 @@ class FER2013Trainer(Trainer):
         """Plot features on 2D plane.
         Args:
             features: (num_instances, num_features).
-            labels: (num_instances). 
+            labels: (num_instances).
         """
         colors = ["C0", "C1", "C2", "C3", "C4", "C5", "C6"]
         for label_idx in range(7):

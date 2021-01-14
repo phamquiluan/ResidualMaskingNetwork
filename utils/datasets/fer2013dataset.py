@@ -36,7 +36,10 @@ class FER2013(Dataset):
         self._emotions = pd.get_dummies(self._data["emotion"])
 
         self._transform = transforms.Compose(
-            [transforms.ToPILImage(), transforms.ToTensor(),]
+            [
+                transforms.ToPILImage(),
+                transforms.ToTensor(),
+            ]
         )
 
     def is_tta(self):

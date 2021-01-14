@@ -39,7 +39,10 @@ class TableDataset(Dataset):
         self._is_cached = configs["cached_npy"] == 1
 
         self._transform = transforms.Compose(
-            [transforms.ToPILImage(), transforms.ToTensor(),]
+            [
+                transforms.ToPILImage(),
+                transforms.ToTensor(),
+            ]
         )
 
         self._images = {}

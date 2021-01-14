@@ -43,7 +43,10 @@ class AffectNet(Dataset):
             raise Exception("just train or val")
 
         self._transform = transforms.Compose(
-            [transforms.ToPILImage(), transforms.ToTensor(),]
+            [
+                transforms.ToPILImage(),
+                transforms.ToTensor(),
+            ]
         )
 
     def is_tta(self):

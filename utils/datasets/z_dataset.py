@@ -51,7 +51,10 @@ class Z(Dataset):
             np.save(npy_path, self._images)
 
         self._transform = transforms.Compose(
-            [transforms.ToPILImage(), transforms.ToTensor(),]
+            [
+                transforms.ToPILImage(),
+                transforms.ToTensor(),
+            ]
         )
 
     def is_tta(self):

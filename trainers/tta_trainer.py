@@ -65,7 +65,8 @@ class FER2013Trainer(Trainer):
         self._val_set = val_set
         self._test_set = test_set
         self._model = model(
-            in_channels=configs["in_channels"], num_classes=configs["num_classes"],
+            in_channels=configs["in_channels"],
+            num_classes=configs["num_classes"],
         )
 
         # self._model.fc = nn.Linear(512, 7)
