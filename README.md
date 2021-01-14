@@ -77,6 +77,7 @@ python ssd_infer.py
 
 
 ## Recent Update
+ - [14/01/2021] Packaging Project and publish `rmn` on Pypi
  - [27/02/2020] Update Tensorboard visualizations and Overleaf source
  - [22/02/2020] Test-time augmentation implementation.
  - [21/02/2020] Imagenet training code and trained weights released.
