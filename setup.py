@@ -2,7 +2,7 @@ import os
 
 from setuptools import find_packages, setup
 
-version = "0.0.4"
+version = "0.0.5"
 cwd = os.path.dirname(os.path.abspath(__file__))
 
 
@@ -22,7 +22,7 @@ setup(
     author="Luan Pham",
     author_email="phamquiluan@gmail.com",
     packages=find_packages(
-        exclude=["docs", "tests", "configs", "env", "script", "trainers", "utils"]
+        exclude=["docs", "tests", "env", "script", "trainers", "utils"]
     ),
     include_package_data=True,
     install_requires=["numpy", "opencv-python", "torch", "torchvision", "requests" ,"pytorchcv", "tqdm"],
