@@ -9,7 +9,12 @@ from models import resmasking_dropout1
 from utils.datasets.fer2013dataset import EMOTION_DICT
 from barez import show
 
-transform = transforms.Compose([transforms.ToPILImage(), transforms.ToTensor(),])
+transform = transforms.Compose(
+    [
+        transforms.ToPILImage(),
+        transforms.ToTensor(),
+    ]
+)
 
 
 def activations_mask(tensor):

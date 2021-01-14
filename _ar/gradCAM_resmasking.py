@@ -21,8 +21,8 @@ EMOTION_DICT = {
 
 
 class FeatureExtractor:
-    """ Class for extracting activations and 
-    registering gradients from targetted intermediate layers """
+    """Class for extracting activations and
+    registering gradients from targetted intermediate layers"""
 
     def __init__(self, model):
         self.model = model
@@ -258,12 +258,12 @@ def get_args():
 
 
 if __name__ == "__main__":
-    """ python grad_cam.py <path_to_image>
+    """python grad_cam.py <path_to_image>
     1. Loads an image with opencv.
     2. Preprocesses it for VGG19 and converts to a pytorch variable.
     3. Makes a forward pass to find the category index with the highest score,
     and computes intermediate activations.
-    Makes the visualization. """
+    Makes the visualization."""
 
     args = get_args()
 

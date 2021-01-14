@@ -1,8 +1,11 @@
+# Facial Expression Recognition using Residual Masking Network, in PyTorch
+
+
+[![version](https://img.shields.io/badge/version-v0.0.1-blue)](https://github.com/phamquiluan/residualmaskingnetwork/tree/master/README.md)
+[![luan](https://circleci.com/gh/phamquiluan/ResidualMaskingNetwork.svg?style=shield&circle-token=3ca7f15b6bd362b625bec536d57c45fe5ef6f2c9)](https://app.circleci.com/pipelines/github/phamquiluan/ResidualMaskingNetwork)
+[![phamquiluan](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/phamquiluan/residualmaskingnetwork)
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/challenges-in-representation-learning-a/facial-expression-recognition-on-fer2013)](https://paperswithcode.com/sota/facial-expression-recognition-on-fer2013?p=challenges-in-representation-learning-a)
 
-[![luan](https://circleci.com/gh/phamquiluan/ResidualMaskingNetwork.svg?style=shield&circle-token=3ca7f15b6bd362b625bec536d57c45fe5ef6f2c9)](https://app.circleci.com/pipelines/github/phamquiluan/ResidualMaskingNetwork)
-
-# Facial Expression Recognition using Residual Masking Network, in PyTorch
 A [PyTorch](http://pytorch.org/) implementation of my thesis with the same name.
 
 
@@ -11,11 +14,28 @@ A [PyTorch](http://pytorch.org/) implementation of my thesis with the same name.
 </p>
 
 # Live Demo:
+
+## Approach 1:
 - Model file: [download](https://drive.google.com/open?id=1_6CzlKRS9ksxlo0TjqIGXMzQE4I83tE0) (this checkpoint is trained on VEMO dataset, locate it at ```./saved/checkpoints/``` directory)
 - Download 2 files: [prototxt](https://drive.google.com/open?id=1ANVPx3JM4EcJVZOstV_kEO1Jcv74mBu5), and [res10_300x300_ssd](https://drive.google.com/open?id=1Iy_3I_mWGhBA63W0IK8tRrUuvr-WrGQ2) for face detection OpenCV. Locate at current directory or checking file path with ```ssd_infer.py``` file.
 
 ```Shell
 python ssd_infer.py
+```
+
+## Approach 2:
+1. clone the repo and install package via pip
+```bash
+git clone git@github.com:phamquiluan/ResidualMaskingNetwork.git 
+
+cd ResidualMaskingNetwork
+pip install -e .
+```
+
+2. call ```video_demo``` in `rmn` package
+```python
+from rmn import video_demo
+video_demo()
 ```
 
 
