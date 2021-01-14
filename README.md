@@ -16,11 +16,11 @@ A [PyTorch](http://pytorch.org/) implementation of my thesis with the same name.
 
 ## Approach 1:
 1. Install from pip
-```
+```bash
 pip install rmn
 ```
 2. Run video demo by the following Python scripts
-```
+```python
 from rmn import video_demo
 
 video_demo()
