@@ -84,7 +84,9 @@ FER_2013_EMO_DICT = {
 
 
 # load configs and set random seed
-with open("./configs/fer2013_config.json") as ref:
+package_root_dir = os.path.dirname(__file__)
+config_path = os.path.join(package_root_dir, "configs/fer2013_config.json")
+with open(config_path) as ref:
     configs = json.load(ref)
 
 image_size = (configs["image_size"], configs["image_size"])
