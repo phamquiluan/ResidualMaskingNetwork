@@ -200,7 +200,7 @@ python cm_cbam.py
 ```
 
 <p align="center">
-<img width=600 src= "./docs/cm_cbam.png"/>
+<img width=600 src= "https://user-images.githubusercontent.com/24642166/104806916-81c62e00-580d-11eb-8dcd-c5759e5d48ae.png"/>
 </p>
 
 
