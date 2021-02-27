@@ -256,13 +256,17 @@ We have accumulated the following to-do list, which we hope to complete in the n
 
 
 ## Citation
-```
 
-@misc{luanresmaskingnet2020,
-Author = {Luan Pham & Tuan Anh Tran},
-Title = {Facial Expression Recognition using Residual Masking Network},
-url = {https://github.com/phamquiluan/ResidualMaskingNetwork},
-Year = {2020}
+L. Pham, H. Vu, T. A. Tran, "Facial Expression Recognition Using Residual Masking Network", IEEE 25th International Conference on Pattern Recognition, 2020, 4513-4519. Milan -Italia.
+
+
+```
+@inproceedings{luanresmaskingnet2020,
+  title={Facial Expression Recognition using Residual Masking Network},
+  author={Luan, Pham and Huynh, Vu and Tuan Anh, Tran},
+  booktitle={IEEE 25th International Conference on Pattern Recognition},
+  pages={4513--4519},
+  year={2020}
 }
 ```
 
