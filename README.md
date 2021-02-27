@@ -77,6 +77,7 @@ python ssd_infer.py
 
 
 ## Recent Update
+ - [27/02/2021] Add paper
  - [14/01/2021] Packaging Project and publish `rmn` on Pypi
  - [27/02/2020] Update Tensorboard visualizations and Overleaf source
  - [22/02/2020] Test-time augmentation implementation.
@@ -222,6 +223,7 @@ I used no-weighted sum avarage ensemble method to fusing 7 different models toge
 - [Dissertation Overleaf Source](https://www.overleaf.com/read/qdyhnzjmbscd)
 - [Presentation slide PDF (in English) with full appendix](https://drive.google.com/open?id=19zweCDX8Vz4jgwJ6cBWr5x_iQPvahsQg)
 - [Presentation slide Overleaf Source](https://www.overleaf.com/read/vxdhjvhvgwdn)
+- [Paper](docs/paper.pdf)
 
 
 ## TODO
