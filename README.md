@@ -21,10 +21,18 @@ pip install rmn
 ```
 2. Run video demo by the following Python scripts
 ```python
-from rmn import video_demo
+from rmn import RMN
 
-video_demo()
+m = RMN
+
+m. video_demo()
 ```
+
+<p align="center">
+<img width=500 src= "https://user-images.githubusercontent.com/24642166/117097030-d4176480-ad94-11eb-8c65-097a62ede067.png"/>
+</p>
+
+
 
 ## Approach 2:
 1. clone the repo and install package via pip
