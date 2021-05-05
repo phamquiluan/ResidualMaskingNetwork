@@ -167,7 +167,7 @@ class RMN:
             try:
                 frame = np.fliplr(frame).astype(np.uint8)
 
-                results = self.detection_emotion_for_single_frame(frame)
+                results = self.detect_emotion_for_single_frame(frame)
                 frame = self.draw(frame, results)
 
                 # h, w = frame.shape[:2]
@@ -249,7 +249,7 @@ class RMN:
         return frame
    
     @torch.no_grad()
-    def detection_emotion_for_single_frame(self, frame):
+    def detect_emotion_for_single_frame(self, frame):
         h, w = frame.shape[:2]
         gray = ensure_gray(frame)
 
