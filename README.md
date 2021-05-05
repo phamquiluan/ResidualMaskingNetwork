@@ -25,7 +25,9 @@ pip install rmn
 
 # or 
 
-git clone git@github.com:phamquiluan/ResidualMaskingNetwork.git && cd ResidualMaskingNetwork && pip install -e .
+git clone git@github.com:phamquiluan/ResidualMaskingNetwork.git
+cd ResidualMaskingNetwork
+pip install -e .
 ```
 
 2. Run infenrece by the following Python scripts
