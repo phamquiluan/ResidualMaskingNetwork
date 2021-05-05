@@ -1,6 +1,6 @@
 # Facial Expression Recognition using Residual Masking Network, in PyTorch
 
-[![pypi package](https://img.shields.io/badge/version-v2.0.0.alph-blue)](https://pypi.org/project/rmn)
+[![pypi package](https://img.shields.io/badge/version-v2.0.0)](https://pypi.org/project/rmn)
 [![circleci](https://circleci.com/gh/phamquiluan/ResidualMaskingNetwork.svg?style=shield&circle-token=3ca7f15b6bd362b625bec536d57c45fe5ef6f2c9)](https://app.circleci.com/pipelines/github/phamquiluan/ResidualMaskingNetwork)
 [![style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/phamquiluan/residualmaskingnetwork)
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/challenges-in-representation-learning-a/facial-expression-recognition-on-fer2013)](https://paperswithcode.com/sota/facial-expression-recognition-on-fer2013?p=challenges-in-representation-learning-a)
@@ -14,21 +14,32 @@ A [PyTorch](http://pytorch.org/) implementation of my thesis with the same name.
 
 # Inference:
 
-## Approach 1:
+## Approach 1: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1ZEbJ6rJuGZ6UzmOFE1XCzSgacTUJiN-H?usp=sharing)
+
+
 1. Install from pip
 ```bash
 pip install rmn
 
 # or 
 
-git clone git@github.com:phamquiluan/ResidualMaskingNetwork.git && cd ResidualMaskingNetwork && pip install -e .
+git clone git@github.com:phamquiluan/ResidualMaskingNetwork.git
+cd ResidualMaskingNetwork
+pip install -e .
 ```
 
-2. Run video demo by the following Python scripts
+2. Run infenrece by the following Python scripts
 ```python
 from rmn import RMN
 m = RMN()
 m.video_demo()
+
+# or
+image = cv2.imread("some-image-path.png")
+results = m.detect_emotion_for_single_frame(image)
+print(results)
+image = m.draw(image, results)
+cv2.imwrite("output.png", image)
 ```
 
 <p align="center">

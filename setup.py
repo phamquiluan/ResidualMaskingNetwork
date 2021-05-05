@@ -2,7 +2,7 @@ import os
 
 from setuptools import find_packages, setup
 
-version = "2.0.0.alpha"
+version = "2.0.0"
 cwd = os.path.dirname(os.path.abspath(__file__))
 
 
@@ -27,7 +27,7 @@ setup(
     author="Luan Pham",
     author_email="phamquiluan@gmail.com",
     packages=find_packages(
-        exclude=["docs", "tests", "env", "script", "trainers", "utils"]
+        exclude=["docs", "tests", "env", "script", "trainers", "utils", "pretrained_ckpt"]
     ),
     include_package_data=True,
     install_requires=[

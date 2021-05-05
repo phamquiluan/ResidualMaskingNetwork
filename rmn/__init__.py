@@ -8,6 +8,18 @@ from torchvision.transforms import transforms
 from models import densenet121, resmasking_dropout1
 
 
+def show(img, name="disp", width=1000):
+    """
+    name: name of window, should be name of img
+    img: source of img, should in type ndarray
+    """
+    cv2.namedWindow(name, cv2.WINDOW_GUI_NORMAL)
+    cv2.resizeWindow(name, width, 1000)
+    cv2.imshow(name, img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+
 checkpoint_url = "https://github.com/phamquiluan/ResidualMaskingNetwork/releases/download/v0.0.1/Z_resmasking_dropout1_rot30_2019Nov30_13.32"
 local_checkpoint_path = "pretrained_ckpt"
 
@@ -170,36 +182,6 @@ class RMN:
                 results = self.detect_emotion_for_single_frame(frame)
                 frame = self.draw(frame, results)
 
-                # h, w = frame.shape[:2]
-                # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-                # blob = cv2.dnn.blobFromImage(
-                #     cv2.resize(frame, (300, 300)),
-                #     1.0,
-                #     (300, 300),
-                #     (104.0, 177.0, 123.0),
-                # )
-                # self.face_detector.setInput(blob)
-                # faces = self.face_detector.forward()
-
-                # for i in range(0, faces.shape[2]):
-                #     confidence = faces[0, 0, i, 2]
-                #     if confidence < 0.5:
-                #         continue
-
-                #     xmin, ymin, xmax, ymax = (faces[0, 0, i, 3:7] * np.array([w, h, w, h])).astype("int")
-                #     xmin, ymin, xmax, ymax = convert_to_square(xmin, ymin, xmax, ymax)
-            
-                #     # draw face
-                #     cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (179, 255, 179), 2)
-                #     
-                #     # predict emotion
-                #     face_image = gray[ymin:ymax, xmin:xmax]
-                #     emo_label, emo_proba = self.detect_emotion_for_single_face_image(face_image)
-
-                #     # draw output
-                #     frame = draw(frame, xmin, ymin, xmax, ymax, emo_label, emo_proba)
-
                 cv2.rectangle(frame, (1, 1), (220, 25), (223, 128, 255), cv2.FILLED)
                 cv2.putText(frame, f"press q to exit", (20, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 0), 2)
                 cv2.imshow("disp", frame)
@@ -248,29 +230,55 @@ class RMN:
 
         return frame
    
-    @torch.no_grad()
-    def detect_emotion_for_single_frame(self, frame):
+    def detect_faces(self, frame):
         h, w = frame.shape[:2]
-        gray = ensure_gray(frame)
-
         blob = cv2.dnn.blobFromImage(
             cv2.resize(frame, (300, 300)),
             1.0,
             (300, 300),
             (104.0, 177.0, 123.0),
+            False, 
+            False
         )
         self.face_detector.setInput(blob)
         faces = self.face_detector.forward()
-        
-        results = []
+
+        face_results = []
         for i in range(0, faces.shape[2]):
             confidence = faces[0, 0, i, 2]
             if confidence < 0.5:
                 continue
             xmin, ymin, xmax, ymax = (faces[0, 0, i, 3:7] * np.array([w, h, w, h])).astype("int")
             xmin, ymin, xmax, ymax = convert_to_square(xmin, ymin, xmax, ymax)
-    
+            if xmax <= xmin or ymax <= ymin:
+                continue
+        
+            face_results.append({
+                "xmin": xmin,
+                "ymin": ymin,
+                "xmax": xmax,
+                "ymax": ymax,
+            })
+        return face_results
+
+    @torch.no_grad()
+    def detect_emotion_for_single_frame(self, frame):
+        gray = ensure_gray(frame)
+
+        results = []
+        face_results = self.detect_faces(frame)
+        print(f"num faces: {len(face_results)}")
+            
+        for face in face_results:
+            xmin = face["xmin"]
+            ymin = face["ymin"]
+            xmax = face["xmax"]
+            ymax = face["ymax"]
+            
             face_image = gray[ymin:ymax, xmin:xmax]
+
+            if face_image.shape[0] < 10 or face_image.shape[1] < 10:
+                continue
             emo_label, emo_proba = self.detect_emotion_for_single_face_image(face_image)
             
             results.append({
