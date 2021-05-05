@@ -61,7 +61,7 @@ def ensure_color(image):
     return image
 
 
-net = cv2.dnn.readNetFromCaffe(
+ssd_face_detector = cv2.dnn.readNetFromCaffe(
     prototxt=local_prototxt_path,
     caffeModel=local_ssd_checkpoint_path,
 )
@@ -121,8 +121,8 @@ def video_demo():
                     (300, 300),
                     (104.0, 177.0, 123.0),
                 )
-                net.setInput(blob)
-                faces = net.forward()
+                ssd_face_detector.setInput(blob)
+                faces = ssd_face_detector.forward()
 
                 for i in range(0, faces.shape[2]):
                     confidence = faces[0, 0, i, 2]
