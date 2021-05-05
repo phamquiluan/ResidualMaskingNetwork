@@ -28,11 +28,18 @@ pip install rmn
 git clone git@github.com:phamquiluan/ResidualMaskingNetwork.git && cd ResidualMaskingNetwork && pip install -e .
 ```
 
-2. Run video demo by the following Python scripts
+2. Run infenrece by the following Python scripts
 ```python
 from rmn import RMN
 m = RMN()
 m.video_demo()
+
+# or
+image = cv2.imread("some-image-path.png")
+results = m.detect_emotion_for_single_frame(image)
+print(results)
+image = m.draw(image, results)
+cv2.imwrite("output.png", image)
 ```
 
 <p align="center">
