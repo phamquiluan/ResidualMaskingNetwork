@@ -12,7 +12,7 @@ A [PyTorch](http://pytorch.org/) implementation of my thesis with the same name.
 <img width=700 src= "https://user-images.githubusercontent.com/24642166/104806861-14b29880-580d-11eb-814b-a074847e35fe.png"/>
 </p>
 
-# Live Demo:
+# Inference:
 
 ## Approach 1:
 1. Install from pip
