@@ -22,10 +22,8 @@ pip install rmn
 2. Run video demo by the following Python scripts
 ```python
 from rmn import RMN
-
-m = RMN
-
-m. video_demo()
+m = RMN()
+m.video_demo()
 ```
 
 <p align="center">
