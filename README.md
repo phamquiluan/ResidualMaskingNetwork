@@ -18,7 +18,12 @@ A [PyTorch](http://pytorch.org/) implementation of my thesis with the same name.
 1. Install from pip
 ```bash
 pip install rmn
+
+# or 
+
+git clone git@github.com:phamquiluan/ResidualMaskingNetwork.git && cd ResidualMaskingNetwork && pip install -e .
 ```
+
 2. Run video demo by the following Python scripts
 ```python
 from rmn import RMN
@@ -33,22 +38,6 @@ m.video_demo()
 
 
 ## Approach 2:
-1. clone the repo and install package via pip
-```bash
-git clone git@github.com:phamquiluan/ResidualMaskingNetwork.git 
-
-cd ResidualMaskingNetwork
-pip install -e .
-```
-
-2. call ```video_demo``` in `rmn` package
-```python
-from rmn import video_demo
-video_demo()
-```
-
-
-## Approach 3:
 - Model file: [download](https://drive.google.com/open?id=1_6CzlKRS9ksxlo0TjqIGXMzQE4I83tE0) (this checkpoint is trained on VEMO dataset, locate it at ```./saved/checkpoints/``` directory)
 - Download 2 files: [prototxt](https://drive.google.com/open?id=1ANVPx3JM4EcJVZOstV_kEO1Jcv74mBu5), and [res10_300x300_ssd](https://drive.google.com/open?id=1Iy_3I_mWGhBA63W0IK8tRrUuvr-WrGQ2) for face detection OpenCV. Locate at current directory or checking file path with ```ssd_infer.py``` file.
 
