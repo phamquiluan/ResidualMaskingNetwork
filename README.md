@@ -14,9 +14,7 @@ A [PyTorch](http://pytorch.org/) implementation of my thesis with the same name.
 
 # Inference:
 
-## Approach 1:
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1ZEbJ6rJuGZ6UzmOFE1XCzSgacTUJiN-H?usp=sharing)
+## Approach 1: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1ZEbJ6rJuGZ6UzmOFE1XCzSgacTUJiN-H?usp=sharing)
 
 
 1. Install from pip
