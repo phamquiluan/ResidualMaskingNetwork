@@ -83,6 +83,7 @@ python ssd_infer.py
 
 
 ## Recent Update
+ - [05/05/2021] Release ver 2, add colab
  - [27/02/2021] Add paper
  - [14/01/2021] Packaging Project and publish `rmn` on Pypi
  - [27/02/2020] Update Tensorboard visualizations and Overleaf source
