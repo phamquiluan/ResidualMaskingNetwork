@@ -159,13 +159,20 @@ class RMN:
 
         output = torch.squeeze(self.emo_model(face_image), 0)
         proba = torch.softmax(output, 0)
-
+    
+        # get dominant emotion
         emo_proba, emo_idx = torch.max(proba, dim=0)
         emo_idx = emo_idx.item()
         emo_proba = emo_proba.item()
-
         emo_label = FER_2013_EMO_DICT[emo_idx]
-        return emo_label, emo_proba
+    
+        # get proba for each emotion
+        proba = proba.tolist()
+        proba_list = []
+        for emo_idx, emo_name in FER_2013_EMO_DICT.items():
+            proba_list.append({emo_name: proba[emo_idx]})
+
+        return emo_label, emo_proba, proba_list
     
     @torch.no_grad()
     def video_demo(self):
@@ -279,7 +286,7 @@ class RMN:
 
             if face_image.shape[0] < 10 or face_image.shape[1] < 10:
                 continue
-            emo_label, emo_proba = self.detect_emotion_for_single_face_image(face_image)
+            emo_label, emo_proba, proba_list = self.detect_emotion_for_single_face_image(face_image)
             
             results.append({
                 "xmin": xmin,
@@ -288,6 +295,7 @@ class RMN:
                 "ymax": ymax,
                 "emo_label": emo_label,
                 "emo_proba": emo_proba,
+                "proba_list": proba_list
             })
         return results
 
