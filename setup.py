@@ -2,9 +2,13 @@ import os
 
 from setuptools import find_packages, setup
 
-version = "3.0.0a1"
-cwd = os.path.dirname(os.path.abspath(__file__))
+version = None
+with open("README.md") as ref:
+    data = ref.readlines()[2]
+    version = data[data.find("version-v")+9:data.find("-blue")]
+    assert version is not None, data
 
+cwd = os.path.dirname(os.path.abspath(__file__))
 
 def write_version_file():
     version_path = os.path.join(cwd, "rmn", "version.py")
