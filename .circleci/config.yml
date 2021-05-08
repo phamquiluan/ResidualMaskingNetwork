@@ -21,6 +21,7 @@ commands:
             sudo apt-get update -y
             pyenv install -f 3.6.5
             pyenv global 3.6.5
+            pip install -U pip
 
 
 jobs:
