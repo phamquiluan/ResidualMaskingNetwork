@@ -2,7 +2,7 @@ import os
 
 from setuptools import find_packages, setup
 
-version = "2.0.0"
+version = "3.0.0.a0"
 cwd = os.path.dirname(os.path.abspath(__file__))
 
 
