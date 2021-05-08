@@ -11,25 +11,36 @@ workflows:
                 - master
           requires:
             - build-and-test
+
+commands:
+  install_base_env:
+    steps:
+      - run:
+          name: "install base env"
+          command: |
+            sudo apt-get update -y
+            pyenv install -f 3.6.5
+            pyenv global 3.6.5
+
+
 jobs:
   build-and-test:
     machine:
       image: ubuntu-1604:201903-01 
     steps:
       - checkout
+      - install_base_env
       - run:
-          name: "Prepare environment: Install Miniconda and required packages."
+          name: "try to install"
           command: |
-            curl -o conda.sh https://repo.anaconda.com/miniconda/Miniconda3-py37_4.8.2-Linux-x86_64.sh
-            sh conda.sh -b
-            source $HOME/miniconda3/bin/activate
-            pip install -r requirements.txt
+            pip install -e .
   
   deploy-to-pypi:
     machine:
       image: ubuntu-1604:201903-01 
     steps:
       - checkout
+      - install_base_env
       - run:
           name: init .pypirc
           command: |
@@ -38,7 +49,9 @@ jobs:
             echo -e "password = $pp" >> ~/.pypirc
       - run: 
           name: create package
-          command: python setup.py sdist bdist_wheel
+          command: |
+            pip install wheel twine
+            python setup.py sdist bdist_wheel
       - run: 
           name: upload
           command: twine upload dist/*
