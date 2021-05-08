@@ -3,18 +3,45 @@ version: 2.1
 workflows:
   main:
     jobs:
-      - build
-
+      - build-and-test
+      - deploy-to-pypi:
+          filters:
+            branches:
+              only:
+                - master
+          requires:
+            - build-and-test
 jobs:
-    build:
-        machine:
-            image: ubuntu-1604:201903-01 
-        steps:
-            - checkout
-            - run:
-                name: "Prepare environment: Install Miniconda and required packages."
-                command: |
-                    curl -o conda.sh https://repo.anaconda.com/miniconda/Miniconda3-py37_4.8.2-Linux-x86_64.sh
-                    sh conda.sh -b
-                    source $HOME/miniconda3/bin/activate
-                    pip install -r requirements.txt
+  build-and-test:
+    machine:
+      image: ubuntu-1604:201903-01 
+    steps:
+      - checkout
+      - run:
+          name: "Prepare environment: Install Miniconda and required packages."
+          command: |
+            curl -o conda.sh https://repo.anaconda.com/miniconda/Miniconda3-py37_4.8.2-Linux-x86_64.sh
+            sh conda.sh -b
+            source $HOME/miniconda3/bin/activate
+            pip install -r requirements.txt
+  
+  deploy-to-pypi:
+    machine:
+      image: ubuntu-1604:201903-01 
+    steps:
+      - checkout
+      - run:
+          name: init .pypirc
+          command: |
+            echo -e "[pypi]" >> ~/.pypirc
+            echo -e "username = $pu" >> ~/.pypirc
+            echo -e "password = $pp" >> ~/.pypirc
+      - run: 
+          name: create package
+          command: python setup.py sdist bdist_wheel
+      - run: 
+          name: upload
+          command: twine upload dist/*
+
+
+
