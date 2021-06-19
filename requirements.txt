@@ -1,3 +1,8 @@
 torch
 torchvision
 tqdm
+imgaug
+requests
+pytorchcv
+pandas
+tensorboard
