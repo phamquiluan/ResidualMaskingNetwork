@@ -28,9 +28,7 @@ class FER2013(Dataset):
 
         self._image_size = (configs["image_size"], configs["image_size"])
 
-        self._data = pd.read_csv(
-            os.path.join(configs["data_path"], "{}.csv".format(stage))
-        )
+        self._data = pd.read_csv(os.path.join(configs["data_path"], "{}.csv".format(stage)))
 
         self._pixels = self._data["pixels"].tolist()
         self._emotions = pd.get_dummies(self._data["emotion"])
