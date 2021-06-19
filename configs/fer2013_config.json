@@ -1,9 +1,9 @@
 {
-	"data_path": "saved/data/fer2013",
+	"data_path": "data",
 	"image_size": 224,
 	"in_channels": 3,
 	"num_classes": 7,
-	"arch": "alexnet",
+	"arch": "resnet34",
 	"lr":  0.0001,
 	"weighted_loss": 0,
 	"momentum": 0.9,
@@ -16,7 +16,7 @@
 	"max_plateau_count": 8,
 	"plateau_patience": 2,
 	"steplr": 50,
-	"log_dir": "saved/logs",
-	"checkpoint_dir": "saved/checkpoints",
-	"model_name": "_n"
+	"log_dir": "log",
+	"checkpoint_dir": "checkpoint",
+	"model_name": "test"
 }
