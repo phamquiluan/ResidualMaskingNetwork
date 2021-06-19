@@ -1,5 +1,2 @@
 #!/bin/bash
-
-apt -y install htop
-apt-get -y install libglib2.0-0
-# apt -y install vim-gtk
+apt-get -y install htop libglib2.0-0
