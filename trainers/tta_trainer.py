@@ -189,9 +189,16 @@ class FER2013Trainer(Trainer):
         self._current_epoch_num = 0
 
         # for checkpoints
-        self._checkpoint_dir = os.path.join(self._configs["cwd"], "saved/checkpoints")
+        # really? 
+        # self._checkpoint_dir = os.path.join(self._configs["cwd"], "saved/checkpoints")
+        # if not os.path.exists(self._checkpoint_dir):
+        #     os.makedirs(self._checkpoint_dir, exist_ok=True)
+
+        self._checkpoint_dir = os.path.join(self._configs["cwd"], self._configs["checkpoint_dir"])
         if not os.path.exists(self._checkpoint_dir):
             os.makedirs(self._checkpoint_dir, exist_ok=True)
+
+
 
         self._checkpoint_path = os.path.join(
             self._checkpoint_dir,
