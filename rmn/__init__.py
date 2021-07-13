@@ -148,6 +148,23 @@ class RMN:
 
     @torch.no_grad()
     def detect_emotion_for_single_face_image(self, face_image):
+        """
+        Params:
+        -----------
+        face_image : np.ndarray
+            a cropped face image
+
+        Return:
+        -----------
+        emo_label : str
+            dominant emotion label
+
+        emo_proba : float 
+            dominant emotion proba
+
+        proba_list : list
+            all emotion label and their proba
+        """
         assert isinstance(face_image, np.ndarray)
         face_image = ensure_color(face_image)
         face_image = cv2.resize(face_image, image_size)
@@ -204,6 +221,17 @@ class RMN:
     
     @staticmethod
     def draw(frame, results):
+        """
+        Params:
+        ---------
+        frame : np.ndarray
+
+        results : list of dict.keys('xmin', 'xmax', 'ymin', 'ymax', 'emo_label', 'emo_proba')
+
+        Returns:
+        ---------
+        frame : np.ndarray
+        """
         for r in results:
             xmin = r["xmin"]
             xmax = r["xmax"]
