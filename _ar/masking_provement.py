@@ -7,7 +7,6 @@ from torchvision.transforms import transforms
 from natsort import natsorted
 from models import resmasking_dropout1
 from utils.datasets.fer2013dataset import EMOTION_DICT
-from barez import show
 
 transform = transforms.Compose(
     [
@@ -81,7 +80,6 @@ for image_path in natsorted(
 
     # print(np.sum(heat_1 - heat_2))
 
-    # show(np.concatenate((image, heat_1, heat_2), axis=1))
     cv2.imwrite(
         "./masking_provements/{}".format(image_name),
         np.concatenate((image, heat_1), axis=1),

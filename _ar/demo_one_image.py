@@ -6,7 +6,9 @@ import numpy as np
 import torch
 from torchvision.transforms import transforms
 from models import densenet121, resmasking_dropout1
-from barez import show, ensure_gray, ensure_color
+
+from ..ssd_infer import ensure_color
+from ..utils.utils import ensure_gray
 
 # haar = '/home/z/anaconda3/lib/python3.6/site-packages/cv2/data/haarcascade_frontalface_default.xml'
 haar = "/home/z/anaconda3/lib/python3.6/site-packages/cv2/data/haarcascade_frontalface_alt.xml"
@@ -81,18 +83,6 @@ def main(image_path):
             (0, 0, 0),
             2,
         )
-
-    from barez import show
-
-    show(image)
-    """
-    cv2.imshow('disp', image)
-    key = cv2.waitKey(0)
-    if key == ord('w'):
-        cv2.imwrite('./real_life_demo/{}'.format(os.path.basename(image_path)), image)
-
-    cv2.destroyAllWindows()
-    """
 
 
 if __name__ == "__main__":

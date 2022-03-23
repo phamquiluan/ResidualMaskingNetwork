@@ -6,7 +6,9 @@ import numpy as np
 import torch
 from torchvision.transforms import transforms
 from models import densenet121, resmasking_dropout1
-from barez import show, ensure_gray, ensure_color
+
+from ..ssd_infer import ensure_color
+from ..utils.utils import ensure_gray
 
 # haar = '/home/z/anaconda3/lib/python3.6/site-packages/cv2/data/haarcascade_frontalface_default.xml'
 haar = "/home/z/anaconda3/lib/python3.6/site-packages/cv2/data/haarcascade_frontalface_alt.xml"

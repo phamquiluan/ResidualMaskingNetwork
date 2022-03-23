@@ -7,7 +7,6 @@ from torchvision.transforms import transforms
 from natsort import natsorted
 from models import resmasking_dropout1
 from utils.datasets.fer2013dataset import EMOTION_DICT
-from barez import show
 
 transform = transforms.Compose(
     [
@@ -87,10 +86,8 @@ for image_path in natsorted(
 
     # output = model.fc(x)
 
-    # show(np.concatenate((image, heat_1, heat_2), axis=1))
     debug_image = np.concatenate((image, heat_1, heat_2), axis=1)
     cv2.imwrite("./debug/{}".format(image_name), debug_image)
-    # cv2.imshow('disp', debug_image)
     # if cv2.waitKey(0) == ord('w'):
 
     # cv2.imwrite(

@@ -62,7 +62,6 @@ if __name__ == "__main__":
         stage="train", fold_idx=1, configs={"image_size": 224, "in_channels": 3}
     )
     import cv2
-    from barez import pp
 
     targets = []
 

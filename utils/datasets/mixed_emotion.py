@@ -128,7 +128,6 @@ class mixed_infer(Dataset):
 
 
 if __name__ == "__main__":
-    from barez import show
 
     dataset = mixed_emotion("/data/emotion_data/MixedEmotion/CK+/", "test", {})
 
@@ -136,4 +135,4 @@ if __name__ == "__main__":
     while True:
         cnt += 1
         image, emo = dataset[cnt]
-        show(image)
+        # show(image)

@@ -97,7 +97,6 @@ if __name__ == "__main__":
         },
     )
     import cv2
-    from barez import pp
 
     targets = []
 
