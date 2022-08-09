@@ -14,7 +14,7 @@ workflows:
 jobs:
   build-and-test:
     docker:
-      - image: cimg/python3.6.5
+      - image: cimg/python3.6
     steps:
       - checkout
       - run:
@@ -23,7 +23,7 @@ jobs:
   
   deploy-to-pypi:
     docker:
-      - image: cimg/python3.6.5
+      - image: cimg/python3.6
     steps:
       - checkout
       - run:
