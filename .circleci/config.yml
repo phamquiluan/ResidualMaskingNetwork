@@ -14,10 +14,7 @@ workflows:
 jobs:
   build-and-test:
     docker:
-      - image: cimg/python3.7
-        auth:
-          username: $DOCKER_USERNAME
-          password: $DOCKER_PASSWORD
+      - image: cimg/python:3.6
     steps:
       - checkout
       - run:
@@ -26,7 +23,7 @@ jobs:
   
   deploy-to-pypi:
     docker:
-      - image: cimg/python3.6
+      - image: cimg/python:3.6
     steps:
       - checkout
       - run:
