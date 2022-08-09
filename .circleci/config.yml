@@ -15,15 +15,20 @@ jobs:
   build-and-test:
     docker:
       - image: cimg/python:3.6
+    resource_class: small
     steps:
       - checkout
       - run:
           name: build
-          command: pip install -e .
+          command: |
+            sudo apt-get update -y
+            sudo apt-get install cmake -y 
+            pip install -e .
   
   deploy-to-pypi:
     docker:
       - image: cimg/python:3.6
+    resource_class: small
     steps:
       - checkout
       - run:
