@@ -15,6 +15,9 @@ jobs:
   build-and-test:
     docker:
       - image: cimg/python3.6
+        auth:
+          username: $DOCKER_USERNAME
+          password: $DOCKER_PASSWORD
     steps:
       - checkout
       - run:
