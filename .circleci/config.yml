@@ -11,36 +11,21 @@ workflows:
           requires:
             - build-and-test
 
-commands:
-  install_base_env:
-    steps:
-      - run:
-          name: "install base env"
-          command: |
-            sudo apt-get update -y
-            pyenv install -f 3.6.5
-            pyenv global 3.6.5
-            pip install -U pip
-
-
 jobs:
   build-and-test:
-    machine:
-      image: ubuntu-1604:201903-01 
+    docker:
+      - image: cimg/python3.6.5
     steps:
       - checkout
-      - install_base_env
       - run:
-          name: "try to install"
-          command: |
-            pip install -e .
+          name: build
+          command: pip install -e .
   
   deploy-to-pypi:
-    machine:
-      image: ubuntu-1604:201903-01 
+    docker:
+      - image: cimg/python3.6.5
     steps:
       - checkout
-      - install_base_env
       - run:
           name: init .pypirc
           command: |
