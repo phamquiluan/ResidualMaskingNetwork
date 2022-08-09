@@ -6,9 +6,7 @@ workflows:
       - build-and-test
       - deploy-to-pypi:
           filters:
-            branches:
-              only:
-                - master
+            tags: /.*/
           requires:
             - build-and-test
 
