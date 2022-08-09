@@ -3,7 +3,11 @@ version: 2.1
 workflows:
   main:
     jobs:
-      - build-and-test
+      - build-and-test:
+          filters:
+            tags:
+              only:  /.*/
+
       - deploy-to-pypi:
           requires:
             - build-and-test
