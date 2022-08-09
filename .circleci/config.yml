@@ -6,6 +6,8 @@ workflows:
       - build-and-test
       - deploy-to-pypi:
           filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /^v[0-9]+(\.[0-9]+)*$/
           requires:
