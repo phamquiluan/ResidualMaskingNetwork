@@ -4,9 +4,13 @@ from setuptools import find_packages, setup
 
 version = None
 with open("README.md") as ref:
-    data = ref.readlines()[2]
-    version = data[data.find("version-v")+9:data.find("-blue")]
-    assert version is not None, data
+    lines = ref.readlines()
+    for line in lines:
+        if "version-v" not in line and "-blue" not in line:
+            continue
+        version = line[line.find("version-v")+9:line.find("-blue")]
+        assert version is not None, line
+        break
 
 cwd = os.path.dirname(os.path.abspath(__file__))
 
