@@ -5,13 +5,14 @@ workflows:
     jobs:
       - build-and-test
       - deploy-to-pypi:
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /.*/
           requires:
             - build-and-test
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore: /.*/  
+
 
 jobs:
   build-and-test:
