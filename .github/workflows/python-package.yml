@@ -27,4 +27,4 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install -e .
-        python -m rmn
+        mkdir tmp && cd tmp && python -m rmn
