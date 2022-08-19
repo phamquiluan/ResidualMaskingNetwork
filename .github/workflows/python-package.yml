@@ -34,4 +34,4 @@ jobs:
     - name: Inference
       run: |
         curl "https://user-images.githubusercontent.com/24642166/117108145-f7e6a480-adac-11eb-9786-a3e50a3cdea6.jpg" -o "image.png"
-        python -c "import cv2; from rmn import RMN; print(RMN().detect_emotion_for_single_frame(cv2.imread("image.png")))"
+        python -c "import cv2; from rmn import RMN; print(RMN().detect_emotion_for_single_frame(cv2.imread('image.png')))"
