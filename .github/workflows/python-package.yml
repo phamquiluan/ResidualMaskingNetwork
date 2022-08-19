@@ -16,8 +16,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.7"]
-        # python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
+        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
+        # python-version: ["3.7"]
 
     steps:
     - uses: actions/checkout@v3
@@ -30,4 +30,4 @@ jobs:
     - name: Debugging with ssh
       uses: lhotari/action-upterm@v1
     - name: Try to import
-      run: mkdir tmp && cd tmp && python -m rmn
+      run: python -c "from rmn import RMN"
