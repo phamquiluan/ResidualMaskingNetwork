@@ -1,6 +1,15 @@
 version: 2.1
 
 workflows:
+  code-rot-check-daily:
+    triggers:
+      - schedule:
+          cron: "1 18 * * *"
+          filters:
+            branches:
+              only: master
+    jobs:
+      - build-and-test
   main:
     jobs:
       - build-and-test:
@@ -23,6 +32,8 @@ jobs:
     docker:
       - image: cimg/python:3.7
     resource_class: small
+    environment:
+      TZ: "Asia/Ho_Chi_Minh"
     steps:
       - checkout
       - run:
