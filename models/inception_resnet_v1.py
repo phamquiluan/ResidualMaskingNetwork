@@ -1,9 +1,10 @@
+import os
+
+import requests
 import torch
+from requests.adapters import HTTPAdapter
 from torch import nn
 from torch.nn import functional as F
-import requests
-from requests.adapters import HTTPAdapter
-import os
 
 
 class BasicConv2d(nn.Module):

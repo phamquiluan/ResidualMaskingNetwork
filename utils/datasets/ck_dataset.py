@@ -1,13 +1,11 @@
-import os
-import json
 import glob
+import os
+import sys
 
 import cv2
 import numpy as np
 from torch.utils.data import Dataset
 from torchvision.transforms import transforms
-
-import sys
 
 sys.path.append("/home/z/research/tee")
 from utils.augmenters.augment import seg
@@ -19,7 +17,7 @@ from utils.augmenters.augment import seg
 
 class CkDataset(Dataset):
     def __init__(self, stage, fold_idx, configs):
-        """ fold_idx: test fold """
+        """fold_idx: test fold"""
         self._configs = configs
         self._stage = stage
         self._fold_idx = fold_idx

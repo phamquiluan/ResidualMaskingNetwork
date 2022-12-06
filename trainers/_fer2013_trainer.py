@@ -1,29 +1,21 @@
 """this class build and run a trainer by a configuration"""
-import os
-import sys
-import shutil
 import datetime
+import os
 
-import cv2
 import numpy as np
 import torch
 import torch.nn as nn
-import torch.optim as optim
-import torchvision
-from torchvision.transforms import transforms
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
+from torchvision.transforms import transforms
 from tqdm import tqdm
 
+from utils.metrics.metrics import accuracy
 from utils.radam import RAdam
 
 # from torch.optim import Adam as RAdam
 # from torch.optim import SGD as RAdam
-
-from utils.metrics.segment_metrics import eval_metrics
-from utils.metrics.metrics import accuracy
-from utils.generals import make_batch
 
 
 EMO_DICT = {0: "ne", 1: "an", 2: "di", 3: "fe", 4: "ha", 5: "sa", 6: "su"}
@@ -335,7 +327,7 @@ class FER2013Trainer(Trainer):
             else:
                 self._model.load_state_dict(state["net"])
             # self._test_acc = self._calc_acc_on_private_test()
-            test_acc = self._calc_acc_on_private_test_with_tta()
+            self._calc_acc_on_private_test_with_tta()
             self._save_weights()
         except Exception as e:
             print("Testing error when training stop")

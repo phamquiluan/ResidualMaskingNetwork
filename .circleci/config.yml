@@ -15,7 +15,7 @@ workflows:
       - build-and-test:
           filters:
             tags:
-              only:  /.*/
+              only: /.*/
 
       - deploy-to-pypi:
           requires:
@@ -24,8 +24,7 @@ workflows:
             tags:
               only: /.*/
             branches:
-              ignore: /.*/  
-
+              ignore: /.*/
 
 jobs:
   build-and-test:
@@ -40,7 +39,7 @@ jobs:
           name: build
           command: |
             sudo apt-get update -y
-            sudo apt-get install cmake -y 
+            sudo apt-get install cmake -y
             pip install -e .
       - run:
           name: Try to import
@@ -50,7 +49,7 @@ jobs:
           command: |
             curl "https://user-images.githubusercontent.com/24642166/117108145-f7e6a480-adac-11eb-9786-a3e50a3cdea6.jpg" -o "image.png"
             python -c "import cv2; from rmn import RMN; print(RMN().detect_emotion_for_single_frame(cv2.imread('image.png')))"
-  
+
   deploy-to-pypi:
     docker:
       - image: cimg/python:3.7
@@ -63,14 +62,11 @@ jobs:
             echo -e "[pypi]" >> ~/.pypirc
             echo -e "username = $pu" >> ~/.pypirc
             echo -e "password = $pp" >> ~/.pypirc
-      - run: 
+      - run:
           name: create package
           command: |
             pip install wheel twine
             python setup.py sdist bdist_wheel
-      - run: 
+      - run:
           name: upload
           command: twine upload dist/*
-
-
-

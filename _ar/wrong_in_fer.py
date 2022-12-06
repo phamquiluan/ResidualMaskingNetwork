@@ -1,20 +1,11 @@
-import os
-import glob
 import json
 import random
-import itertools
 
-import imgaug
 import cv2
+import imgaug
 import numpy as np
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
-import matplotlib.pyplot as plt
-from natsort import natsorted
-from sklearn.metrics import confusion_matrix
-from torch.utils.data import Dataset, DataLoader
-from torchvision.transforms import transforms
 
 seed = 1234
 random.seed(seed)
@@ -26,9 +17,10 @@ torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 
 
+from tqdm import tqdm
+
 from utils.datasets.fer2013dataset import fer2013
 from utils.generals import make_batch
-from tqdm import tqdm
 
 class_names = ["Angry", "Disgust", "Fear", "Happy", "Sad", "Surprise", "Neutral"]
 
@@ -41,7 +33,6 @@ def main():
     with open("./configs/fer2013_config.json") as f:
         configs = json.load(f)
 
-    acc = 0.0
     state = torch.load("./saved/checkpoints/{}".format(checkpoint_name))
 
     from models import resmasking_dropout1
@@ -52,10 +43,7 @@ def main():
     model.load_state_dict(state["net"])
     model.eval()
 
-    correct = 0
     total = 0
-    all_target = []
-    all_output = []
 
     test_set = fer2013("test", configs, tta=True, tta_size=8)
     hold_test_set = fer2013("test", configs, tta=False, tta_size=0)

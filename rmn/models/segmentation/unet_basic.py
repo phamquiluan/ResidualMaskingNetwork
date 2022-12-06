@@ -1,7 +1,6 @@
 """no need residual :)"""
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 
 def block(in_channels, out_channels, kernel_size=3, stride=1, padding=1):
@@ -41,9 +40,7 @@ class Unet(nn.Module):
     def __init__(self, in_channels, num_classes):
         super().__init__()
 
-        _filters = [64, 128, 256, 512, 1024]
         filters = [32, 64, 128, 256, 512]
-        _filters = [16, 32, 64, 128, 256]
 
         self.conv1 = block(in_channels, filters[0])
         self.conv2 = block(filters[0], filters[1])

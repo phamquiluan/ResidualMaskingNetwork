@@ -1,9 +1,10 @@
 from collections import namedtuple
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from .utils import load_state_dict_from_url
 
+from .utils import load_state_dict_from_url
 
 __all__ = ["Inception3", "inception_v3"]
 
@@ -138,7 +139,7 @@ class Inception3(nn.Module):
         x = self.Mixed_6e(x)
         # N x 768 x 17 x 17
         if self.training and self.aux_logits:
-            aux = self.AuxLogits(x)
+            self.AuxLogits(x)
         # N x 768 x 17 x 17
         x = self.Mixed_7a(x)
         # N x 1280 x 8 x 8

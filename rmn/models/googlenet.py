@@ -1,8 +1,10 @@
 import warnings
 from collections import namedtuple
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+
 from .utils import load_state_dict_from_url
 
 __all__ = ["GoogLeNet", "googlenet"]

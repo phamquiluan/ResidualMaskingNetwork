@@ -1,15 +1,14 @@
-import os
 import json
+import os
 import random
 import warnings
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
 import imgaug
+import numpy as np
 import torch
 import torch.multiprocessing as mp
-import numpy as np
-
 
 seed = 1234
 random.seed(seed)

@@ -4,7 +4,6 @@ from torch.nn import functional as F
 
 from ._utils import _SimpleSegmentationModel
 
-
 __all__ = ["DeepLabV3"]
 
 
@@ -23,8 +22,6 @@ class DeepLabV3(_SimpleSegmentationModel):
             the backbone and returns a dense prediction.
         aux_classifier (nn.Module, optional): auxiliary classifier used during training
     """
-
-    pass
 
 
 class DeepLabHead(nn.Sequential):

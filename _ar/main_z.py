@@ -1,20 +1,14 @@
-import os
-import sys
-import glob
 import json
+import os
 import random
 import warnings
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
 import imgaug
-import torch
-import torch.nn as nn
-import torch.multiprocessing as mp
 import numpy as np
-from torch.utils.data import Dataset, DataLoader
-from torchvision import datasets
-from torchvision.transforms import transforms
+import torch
+import torch.multiprocessing as mp
 
 seed = 1234
 random.seed(seed)
@@ -27,7 +21,6 @@ torch.backends.cudnn.benchmark = False
 
 import models
 from models import segmentation
-from utils import datasets
 
 
 def main(config_path):

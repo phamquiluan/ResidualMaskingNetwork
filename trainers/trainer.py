@@ -1,23 +1,19 @@
 """this class build and run a trainer by a configuration"""
-import os
-import sys
-import shutil
 import datetime
+import os
 
 import cv2
 import numpy as np
 import torch
 import torch.nn as nn
-import torch.optim as optim
 import torchvision
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm
 
-from utils.radam import RAdam
-from utils.metrics.segment_metrics import eval_metrics
 from utils.metrics.metrics import accuracy
+from utils.radam import RAdam
 
 
 class Trainer(object):
@@ -132,7 +128,6 @@ class TeeTrainer(Trainer):
 
     def reset(self):
         """reset trainer"""
-        pass
 
     def _train(self):
         self._model.train()
@@ -277,7 +272,6 @@ class TeeTrainer(Trainer):
 
     def _store_trainer(self):
         """store config, training info and traning result to file"""
-        pass
 
     def _save_weights(self):
         """save checkpoint"""

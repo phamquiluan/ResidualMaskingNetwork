@@ -1,11 +1,10 @@
 import copy
+
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-from .utils import load_state_dict_from_url
-from .attention import attention
-from .resnet import BasicBlock, Bottleneck, ResNet, resnet18
 
+from .attention import attention
+from .resnet import BasicBlock, ResNet
 
 model_urls = {
     "resnet18": "https://download.pytorch.org/models/resnet18-5c106cde.pth",

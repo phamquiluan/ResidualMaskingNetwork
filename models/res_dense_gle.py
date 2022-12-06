@@ -1,12 +1,9 @@
-import copy
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-from .utils import load_state_dict_from_url
-from .resnet import resnet18
+
 from .densenet import densenet121
 from .googlenet import googlenet
-
+from .resnet import resnet18
 
 model_urls = {
     "resnet18": "https://download.pytorch.org/models/resnet18-5c106cde.pth",

@@ -1,10 +1,8 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
+
+from .resnet import BasicBlock, ResNet
 from .utils import load_state_dict_from_url
-
-from .resnet import ResNet, BasicBlock
-
 
 model_urls = {
     "resnet18": "https://download.pytorch.org/models/resnet18-5c106cde.pth",
@@ -39,7 +37,7 @@ class ResNetCenterLoss(ResNet):
         x = self.avgpool(x)
         x = torch.flatten(x, 1)
 
-        features = self.relu(self.center_loss_fc(x))
+        self.relu(self.center_loss_fc(x))
         outputs = self.fc(x)
         # return outputs, features
         return outputs

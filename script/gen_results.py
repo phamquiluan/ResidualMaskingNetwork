@@ -1,9 +1,10 @@
+import json
 import os
 import random
-import json
+
 import imgaug
-import torch
 import numpy as np
+import torch
 
 seed = 1234
 random.seed(seed)
@@ -14,9 +15,10 @@ np.random.seed(seed)
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 
-from tqdm import tqdm
-import models
 import torch.nn.functional as F
+from tqdm import tqdm
+
+import models
 from utils.datasets.fer2013dataset import fer2013
 from utils.generals import make_batch
 

@@ -1,17 +1,18 @@
 import os
-import cv2
-import pandas as pd
-import numpy as np
-import imgaug.augmenters as iaa
-import torch
 
-from torch.utils.data import Dataset
-from torchvision import transforms
+import cv2
+import imgaug.augmenters as iaa
+import numpy as np
+import pandas as pd
+import torch
 
 # from imgaug.augmentables.segmaps import SegmentationMapOnImage
 from imgaug.augmentables.segmaps import SegmentationMapsOnImage
-from utils.utils import read_unicode_image as imread
 from skimage.morphology import skeletonize
+from torch.utils.data import Dataset
+from torchvision import transforms
+
+from utils.utils import read_unicode_image as imread
 
 
 def get_skeletion(m):

@@ -6,7 +6,7 @@ version = None
 with open("README.md") as ref:
     lines = ref.readlines()[3]
     version_prefix = "version-v"
-    version = data[data.find(version_prefix) + len(version_prefix): data.find("-blue")]
+    version = data[data.find(version_prefix) + len(version_prefix) : data.find("-blue")]
     assert version is not None, data
 
 cwd = os.path.dirname(os.path.abspath(__file__))
@@ -22,12 +22,20 @@ setup(
     name="rmn",
     description="Facial Expression Recognition using Residual Masking Network",
     long_description=long_description,
-    long_description_content_type='text/markdown',
+    long_description_content_type="text/markdown",
     version=version,
     author="Luan Pham",
     author_email="phamquiluan@gmail.com",
     packages=find_packages(
-        exclude=["docs", "tests", "env", "script", "trainers", "utils", "pretrained_ckpt"]
+        exclude=[
+            "docs",
+            "tests",
+            "env",
+            "script",
+            "trainers",
+            "utils",
+            "pretrained_ckpt",
+        ]
     ),
     include_package_data=True,
     install_requires=[

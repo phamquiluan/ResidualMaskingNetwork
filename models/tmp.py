@@ -2,7 +2,6 @@ import numpy as np
 import torch
 from torchvision import transforms
 
-
 image = np.random.rand(48, 48, 1)
 image = image * 255
 image = image.astype(np.uint8)

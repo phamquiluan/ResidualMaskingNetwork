@@ -1,13 +1,9 @@
-import torch
-from torch.autograd import Variable
-from torch.autograd import Function
-from torchvision import models
-from torchvision import utils
-import cv2
-import sys
-import numpy as np
 import argparse
 
+import cv2
+import numpy as np
+import torch
+from torch.autograd import Function, Variable
 
 EMOTION_DICT = {
     0: "angry",
@@ -266,8 +262,9 @@ if __name__ == "__main__":
 
     transform = transforms.Compose([transforms.ToPILImage(), transforms.ToTensor()])
 
-    import os
     import glob
+    import os
+
     from natsort import natsorted
 
     # for image_path in natsorted(glob.glob('/home/z/research/archive_for_tee/face_CK+/only_face/*.png')):

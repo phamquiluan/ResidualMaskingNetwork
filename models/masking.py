@@ -1,9 +1,9 @@
 import traceback
+
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
-from .resnet import conv1x1, conv3x3, BasicBlock, Bottleneck
+from .resnet import BasicBlock, Bottleneck, conv1x1
 
 
 def up_pooling(in_channels, out_channels, kernel_size=2, stride=2):

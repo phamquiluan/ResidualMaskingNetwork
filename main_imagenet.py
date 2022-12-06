@@ -1,15 +1,12 @@
 import argparse
+import datetime
+import glob
+import logging
 import os
-import sys
 import random
 import shutil
-import glob
-import time
-import datetime
+import sys
 import warnings
-import logging
-import subprocess
-
 
 IS_SM = False
 
@@ -41,12 +38,11 @@ logger = logging.getLogger(__name__)
 
 
 import torch
+import torch.distributed as dist
+import torch.multiprocessing as mp
 import torch.nn as nn
 import torch.nn.parallel
-import torch.backends.cudnn as cudnn
-import torch.distributed as dist
 import torch.optim
-import torch.multiprocessing as mp
 import torch.utils.data
 import torch.utils.data.distributed
 import torchvision.transforms as transforms
@@ -59,12 +55,10 @@ torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 
 import torchvision.datasets as datasets
+from natsort import natsorted
 
 # import torchvision.models as models
 import models
-
-from tqdm import tqdm
-from natsort import natsorted
 
 model_names = sorted(
     name
@@ -304,7 +298,7 @@ def main_worker(gpu, ngpus_per_node, args):
 
     # optionally resume from a checkpoint /opt/ml/checkpoints/checkpoints/
     checkpoint_dir = "/opt/ml/checkpoints/checkpoints/"
-    checkpoint_list = os.listdir(checkpoint_dir)
+    os.listdir(checkpoint_dir)
 
     logger.info("Checking checkpoints dir..{}".format(checkpoint_dir))
     logger.info(os.listdir(checkpoint_dir))

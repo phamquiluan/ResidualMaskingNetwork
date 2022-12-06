@@ -1,12 +1,13 @@
-import os
 import glob
+import os
+
 import cv2
 import numpy as np
 import torch
-from torchvision.transforms import transforms
 from natsort import natsorted
+from torchvision.transforms import transforms
+
 from models import resmasking_dropout1
-from utils.datasets.fer2013dataset import EMOTION_DICT
 
 transform = transforms.Compose(
     [

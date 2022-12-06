@@ -1,15 +1,13 @@
 import os
+import sys
 
 import cv2
-import numpy as np
 import pandas as pd
-from torchvision.transforms import transforms
 from torch.utils.data import Dataset
-import sys
+from torchvision.transforms import transforms
 
 sys.path.append("/home/z/research/tee/")
 from utils.augmenters.augment import seg
-
 
 EMOTION_DICT = {
     0: "Neutral",

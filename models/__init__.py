@@ -1,28 +1,29 @@
-from .vgg import *
-from .resnet import *
-from .resnet112 import resnet18x112
-from .resnet50_scratch_dims_2048 import resnet50_pretrained_vgg
-from .centerloss_resnet import resnet18_centerloss
-from .resatt import *
+from pytorchcv.model_provider import get_model as ptcv_get_model
+
 from .alexnet import *
+from .brain_humor import *
+from .centerloss_resnet import resnet18_centerloss
 from .densenet import *
+from .fer2013_models import *
 from .googlenet import *
 from .inception import *
 from .inception_resnet_v1 import *
-from .residual_attention_network import *
-from .fer2013_models import *
-from .res_dense_gle import *
 from .masking import masking
+from .res_dense_gle import *
+from .resatt import *
+from .residual_attention_network import *
 from .resmasking import (
     resmasking,
+    resmasking50_dropout1,
     resmasking_dropout1,
     resmasking_dropout2,
-    resmasking50_dropout1,
 )
 from .resmasking_naive import resmasking_naive_dropout1
-from .brain_humor import *
+from .resnet import *
+from .resnet50_scratch_dims_2048 import resnet50_pretrained_vgg
+from .resnet112 import resnet18x112
 from .runet import *
-from pytorchcv.model_provider import get_model as ptcv_get_model
+from .vgg import *
 
 
 def resattnet56(in_channels, num_classes, pretrained=True):

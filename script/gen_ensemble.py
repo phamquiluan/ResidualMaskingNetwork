@@ -1,7 +1,8 @@
 import random
+
 import imgaug
-import torch
 import numpy as np
+import torch
 
 seed = 1234
 random.seed(seed)

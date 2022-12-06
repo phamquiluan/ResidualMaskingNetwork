@@ -1,11 +1,14 @@
-import os
 import glob
 import json
+import os
+
 import cv2
 import numpy as np
 import torch
 from torchvision.transforms import transforms
+
 from models import densenet121, resmasking_dropout1
+
 from .version import __version__
 
 
@@ -32,8 +35,8 @@ local_ssd_checkpoint_path = "res10_300x300_ssd_iter_140000.caffemodel"
 
 
 def download_checkpoint(remote_url, local_path):
-    from tqdm import tqdm
     import requests
+    from tqdm import tqdm
 
     response = requests.get(remote_url, stream=True)
     total_size_in_bytes = int(response.headers.get("content-length", 0))
@@ -159,7 +162,7 @@ class RMN:
         emo_label : str
             dominant emotion label
 
-        emo_proba : float 
+        emo_proba : float
             dominant emotion proba
 
         proba_list : list
@@ -168,7 +171,7 @@ class RMN:
         assert isinstance(face_image, np.ndarray)
         face_image = ensure_color(face_image)
         face_image = cv2.resize(face_image, image_size)
-        
+
         face_image = transform(face_image)
         if is_cuda:
             face_image = face_image.cuda(0)
@@ -177,13 +180,13 @@ class RMN:
 
         output = torch.squeeze(self.emo_model(face_image), 0)
         proba = torch.softmax(output, 0)
-    
+
         # get dominant emotion
         emo_proba, emo_idx = torch.max(proba, dim=0)
         emo_idx = emo_idx.item()
         emo_proba = emo_proba.item()
         emo_label = FER_2013_EMO_DICT[emo_idx]
-    
+
         # get proba for each emotion
         proba = proba.tolist()
         proba_list = []
@@ -191,11 +194,11 @@ class RMN:
             proba_list.append({emo_name: proba[emo_idx]})
 
         return emo_label, emo_proba, proba_list
-    
+
     @torch.no_grad()
     def video_demo(self):
         vid = cv2.VideoCapture(0)
-        
+
         while True:
             ret, frame = vid.read()
             if frame is None or ret is not True:
@@ -208,7 +211,15 @@ class RMN:
                 frame = self.draw(frame, results)
 
                 cv2.rectangle(frame, (1, 1), (220, 25), (223, 128, 255), cv2.FILLED)
-                cv2.putText(frame, f"press q to exit", (20, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 0), 2)
+                cv2.putText(
+                    frame,
+                    f"press q to exit",
+                    (20, 20),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.8,
+                    (0, 0, 0),
+                    2,
+                )
                 cv2.imshow("disp", frame)
                 if cv2.waitKey(1) == ord("q"):
                     break
@@ -218,7 +229,7 @@ class RMN:
                 continue
 
         cv2.destroyAllWindows()
-    
+
     @staticmethod
     def draw(frame, results):
         """
@@ -265,7 +276,7 @@ class RMN:
             )
 
         return frame
-   
+
     def detect_faces(self, frame):
         h, w = frame.shape[:2]
         blob = cv2.dnn.blobFromImage(
@@ -273,8 +284,8 @@ class RMN:
             1.0,
             (300, 300),
             (104.0, 177.0, 123.0),
-            False, 
-            False
+            False,
+            False,
         )
         self.face_detector.setInput(blob)
         faces = self.face_detector.forward()
@@ -284,17 +295,21 @@ class RMN:
             confidence = faces[0, 0, i, 2]
             if confidence < 0.5:
                 continue
-            xmin, ymin, xmax, ymax = (faces[0, 0, i, 3:7] * np.array([w, h, w, h])).astype("int")
+            xmin, ymin, xmax, ymax = (
+                faces[0, 0, i, 3:7] * np.array([w, h, w, h])
+            ).astype("int")
             xmin, ymin, xmax, ymax = convert_to_square(xmin, ymin, xmax, ymax)
             if xmax <= xmin or ymax <= ymin:
                 continue
-        
-            face_results.append({
-                "xmin": xmin,
-                "ymin": ymin,
-                "xmax": xmax,
-                "ymax": ymax,
-            })
+
+            face_results.append(
+                {
+                    "xmin": xmin,
+                    "ymin": ymin,
+                    "xmax": xmax,
+                    "ymax": ymax,
+                }
+            )
         return face_results
 
     @torch.no_grad()
@@ -304,28 +319,32 @@ class RMN:
         results = []
         face_results = self.detect_faces(frame)
         print(f"num faces: {len(face_results)}")
-            
+
         for face in face_results:
             xmin = face["xmin"]
             ymin = face["ymin"]
             xmax = face["xmax"]
             ymax = face["ymax"]
-            
+
             face_image = gray[ymin:ymax, xmin:xmax]
 
             if face_image.shape[0] < 10 or face_image.shape[1] < 10:
                 continue
-            emo_label, emo_proba, proba_list = self.detect_emotion_for_single_face_image(face_image)
-            
-            results.append({
-                "xmin": xmin,
-                "ymin": ymin,
-                "xmax": xmax,
-                "ymax": ymax,
-                "emo_label": emo_label,
-                "emo_proba": emo_proba,
-                "proba_list": proba_list
-            })
+            (
+                emo_label,
+                emo_proba,
+                proba_list,
+            ) = self.detect_emotion_for_single_face_image(face_image)
+
+            results.append(
+                {
+                    "xmin": xmin,
+                    "ymin": ymin,
+                    "xmax": xmax,
+                    "ymax": ymax,
+                    "emo_label": emo_label,
+                    "emo_proba": emo_proba,
+                    "proba_list": proba_list,
+                }
+            )
         return results
-
-

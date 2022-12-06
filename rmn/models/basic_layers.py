@@ -1,9 +1,4 @@
-import torch
 import torch.nn as nn
-from torch.nn import init
-import functools
-from torch.autograd import Variable
-import numpy as np
 
 
 class ResidualBlock(nn.Module):

@@ -1,9 +1,8 @@
+from .. import resnet
 from .._utils import IntermediateLayerGetter
 from ..utils import load_state_dict_from_url
-from .. import resnet
 from .deeplabv3 import DeepLabHead, DeepLabV3
 from .fcn import FCN, FCNHead
-
 
 __all__ = ["fcn_resnet50", "fcn_resnet101", "deeplabv3_resnet50", "deeplabv3_resnet101"]
 

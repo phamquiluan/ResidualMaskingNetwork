@@ -5,13 +5,12 @@ name: Python package
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -20,18 +19,18 @@ jobs:
         # python-version: ["3.7"]
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: python -m pip install -e .
-    - name: Try to import
-      run: python -c "from rmn import RMN"
-    #- name: Debugging with ssh
-    #  uses: lhotari/action-upterm@v1
-    - name: Inference
-      run: |
-        curl "https://user-images.githubusercontent.com/24642166/117108145-f7e6a480-adac-11eb-9786-a3e50a3cdea6.jpg" -o "image.png"
-        python -c "import cv2; from rmn import RMN; print(RMN().detect_emotion_for_single_frame(cv2.imread('image.png')))"
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: python -m pip install -e .
+      - name: Try to import
+        run: python -c "from rmn import RMN"
+      #- name: Debugging with ssh
+      #  uses: lhotari/action-upterm@v1
+      - name: Inference
+        run: |
+          curl "https://user-images.githubusercontent.com/24642166/117108145-f7e6a480-adac-11eb-9786-a3e50a3cdea6.jpg" -o "image.png"
+          python -c "import cv2; from rmn import RMN; print(RMN().detect_emotion_for_single_frame(cv2.imread('image.png')))"

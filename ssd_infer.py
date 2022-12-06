@@ -1,11 +1,11 @@
-import os
-import glob
 import json
+
 import cv2
 import numpy as np
 import torch
 from torchvision.transforms import transforms
-from models import densenet121, resmasking_dropout1
+
+from models import resmasking_dropout1
 
 
 def ensure_color(image):

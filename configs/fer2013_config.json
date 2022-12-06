@@ -9,7 +9,7 @@
 	"momentum": 0.9,
 	"weight_decay": 0.001,
 	"distributed": 0,
-	"batch_size": 48, 
+	"batch_size": 48,
 	"num_workers": 8,
 	"device": "cuda:0",
 	"max_epoch_num": 50,
