@@ -137,7 +137,7 @@ We also benchmark our model on ImageNet dataset.
 ### prerequisites
 
 - Python 3.6+
-- [requirements.txt](requirements.txt)
+- [setup.py](setup.py)
 
 <p id="datasets"></p>
 
