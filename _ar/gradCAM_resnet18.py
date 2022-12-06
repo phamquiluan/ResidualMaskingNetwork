@@ -104,7 +104,7 @@ class GradCam:
         else:
             features, output = self.extractor(input)
 
-        if index == None:
+        if index is None:
             index = np.argmax(output.cpu().data.numpy())
 
         one_hot = np.zeros((1, output.size()[-1]), dtype=np.float32)
@@ -186,7 +186,7 @@ class GuidedBackpropReLUModel:
         else:
             output = self.forward(input)
 
-        if index == None:
+        if index is None:
             index = np.argmax(output.cpu().data.numpy())
 
         one_hot = np.zeros((1, output.size()[-1]), dtype=np.float32)

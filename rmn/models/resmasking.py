@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 
+from .masking import masking
 from .resnet import BasicBlock, Bottleneck, ResNet
 from .utils import load_state_dict_from_url
 
@@ -9,9 +10,6 @@ model_urls = {
     "resnet34": "https://download.pytorch.org/models/resnet34-333f7ec4.pth",
     "resnet50": "https://download.pytorch.org/models/resnet50-19c8e357.pth",
 }
-
-
-from .masking import masking
 
 
 class ResMasking(ResNet):

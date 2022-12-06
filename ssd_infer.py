@@ -147,7 +147,7 @@ def main():
                 if cv2.waitKey(1) == ord("q"):
                     break
 
-            except:
+            except Exception:
                 continue
         cv2.destroyAllWindows()
 

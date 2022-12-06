@@ -1,9 +1,22 @@
 from pytorchcv.model_provider import get_model as ptcv_get_model
 
-from .alexnet import *
-from .brain_humor import *
+from .alexnet import AlexNet, alexnet
+from .brain_humor import (
+    DeepResUNet,
+    DoubleConv,
+    DownBlock,
+    ONet,
+    PreActivateDoubleConv,
+    PreActivateResBlock,
+    PreActivateResUpBlock,
+    ResBlock,
+    ResUNet,
+    UNet,
+    UpBlock,
+    deepresunet,
+)
 from .centerloss_resnet import resnet18_centerloss
-from .densenet import *
+from .densenet import DenseNet, densenet121, densenet161, densenet169, densenet201
 from .fer2013_models import *
 from .googlenet import *
 from .inception import *
