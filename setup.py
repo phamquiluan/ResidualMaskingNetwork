@@ -4,23 +4,15 @@ from setuptools import find_packages, setup
 
 version = None
 with open("README.md") as ref:
-    lines = ref.readlines()
-    for line in lines:
-        if "version-v" not in line and "-blue" not in line:
-            continue
-        version = line[line.find("version-v")+9:line.find("-blue")]
-        assert version is not None, line
-        break
+    lines = ref.readlines()[3]
+    version_prefix = "version-v"
+    version = data[data.find(version_prefix) + len(version_prefix): data.find("-blue")]
+    assert version is not None, data
 
 cwd = os.path.dirname(os.path.abspath(__file__))
-
-def write_version_file():
-    version_path = os.path.join(cwd, "rmn", "version.py")
-    with open(version_path, "w") as f:
-        f.write(f"__version__ = '{version}'\n")
-
-
-write_version_file()
+version_path = os.path.join(cwd, "rmn", "version.py")
+with open(version_path, "w") as ref:
+    ref.write(f"__version__ = '{version}'\n")
 
 
 with open("README.md", encoding="utf-8") as f:
