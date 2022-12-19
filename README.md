@@ -1,7 +1,7 @@
 # Facial Expression Recognition using Residual Masking Network, in PyTorch
 
 [![Downloads](https://static.pepy.tech/personalized-badge/rmn?period=total&units=international_system&left_color=grey&right_color=blue&left_text=pip%20installs)](https://pepy.tech/project/rmn)
-[![pypi package](https://img.shields.io/badge/version-v3.1.0-blue)](https://pypi.org/project/rmn)
+[![pypi package](https://img.shields.io/badge/version-v3.1.1-blue)](https://pypi.org/project/rmn)
 [![circleci](https://circleci.com/gh/phamquiluan/ResidualMaskingNetwork.svg?style=shield&circle-token=3ca7f15b6bd362b625bec536d57c45fe5ef6f2c9)](https://app.circleci.com/pipelines/github/phamquiluan/ResidualMaskingNetwork)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/841589b75e2249b3833c9582ba2069ed)](https://www.codacy.com/gh/phamquiluan/ResidualMaskingNetwork/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=phamquiluan/ResidualMaskingNetwork&amp;utm_campaign=Badge_Grade)
 [![Python package](https://github.com/phamquiluan/ResidualMaskingNetwork/actions/workflows/python-package.yml/badge.svg)](https://github.com/phamquiluan/ResidualMaskingNetwork/actions/workflows/python-package.yml)
