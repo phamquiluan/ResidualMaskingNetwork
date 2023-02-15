@@ -16,28 +16,31 @@ A [PyTorch](http://pytorch.org/) implementation of my thesis with the same name.
 
 # Inference:
 
-## Approach 1: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1ZEbJ6rJuGZ6UzmOFE1XCzSgacTUJiN-H?usp=sharing)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1ZEbJ6rJuGZ6UzmOFE1XCzSgacTUJiN-H?usp=sharing)
 
 1. Install from pip
 
 ```bash
 pip install rmn
 
-# or
+# or build from source
 
 git clone git@github.com:phamquiluan/ResidualMaskingNetwork.git
 cd ResidualMaskingNetwork
 pip install -e .
 ```
 
-2. Run infenrece by the following Python scripts
+2. Run demo in Python (with webcam available)
 
 ```python
 from rmn import RMN
 m = RMN()
 m.video_demo()
+```
 
-# or
+3. Detect emotions in single images
+
+```python
 image = cv2.imread("some-image-path.png")
 results = m.detect_emotion_for_single_frame(image)
 print(results)
@@ -48,15 +51,6 @@ cv2.imwrite("output.png", image)
 <p align="center">
 <img width=500 src= "https://user-images.githubusercontent.com/24642166/117097030-d4176480-ad94-11eb-8c65-097a62ede067.png"/>
 </p>
-
-## Approach 2:
-
-- Model file: [download](https://drive.google.com/file/d/1J0qA0_xKc_Zq4UIcTUkzWNTmItYzOfXp/view?usp=sharing) (this checkpoint is trained on VEMO dataset, locate it at `./saved/checkpoints/` directory)
-- Download 2 files: [prototxt](https://drive.google.com/file/d/1msV-xLIO0S_WP63ftbH_nbIv8gP8l5Ve/view?usp=sharing), and [res10_300x300_ssd](https://drive.google.com/file/d/1OEvFItUdd4ofcj0se4EcQld28AGpp7bS/view?usp=sharing) for face detection OpenCV. Locate at current directory or checking file path with `ssd_infer.py` file.
-
-```Shell
-python ssd_infer.py
-```
 
 <p align="center">
 <img width=500 src= "https://user-images.githubusercontent.com/24642166/72135777-da244d80-33b9-11ea-90ee-706b25c0a5a9.png"/>
