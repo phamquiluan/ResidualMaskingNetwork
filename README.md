@@ -206,20 +206,6 @@ I used no-weighted sum avarage ensemble method to fusing 7 different models toge
 - [Presentation slide Overleaf Source](https://www.overleaf.com/read/vxdhjvhvgwdn)
 - [Paper](docs/paper.pdf)
 
-## TODO
-
-We have accumulated the following to-do list, which we hope to complete in the near future
-
-- Still to come:
-  - [x] Upload all models and training code.
-  - [x] Test time augmentation.
-  - [x] GPU-Parallel.
-  - [x] Pretrained model.
-  - [x] Demo and inference code.
-  - [x] Imagenet trained and pretrained weights.
-  - [ ] GradCAM visualization and Pooling method for visualize activations.
-  - [ ] Centerloss Visualizations.
-
 <p id="author"></p>
 
 ## Authors
@@ -227,24 +213,21 @@ We have accumulated the following to-do list, which we hope to complete in the n
 - [**Luan Pham**](https://github.com/phamquiluan)
 - [**Tuan Anh Tran**](https://github.com/phamquiluan)
 
-**_Note:_** Unfortunately, I am currently join a full-time job and research on another topic, so I'll do my best to keep things up to date, but no guarantees. That being said, thanks to everyone for your continued help and feedback as it is really appreciated. I will try to address everything as soon as possible.
+**_Note:_** Unfortunately, I am currently engaged in a full-time job and conducting research on another topic. Therefore, I will do my best to keep things up to date, but I cannot guarantee that I will be able to do so. That being said, I am grateful to everyone for their continued help and feedback, as it is truly appreciated. I will endeavor to address everything as soon as possible.
+
 
 <p id="references"></p>
 
-## References
-
-- Same as in dissertation.
-
 ## Citation
 
-L. Pham, H. Vu, T. A. Tran, "Facial Expression Recognition Using Residual Masking Network", IEEE 25th International Conference on Pattern Recognition, 2020, 4513-4519. Milan -Italia.
-
+Pham, Luan, The Huynh Vu, and Tuan Anh Tran. "Facial expression recognition using residual masking network." 2020 25Th international conference on pattern recognition (ICPR). IEEE, 2021.
 ```
-@inproceedings{luanresmaskingnet2020,
-  title={Facial Expression Recognition using Residual Masking Network},
-  author={Luan, Pham and Huynh, Vu and Tuan Anh, Tran},
-  booktitle={IEEE 25th International Conference on Pattern Recognition},
+@inproceedings{pham2021facial,
+  title={Facial expression recognition using residual masking network},
+  author={Pham, Luan and Vu, The Huynh and Tran, Tuan Anh},
+  booktitle={2020 25Th international conference on pattern recognition (ICPR)},
   pages={4513--4519},
-  year={2020}
+  year={2021},
+  organization={IEEE}
 }
 ```
