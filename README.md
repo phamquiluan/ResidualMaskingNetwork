@@ -77,6 +77,7 @@ cv2.imwrite("output.png", image)
 
 ## Recent Update
 
+- [07/03/2023] Re-structure, update Readme
 - [05/05/2021] Release ver 2, add colab
 - [27/02/2021] Add paper
 - [14/01/2021] Packaging Project and publish `rmn` on Pypi
