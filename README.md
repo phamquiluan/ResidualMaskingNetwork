@@ -1,4 +1,4 @@
-# Facial Expression Recognition using Residual Masking Network, in PyTorch
+# Facial Expression Recognition using Residual Masking Network
 
 [![Downloads](https://static.pepy.tech/personalized-badge/rmn?period=total&units=international_system&left_color=grey&right_color=blue&left_text=pip%20installs)](https://pepy.tech/project/rmn)
 [![pypi package](https://img.shields.io/badge/version-v3.1.1-blue)](https://pypi.org/project/rmn)
