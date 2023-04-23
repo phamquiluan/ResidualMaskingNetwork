@@ -146,7 +146,7 @@ We also benchmark our model on ImageNet dataset.
 
 ## Training on FER2013
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1LbDiAs5xOmhwaoKtJepaK_oVU_IkgLM8?usp=sharing)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1IEQ091jBeJrOKHJe4wNhodH-bUGbLHSE?usp=sharing)
 
 - To train network, you need to specify model name and other hyperparameters in config file (located at configs/\*) then ensure it is loaded in main file, then run training procedure by simply run main file, for example:
 
