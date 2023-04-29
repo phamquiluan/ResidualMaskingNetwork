@@ -1,7 +1,7 @@
 version: 2.1
 
 workflows:
-  code-rot-check-daily:
+  daily-build:
     triggers:
       - schedule:
           cron: "1 18 * * *"
