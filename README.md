@@ -130,10 +130,6 @@ We also benchmark our model on ImageNet dataset.
 - Clone this repository and install package [prerequisites](#prerequisites) below.
 - Then download the dataset by following the [instructions](#datasets) below.
 
-### prerequisites
-
-- Python 3.6+
-- [setup.py](setup.py)
 
 <p id="datasets"></p>
 
