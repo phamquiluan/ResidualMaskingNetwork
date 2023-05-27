@@ -210,8 +210,6 @@ I used no-weighted sum avarage ensemble method to fusing 7 different models toge
 - [**Luan Pham**](https://github.com/phamquiluan)
 - [**Tuan Anh Tran**](https://github.com/phamquiluan)
 
-**_Note:_** Unfortunately, I am currently engaged in a full-time job and conducting research on another topic. Therefore, I will do my best to keep things up to date, but I cannot guarantee that I will be able to do so. That being said, I am grateful to everyone for their continued help and feedback, as it is truly appreciated. I will endeavor to address everything as soon as possible.
-
 
 <p id="references"></p>
 
