@@ -187,11 +187,11 @@ python cm_cbam.py
 
 ## Ensemble method
 
-I used no-weighted sum avarage ensemble method to fusing 7 different models together, to reproduce results, you need to do some steps:
+I used the no-weighted sum average ensemble method to fuse 7 different models together, to reproduce results, you need to do some steps:
 
-1. Download all needed trained weights and located on `./saved/checkpoints/` directory. Link to download can be found on Benchmarking section.
+1. Download all needed trained weights and locate them on the `./saved/checkpoints/` directory. The link to download can be found in the Benchmarking section.
 2. Edit file `gen_results` and run it to generate result offline for **each** model.
-3. Run `gen_ensemble.py` file to generate accuracy for example methods.
+3. Run the `gen_ensemble.py` file to generate accuracy for example methods.
 
 <p id="docs"></p>
 
@@ -201,7 +201,8 @@ I used no-weighted sum avarage ensemble method to fusing 7 different models toge
 - [Dissertation Overleaf Source](https://www.overleaf.com/read/qdyhnzjmbscd)
 - [Presentation slide PDF (in English) with full appendix](https://drive.google.com/drive/folders/1Nt7y1T99HpmF93peYxMg-i6BUqdzDBve?usp=sharing)
 - [Presentation slide Overleaf Source](https://www.overleaf.com/read/vxdhjvhvgwdn)
-- [Paper](docs/paper.pdf)
+- [ICPR Paper](docs/paper.pdf)
+- [ICPR Poster Overleaf Source](https://www.overleaf.com/read/jjqwfrsdcdwh#566470)
 
 <p id="author"></p>
 
