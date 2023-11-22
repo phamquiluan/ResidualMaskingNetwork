@@ -52,7 +52,7 @@ jobs:
 
   deploy-to-pypi:
     docker:
-      - image: cimg/python:3.7
+      - image: cimg/python:3.10
     resource_class: small
     steps:
       - checkout
