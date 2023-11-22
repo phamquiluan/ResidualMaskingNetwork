@@ -1,5 +1,7 @@
 # Facial Expression Recognition using Residual Masking Network
 
+The code for my undergraduate thesis.
+
 [![Downloads](https://static.pepy.tech/personalized-badge/rmn?period=total&units=international_system&left_color=grey&right_color=blue&left_text=pip%20installs)](https://pepy.tech/project/rmn)
 [![pypi package](https://img.shields.io/badge/version-v3.1.1-blue)](https://pypi.org/project/rmn)
 [![circleci](https://circleci.com/gh/phamquiluan/ResidualMaskingNetwork.svg?style=shield&circle-token=d642bb5917bc9c252f535360fc6beb6a865afc01)](https://app.circleci.com/pipelines/github/phamquiluan/ResidualMaskingNetwork)
@@ -8,10 +10,9 @@
 [![style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/phamquiluan/residualmaskingnetwork)
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/challenges-in-representation-learning-a/facial-expression-recognition-on-fer2013)](https://paperswithcode.com/sota/facial-expression-recognition-on-fer2013?p=challenges-in-representation-learning-a)
 
-The code for my undergraduate thesis.
 
 <p align="center">
-<img width=700 src= "https://user-images.githubusercontent.com/24642166/104806861-14b29880-580d-11eb-814b-a074847e35fe.png"/>
+<img width=1000 src= "https://user-images.githubusercontent.com/24642166/284939631-ee2909f0-f084-47bb-8262-2c1728166fba.jpg"/>
 </p>
 
 # Inference:
