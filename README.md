@@ -106,7 +106,7 @@ We benchmark our code thoroughly on two datasets: FER2013 and VEMO. Below are th
 | [Resnet152](https://drive.google.com/file/d/1A-kUqrP9u3ZCXVBtE6AdUN5afPwQjTHl/view?usp=sharing)           | 73.22    |
 | [Cbam_Resnet50](https://drive.google.com/file/d/1_u_B2NcxqCMPdWmPLMYKVzAenwBlwoFi/view?usp=sharing)       | 73.39    |
 | [ResMaskingNet](https://drive.google.com/file/d/1dmOycqZACsLh0eyDSR2ssn4g9xh36zMp/view?usp=sharing)       | 74.14    |
-| [ResMaskingNet + 6](https://drive.google.com/drive/folders/1Nt7y1T99HpmF93peYxMg-i6BUqdzDBve?usp=sharing) | 76.82    |
+| [**ResMaskingNet + 6**](https://drive.google.com/drive/folders/1Nt7y1T99HpmF93peYxMg-i6BUqdzDBve?usp=sharing) | **76.82**    |
 
 Results in VEMO dataset could be found in my thesis or slide (attached below)
 
@@ -120,7 +120,7 @@ We also benchmark our model on ImageNet dataset.
 | -------------------------------------------------------------------------------------------- | -------------- | -------------- |
 | [Resnet34](https://drive.google.com/open?id=16lErBAk7K3WswKP0wyE9S0dNrr7AF6wd)               | 72.59          | 90.92          |
 | [CBAM Resnet34](https://drive.google.com/open?id=16lErBAk7K3WswKP0wyE9S0dNrr7AF6wd)          | 73.77          | 91.72          |
-| [ResidualMaskingNetwork](https://drive.google.com/open?id=1myjp4_XL8mNJlAbz0TFjYKUc7B0N64eb) | 74.16          | 91.91          |
+| [**ResidualMaskingNetwork**](https://drive.google.com/open?id=1myjp4_XL8mNJlAbz0TFjYKUc7B0N64eb) | **74.16**          | **91.91**          |
 
 <p id="install"></p>
 
