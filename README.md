@@ -144,7 +144,7 @@ We also benchmark our model on ImageNet dataset.
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1IEQ091jBeJrOKHJe4wNhodH-bUGbLHSE?usp=sharing)
 
-- To train network, you need to specify model name and other hyperparameters in config file (located at configs/\*) then ensure it is loaded in main file, then run training procedure by simply run main file, for example:
+- To train the networks, you need to specify the model name and other hyperparameters in the config file (located at configs/\*) then ensure it is loaded in main file, then run training procedure by simply run main file, for example:
 
 ```Shell
 python main_fer.py  # Example for fer2013_config.json file
@@ -161,7 +161,7 @@ python main_fer.py  # Example for fer2013_config.json file
 
 <p id="train_imagenet"></p>
 
-## Training on Imagenet dataset
+## Training on the Imagenet dataset
 
 To perform training resnet34 on 4 V100 GPUs on a single machine:
 
@@ -173,7 +173,7 @@ python ./main_imagenet.py -a resnet34 --dist-url 'tcp://127.0.0.1:12345' --dist-
 
 ## Evaluation
 
-For student, who takes care of font family of confusion matrix and would like to write things in LaTeX, below is an example for generating a striking confusion matrix.
+For students, who should take care of the font family of the confusion matrix and would like to write things in LaTeX, below is an example for generating a striking confusion matrix.
 
 (Read [this article](https://matplotlib.org/3.1.1/tutorials/text/usetex.html) for more information, there will be some bugs if you blindly run the code without reading).
 
