@@ -217,12 +217,12 @@ I used the no-weighted sum average ensemble method to fuse 7 different models to
 
 ## Citation
 
-Pham, Luan, The Huynh Vu, and Tuan Anh Tran. "Facial expression recognition using residual masking network." 2020 25Th international conference on pattern recognition (ICPR). IEEE, 2021.
+Pham Luan, The Huynh Vu, and Tuan Anh Tran. "Facial Expression Recognition using Residual Masking Network". In: Proc. ICPR. 2020.
 ```
 @inproceedings{pham2021facial,
   title={Facial expression recognition using residual masking network},
   author={Pham, Luan and Vu, The Huynh and Tran, Tuan Anh},
-  booktitle={2020 25Th international conference on pattern recognition (ICPR)},
+  booktitle={2020 25th International Conference on Pattern Recognition (ICPR)},
   pages={4513--4519},
   year={2021},
   organization={IEEE}
