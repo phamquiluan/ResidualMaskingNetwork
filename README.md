@@ -39,7 +39,7 @@ m = RMN()
 m.video_demo()
 ```
 
-3. Detect emotions in single images
+3. Detect emotions from an image
 
 ```python
 image = cv2.imread("some-image-path.png")
