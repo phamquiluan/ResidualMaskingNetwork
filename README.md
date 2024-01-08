@@ -8,7 +8,7 @@ The code for my undergraduate thesis.
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/841589b75e2249b3833c9582ba2069ed)](https://www.codacy.com/gh/phamquiluan/ResidualMaskingNetwork/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=phamquiluan/ResidualMaskingNetwork&amp;utm_campaign=Badge_Grade)
 [![Python package](https://github.com/phamquiluan/ResidualMaskingNetwork/actions/workflows/python-package.yml/badge.svg)](https://github.com/phamquiluan/ResidualMaskingNetwork/actions/workflows/python-package.yml)
 [![style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/phamquiluan/residualmaskingnetwork)
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/challenges-in-representation-learning-a/facial-expression-recognition-on-fer2013)](https://paperswithcode.com/sota/facial-expression-recognition-on-fer2013?p=challenges-in-representation-learning-a)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/facial-expression-recognition-using-residual/facial-expression-recognition-on-fer2013)](https://paperswithcode.com/sota/facial-expression-recognition-on-fer2013?p=facial-expression-recognition-using-residual)
 
 
 <p align="center">
