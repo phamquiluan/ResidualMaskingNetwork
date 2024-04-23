@@ -32,7 +32,7 @@ jobs:
       - image: cimg/python:3.10
     resource_class: small
     environment:
-      TZ: "Asia/Ho_Chi_Minh"
+      TZ: "Australia/Melbourne"
     steps:
       - checkout
       - run:
