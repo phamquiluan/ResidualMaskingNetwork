@@ -2,7 +2,7 @@
 
 The code for my undergraduate thesis.
 
-[![Downloads](https://static.pepy.tech/personalized-badge/rmn?period=total&units=international_system&left_color=grey&right_color=blue&left_text=pip%20installs)](https://pepy.tech/project/rmn)
+[![PyPI Downloads](https://static.pepy.tech/badge/rmn)](https://pepy.tech/projects/rmn)
 [![pypi package](https://img.shields.io/badge/version-v3.1.2-blue)](https://pypi.org/project/rmn)
 [![circleci](https://circleci.com/gh/phamquiluan/ResidualMaskingNetwork.svg?style=shield&circle-token=d642bb5917bc9c252f535360fc6beb6a865afc01)](https://app.circleci.com/pipelines/github/phamquiluan/ResidualMaskingNetwork)
 [![Python package](https://github.com/phamquiluan/ResidualMaskingNetwork/actions/workflows/python-package.yml/badge.svg)](https://github.com/phamquiluan/ResidualMaskingNetwork/actions/workflows/python-package.yml)
