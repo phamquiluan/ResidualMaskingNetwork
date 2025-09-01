@@ -4,10 +4,19 @@ from setuptools import find_packages, setup
 
 version = None
 with open("README.md") as ref:
-    data = ref.readlines()[5]
+    lines = ref.readlines()
     version_prefix = "version-v"
-    version = data[data.find(version_prefix) + len(version_prefix) : data.find("-blue")]
-    assert version is not None, data
+    
+    # Search for the line containing the version badge
+    for line in lines:
+        if version_prefix in line and "-blue" in line:
+            version = line[line.find(version_prefix) + len(version_prefix) : line.find("-blue")]
+            break
+    
+    if version is None:
+        raise ValueError("Could not find version pattern 'version-v...blue' in README.md")
+    
+    assert version is not None, f"Version parsing failed for README.md"
 
 cwd = os.path.dirname(os.path.abspath(__file__))
 version_path = os.path.join(cwd, "rmn", "version.py")
