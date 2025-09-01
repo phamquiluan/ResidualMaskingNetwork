@@ -1,13 +1,12 @@
 # Facial Expression Recognition using Residual Masking Network
 
-The code for my undergraduate thesis.
+_(*) State-of-the-art Facial Expression Recognition / Emotion Detection._
 
 [![PyPI Downloads](https://static.pepy.tech/badge/rmn)](https://pepy.tech/projects/rmn)
 [![pypi package](https://img.shields.io/badge/version-v3.1.2-blue)](https://pypi.org/project/rmn)
 [![circleci](https://circleci.com/gh/phamquiluan/ResidualMaskingNetwork.svg?style=shield&circle-token=d642bb5917bc9c252f535360fc6beb6a865afc01)](https://app.circleci.com/pipelines/github/phamquiluan/ResidualMaskingNetwork)
 [![Python package](https://github.com/phamquiluan/ResidualMaskingNetwork/actions/workflows/python-package.yml/badge.svg)](https://github.com/phamquiluan/ResidualMaskingNetwork/actions/workflows/python-package.yml)
 [![style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/phamquiluan/residualmaskingnetwork)
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/facial-expression-recognition-using-residual/facial-expression-recognition-on-fer2013)](https://paperswithcode.com/sota/facial-expression-recognition-on-fer2013?p=facial-expression-recognition-using-residual)
 
 
 <p align="center">
