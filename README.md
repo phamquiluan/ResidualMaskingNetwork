@@ -14,7 +14,7 @@ The code for my undergraduate thesis.
 <img width=1000 src= "https://user-images.githubusercontent.com/24642166/284939631-ee2909f0-f084-47bb-8262-2c1728166fba.jpg"/>
 </p>
 
-# Inference:
+## Installation
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1ZEbJ6rJuGZ6UzmOFE1XCzSgacTUJiN-H?usp=sharing)
 
@@ -22,15 +22,18 @@ The code for my undergraduate thesis.
 
 ```bash
 pip install rmn
+```
 
-# or build from source
+2. Or build from source
 
+```bash
 git clone git@github.com:phamquiluan/ResidualMaskingNetwork.git
 cd ResidualMaskingNetwork
 pip install -e .
 ```
 
-2. Run demo in Python (with webcam available)
+## How to use
+### Run demo in Python (with webcam available)
 
 ```python
 from rmn import RMN
@@ -38,7 +41,7 @@ m = RMN()
 m.video_demo()
 ```
 
-3. Detect emotions from an image
+### Detect emotions from an image
 
 ```python
 image = cv2.imread("some-image-path.png")
@@ -49,11 +52,8 @@ cv2.imwrite("output.png", image)
 ```
 
 <p align="center">
-<img width=500 src= "https://user-images.githubusercontent.com/24642166/117097030-d4176480-ad94-11eb-8c65-097a62ede067.png"/>
-</p>
-
-<p align="center">
-<img width=500 src= "https://user-images.githubusercontent.com/24642166/72135777-da244d80-33b9-11ea-90ee-706b25c0a5a9.png"/>
+<img width="41%" src= "https://user-images.githubusercontent.com/24642166/117097030-d4176480-ad94-11eb-8c65-097a62ede067.png"/>
+<img width="58%" src= "https://user-images.githubusercontent.com/24642166/72135777-da244d80-33b9-11ea-90ee-706b25c0a5a9.png"/>
 </p>
 
 ### Table of Contents
