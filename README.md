@@ -2,6 +2,7 @@
 
 _(*) State-of-the-art Facial Expression Recognition / Emotion Detection._
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1ZEbJ6rJuGZ6UzmOFE1XCzSgacTUJiN-H?usp=sharing)
 [![PyPI Downloads](https://static.pepy.tech/badge/rmn)](https://pepy.tech/projects/rmn)
 [![pypi package](https://img.shields.io/badge/version-v3.1.2-blue)](https://pypi.org/project/rmn)
 [![circleci](https://circleci.com/gh/phamquiluan/ResidualMaskingNetwork.svg?style=shield&circle-token=d642bb5917bc9c252f535360fc6beb6a865afc01)](https://app.circleci.com/pipelines/github/phamquiluan/ResidualMaskingNetwork)
@@ -15,7 +16,6 @@ _(*) State-of-the-art Facial Expression Recognition / Emotion Detection._
 
 ## Installation
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1ZEbJ6rJuGZ6UzmOFE1XCzSgacTUJiN-H?usp=sharing)
 
 1. Install from pip
 
