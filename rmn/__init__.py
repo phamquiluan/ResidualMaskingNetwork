@@ -27,11 +27,8 @@ def show(img, name="disp", width=1000):
 checkpoint_url = "https://github.com/phamquiluan/ResidualMaskingNetwork/releases/download/v0.0.1/Z_resmasking_dropout1_rot30_2019Nov30_13.32"
 local_checkpoint_path = "pretrained_ckpt"
 
-prototxt_url = "https://github.com/phamquiluan/ResidualMaskingNetwork/releases/download/v0.0.1/deploy.prototxt.txt"
-local_prototxt_path = "deploy.prototxt.txt"
-
-ssd_checkpoint_url = "https://github.com/phamquiluan/ResidualMaskingNetwork/releases/download/v0.0.1/res10_300x300_ssd_iter_140000.caffemodel"
-local_ssd_checkpoint_path = "res10_300x300_ssd_iter_140000.caffemodel"
+yunet_checkpoint_url = "https://github.com/phamquiluan/ResidualMaskingNetwork/releases/download/v0.0.1/face_detection_yunet_2023mar.onnx"
+local_yunet_checkpoint_path = "face_detection_yunet_2023mar.onnx"
 
 
 def download_checkpoint(remote_url, local_path):
@@ -61,8 +58,7 @@ def download_checkpoint(remote_url, local_path):
 
 for remote_path, local_path in [
     (checkpoint_url, local_checkpoint_path),
-    (prototxt_url, local_prototxt_path),
-    (ssd_checkpoint_url, local_ssd_checkpoint_path),
+    (yunet_checkpoint_url, local_yunet_checkpoint_path),
 ]:
     if not os.path.exists(local_path):
         print(f"{local_path} does not exists!")
@@ -85,12 +81,14 @@ def ensure_gray(image):
     return image
 
 
-def get_ssd_face_detector():
-    ssd_face_detector = cv2.dnn.readNetFromCaffe(
-        prototxt=local_prototxt_path,
-        caffeModel=local_ssd_checkpoint_path,
+def get_yunet_face_detector():
+    yunet_face_detector = cv2.FaceDetectorYN.create(
+        model=local_yunet_checkpoint_path,
+        config="",
+        input_size=(320, 320),
+        score_threshold=0.5,
     )
-    return ssd_face_detector
+    return yunet_face_detector
 
 
 transform = transforms.Compose(
@@ -146,7 +144,7 @@ def convert_to_square(xmin, ymin, xmax, ymax):
 class RMN:
     def __init__(self, face_detector=True):
         if face_detector is True:
-            self.face_detector = get_ssd_face_detector()
+            self.face_detector = get_yunet_face_detector()
         self.emo_model = get_emo_model()
 
     @torch.no_grad()
@@ -278,27 +276,21 @@ class RMN:
         return frame
 
     def detect_faces(self, frame):
+        frame = ensure_color(frame)
         h, w = frame.shape[:2]
-        blob = cv2.dnn.blobFromImage(
-            cv2.resize(frame, (300, 300)),
-            1.0,
-            (300, 300),
-            (104.0, 177.0, 123.0),
-            False,
-            False,
-        )
-        self.face_detector.setInput(blob)
-        faces = self.face_detector.forward()
+        self.face_detector.setInputSize((w, h))
+        _, faces = self.face_detector.detect(frame)
 
         face_results = []
-        for i in range(0, faces.shape[2]):
-            confidence = faces[0, 0, i, 2]
-            if confidence < 0.5:
-                continue
-            xmin, ymin, xmax, ymax = (
-                faces[0, 0, i, 3:7] * np.array([w, h, w, h])
-            ).astype("int")
-            xmin, ymin, xmax, ymax = convert_to_square(xmin, ymin, xmax, ymax)
+        if faces is None:
+            return face_results
+        for face in faces:
+            xmin, ymin, bw, bh = face[:4].astype("int")
+            xmin, ymin, xmax, ymax = convert_to_square(
+                xmin, ymin, xmin + bw, ymin + bh
+            )
+            xmin = max(xmin, 0)
+            ymin = max(ymin, 0)
             if xmax <= xmin or ymax <= ymin:
                 continue
 
