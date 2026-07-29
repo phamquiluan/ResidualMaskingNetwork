@@ -50,7 +50,7 @@ setup(
     include_package_data=True,
     install_requires=[
         "numpy",
-        "opencv-python",
+        "opencv-python>=4.8.0",
         "torch",
         "torchvision",
         "requests",
