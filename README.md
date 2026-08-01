@@ -8,6 +8,8 @@ _(*) State-of-the-art Facial Expression Recognition / Emotion Detection._
 [![circleci](https://circleci.com/gh/phamquiluan/ResidualMaskingNetwork.svg?style=shield)](https://app.circleci.com/pipelines/github/phamquiluan/ResidualMaskingNetwork)
 [![Python package](https://github.com/phamquiluan/ResidualMaskingNetwork/actions/workflows/python-package.yml/badge.svg)](https://github.com/phamquiluan/ResidualMaskingNetwork/actions/workflows/python-package.yml)
 [![style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/phamquiluan/residualmaskingnetwork)
+[![HF Paper](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Paper-yellow)](https://huggingface.co/papers/2603.05937)
+[![HF Model](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-yellow)](https://huggingface.co/phamquiluan/ResidualMaskingNetwork)
 
 
 <p align="center">
@@ -164,6 +166,8 @@ I used the no-weighted sum average ensemble method to fuse 7 different models to
 - [Presentation slide PDF (in English) with full appendix](https://drive.google.com/drive/folders/1Nt7y1T99HpmF93peYxMg-i6BUqdzDBve?usp=sharing)
 - [Presentation slide Overleaf Source](https://www.overleaf.com/read/vxdhjvhvgwdn)
 - [ICPR Paper](docs/paper.pdf)
+- [Hugging Face Paper Page](https://huggingface.co/papers/2603.05937)
+- [Hugging Face Model (trained weights)](https://huggingface.co/phamquiluan/ResidualMaskingNetwork)
 - [ICPR Poster Overleaf Source](https://www.overleaf.com/read/jjqwfrsdcdwh#566470)
 
 
