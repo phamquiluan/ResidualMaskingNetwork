@@ -55,6 +55,6 @@ setup(
         "torchvision",
         "requests",
         "pytorchcv",
-        "tqdm",
+        "huggingface_hub",
     ],
 )

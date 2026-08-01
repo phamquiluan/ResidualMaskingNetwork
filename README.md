@@ -4,7 +4,7 @@ _(*) State-of-the-art Facial Expression Recognition / Emotion Detection._
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1ZEbJ6rJuGZ6UzmOFE1XCzSgacTUJiN-H?usp=sharing)
 [![PyPI Downloads](https://static.pepy.tech/badge/rmn)](https://pepy.tech/projects/rmn)
-[![pypi package](https://img.shields.io/badge/version-v3.2.0-blue)](https://pypi.org/project/rmn)
+[![pypi package](https://img.shields.io/badge/version-v3.3.0-blue)](https://pypi.org/project/rmn)
 [![circleci](https://circleci.com/gh/phamquiluan/ResidualMaskingNetwork.svg?style=shield)](https://app.circleci.com/pipelines/github/phamquiluan/ResidualMaskingNetwork)
 [![Python package](https://github.com/phamquiluan/ResidualMaskingNetwork/actions/workflows/python-package.yml/badge.svg)](https://github.com/phamquiluan/ResidualMaskingNetwork/actions/workflows/python-package.yml)
 [![style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/phamquiluan/residualmaskingnetwork)

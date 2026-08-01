@@ -5,6 +5,7 @@ import os
 import cv2
 import numpy as np
 import torch
+from huggingface_hub import hf_hub_download
 from torchvision.transforms import transforms
 
 from models import densenet121, resmasking_dropout1
@@ -24,45 +25,20 @@ def show(img, name="disp", width=1000):
     cv2.destroyAllWindows()
 
 
-checkpoint_url = "https://github.com/phamquiluan/ResidualMaskingNetwork/releases/download/v0.0.1/Z_resmasking_dropout1_rot30_2019Nov30_13.32"
+hf_repo_id = "phamquiluan/ResidualMaskingNetwork"
+checkpoint_filename = "Z_resmasking_dropout1_rot30_2019Nov30_13.32"
+yunet_checkpoint_filename = "face_detection_yunet_2023mar.onnx"
+
+# pre-downloaded files in the working directory take precedence,
+# otherwise checkpoints are fetched from the Hugging Face Hub cache
 local_checkpoint_path = "pretrained_ckpt"
+local_yunet_checkpoint_path = yunet_checkpoint_filename
 
-yunet_checkpoint_url = "https://github.com/phamquiluan/ResidualMaskingNetwork/releases/download/v0.0.1/face_detection_yunet_2023mar.onnx"
-local_yunet_checkpoint_path = "face_detection_yunet_2023mar.onnx"
+if not os.path.exists(local_checkpoint_path):
+    local_checkpoint_path = hf_hub_download(hf_repo_id, checkpoint_filename)
 
-
-def download_checkpoint(remote_url, local_path):
-    import requests
-    from tqdm import tqdm
-
-    response = requests.get(remote_url, stream=True)
-    total_size_in_bytes = int(response.headers.get("content-length", 0))
-    block_size = 1024  # 1 Kibibyte
-
-    progress_bar = tqdm(
-        desc=f"Downloading {local_path}..",
-        total=total_size_in_bytes,
-        unit="iB",
-        unit_scale=True,
-    )
-
-    with open(local_path, "wb") as ref:
-        for data in response.iter_content(block_size):
-            progress_bar.update(len(data))
-            ref.write(data)
-
-    progress_bar.close()
-    if total_size_in_bytes != 0 and progress_bar.n != total_size_in_bytes:
-        print("ERROR, something went wrong")
-
-
-for remote_path, local_path in [
-    (checkpoint_url, local_checkpoint_path),
-    (yunet_checkpoint_url, local_yunet_checkpoint_path),
-]:
-    if not os.path.exists(local_path):
-        print(f"{local_path} does not exists!")
-        download_checkpoint(remote_url=remote_path, local_path=local_path)
+if not os.path.exists(local_yunet_checkpoint_path):
+    local_yunet_checkpoint_path = hf_hub_download(hf_repo_id, yunet_checkpoint_filename)
 
 
 def ensure_color(image):
