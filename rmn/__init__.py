@@ -29,16 +29,60 @@ hf_repo_id = "phamquiluan/ResidualMaskingNetwork"
 checkpoint_filename = "Z_resmasking_dropout1_rot30_2019Nov30_13.32"
 yunet_checkpoint_filename = "face_detection_yunet_2023mar.onnx"
 
+github_release_url = (
+    "https://github.com/phamquiluan/ResidualMaskingNetwork/releases/download/v0.0.1"
+)
+
 # pre-downloaded files in the working directory take precedence,
 # otherwise checkpoints are fetched from the Hugging Face Hub cache
 local_checkpoint_path = "pretrained_ckpt"
 local_yunet_checkpoint_path = yunet_checkpoint_filename
 
-if not os.path.exists(local_checkpoint_path):
-    local_checkpoint_path = hf_hub_download(hf_repo_id, checkpoint_filename)
 
-if not os.path.exists(local_yunet_checkpoint_path):
-    local_yunet_checkpoint_path = hf_hub_download(hf_repo_id, yunet_checkpoint_filename)
+def download_from_github_release(filename, local_path):
+    """Stream a release asset to local_path, used when the Hub is unavailable."""
+    import requests
+
+    url = f"{github_release_url}/{filename}"
+    print(f"Downloading {url} -> {local_path}")
+
+    response = requests.get(url, stream=True, timeout=60)
+    response.raise_for_status()
+
+    # write to a temporary name so an interrupted download is never mistaken
+    # for a complete checkpoint on the next import
+    partial_path = f"{local_path}.part"
+    with open(partial_path, "wb") as ref:
+        for chunk in response.iter_content(chunk_size=1024 * 1024):
+            ref.write(chunk)
+    os.replace(partial_path, local_path)
+    return local_path
+
+
+def fetch_checkpoint(filename, local_path):
+    """Prefer the Hub, fall back to the GitHub release it used to ship from.
+
+    The Hub rate-limits unauthenticated downloads (HTTP 429), which is easy to
+    hit from CI matrices or shared IPs, and a rate limit should not make the
+    package unimportable.
+    """
+    if os.path.exists(local_path):
+        return local_path
+
+    try:
+        return hf_hub_download(hf_repo_id, filename)
+    except Exception as error:
+        print(
+            f"Hugging Face Hub download failed ({type(error).__name__}: {error}); "
+            "falling back to the GitHub release"
+        )
+        return download_from_github_release(filename, local_path)
+
+
+local_checkpoint_path = fetch_checkpoint(checkpoint_filename, local_checkpoint_path)
+local_yunet_checkpoint_path = fetch_checkpoint(
+    yunet_checkpoint_filename, local_yunet_checkpoint_path
+)
 
 
 def ensure_color(image):
