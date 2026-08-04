@@ -10,11 +10,18 @@ _(*) State-of-the-art Facial Expression Recognition / Emotion Detection._
 [![style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/phamquiluan/residualmaskingnetwork)
 [![HF Paper](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Paper-yellow)](https://huggingface.co/papers/2603.05937)
 [![HF Model](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-yellow)](https://huggingface.co/phamquiluan/ResidualMaskingNetwork)
+[![HF Space](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Demo-orange)](https://huggingface.co/spaces/phamquiluan/ResidualMaskingNetwork)
 
 
 <p align="center">
 <img width=1000 src= "https://user-images.githubusercontent.com/24642166/284939631-ee2909f0-f084-47bb-8262-2c1728166fba.jpg"/>
 </p>
+
+## Live Demo
+
+Try it in your browser — [**huggingface.co/spaces/phamquiluan/ResidualMaskingNetwork**](https://huggingface.co/spaces/phamquiluan/ResidualMaskingNetwork).
+Inference runs entirely client-side through ONNX Runtime Web, so images never leave your
+machine. Source in [`space/`](space).
 
 ## Installation
 
