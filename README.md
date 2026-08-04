@@ -20,8 +20,8 @@ _(*) State-of-the-art Facial Expression Recognition / Emotion Detection._
 ## Live Demo
 
 Try it in your browser — [**huggingface.co/spaces/phamquiluan/ResidualMaskingNetwork**](https://huggingface.co/spaces/phamquiluan/ResidualMaskingNetwork).
-Inference runs entirely client-side through ONNX Runtime Web, so images never leave your
-machine. Source in [`space/`](space).
+Inference runs entirely client-side through ONNX Runtime Web, so images
+never leave your machine. Source in [`space/`](space).
 
 ## Installation
 
