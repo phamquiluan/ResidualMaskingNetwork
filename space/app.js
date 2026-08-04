@@ -8,6 +8,13 @@
  * `pip install rmn` agree on the same image.
  */
 
+/* global ort */
+
+/* Every index into an array in this file is a loop counter or a value derived
+   from model output shapes, never a user-supplied key, so the object-injection
+   rule only produces false positives on the pixel and tensor loops below. */
+/* eslint-disable security/detect-object-injection */
+
 // overridable so the pipeline can be exercised against local files in tests
 const MODEL_BASE =
   window.RMN_MODEL_BASE ||
@@ -85,18 +92,21 @@ async function loadModels(onStatus) {
 
   onStatus("Loading face detector...", 0);
   const detectorBytes = await fetchWithProgress(DETECTOR_URL, (p) =>
-    onStatus("Loading face detector...", p * 0.02)
+    onStatus("Loading face detector...", p * 0.02),
   );
   detectorSession = await ort.InferenceSession.create(detectorBytes, {
     executionProviders: ["wasm"],
   });
 
-  onStatus("Downloading emotion model (132 MB, cached after first visit)...", 0.02);
+  onStatus(
+    "Downloading emotion model (132 MB, cached after first visit)...",
+    0.02,
+  );
   const classifierBytes = await fetchWithProgress(CLASSIFIER_URL, (p) =>
     onStatus(
       `Downloading emotion model (132 MB, cached after first visit)... ${Math.round(p * 100)}%`,
-      0.02 + p * 0.93
-    )
+      0.02 + p * 0.93,
+    ),
   );
 
   onStatus("Initialising inference session...", 0.96);
@@ -142,10 +152,8 @@ function resizeBilinear(src, srcW, srcH, dstW, dstH) {
       const x1 = Math.min(x0 + 1, srcW - 1);
       const wx = fx - x0;
 
-      const top =
-        src[y0 * srcW + x0] * (1 - wx) + src[y0 * srcW + x1] * wx;
-      const bottom =
-        src[y1 * srcW + x0] * (1 - wx) + src[y1 * srcW + x1] * wx;
+      const top = src[y0 * srcW + x0] * (1 - wx) + src[y0 * srcW + x1] * wx;
+      const bottom = src[y1 * srcW + x0] * (1 - wx) + src[y1 * srcW + x1] * wx;
       dst[y * dstW + x] = top * (1 - wy) + bottom * wy;
     }
   }
@@ -167,8 +175,14 @@ function nonMaxSuppression(boxes, scores, threshold) {
 
     for (let i = order.length - 1; i >= 0; i--) {
       const [bx, by, bw, bh] = boxes[order[i]];
-      const overlapW = Math.max(0, Math.min(ax + aw, bx + bw) - Math.max(ax, bx));
-      const overlapH = Math.max(0, Math.min(ay + ah, by + bh) - Math.max(ay, by));
+      const overlapW = Math.max(
+        0,
+        Math.min(ax + aw, bx + bw) - Math.max(ax, bx),
+      );
+      const overlapH = Math.max(
+        0,
+        Math.min(ay + ah, by + bh) - Math.max(ay, by),
+      );
       const intersection = overlapW * overlapH;
       const iou = intersection / (aw * ah + bw * bh - intersection);
       if (iou > threshold) order.splice(i, 1);
@@ -195,7 +209,7 @@ function letterbox(canvas) {
     0,
     0,
     Math.round(canvas.width * scale),
-    Math.round(canvas.height * scale)
+    Math.round(canvas.height * scale),
   );
   return { canvas: target, scale };
 }
@@ -329,7 +343,7 @@ async function analyse(sourceCanvas) {
     0,
     0,
     sourceCanvas.width,
-    sourceCanvas.height
+    sourceCanvas.height,
   );
   const gray = toGrayscale(data, sourceCanvas.width, sourceCanvas.height);
 
@@ -351,12 +365,14 @@ async function analyse(sourceCanvas) {
 
   const results = [];
   for (const face of faces) {
-    const box = usedFallback ? face : convertToSquare(face.xmin, face.ymin, face.xmax, face.ymax);
+    const box = usedFallback
+      ? face
+      : convertToSquare(face.xmin, face.ymin, face.xmax, face.ymax);
     const prediction = await classifyCrop(
       gray,
       sourceCanvas.width,
       sourceCanvas.height,
-      box
+      box,
     );
     if (prediction) results.push({ ...box, ...prediction });
   }
